@@ -303,7 +303,7 @@ class OSM(Network):
         """
         streets = self.ways.get_list()
         street_polygons = []
-        distance_to_sidewalk = 0.00003
+        distance_to_sidewalk = 0.00005
 
         for street in streets:
             start_node_id = street.get_node_ids()[0]
@@ -325,19 +325,26 @@ class OSM(Network):
 
         # Find pair of polygons that intersect each other.
         polygon_combinations = combinations(street_polygons, 2)
+        # Create a list for storing parallel pairs
         parallel_pairs = []
-        for pair in polygon_combinations:
+
+
+
+        # Todo: change the variable name pair to pair_poly
+        for pair in polygon_combinations: # pair[0] and pair[1] are polygons
             angle_diff = ((pair[0].angle - pair[1].angle) + 360.) % 180.
-            if pair[0].intersects(pair[1]) and angle_diff < 10.:
+            if pair[0].intersects(pair[1]) and (angle_diff < 10. or angle_diff>170.):
                 # If the polygon intersects, and they have a kind of similar angle, and they don't share a node,
                 # then they should be merged together.
                 parallel_pairs.append((street_polygons.index(pair[0]), street_polygons.index(pair[1])))
 
+
         filtered_parallel_pairs = []
+
+        #Filter parallel_pairs and store in filtered_parallel_pairs
         for pair in parallel_pairs:
             street_pair = (streets[pair[0]], streets[pair[1]])
             shared_nids = set(street_pair[0].nids) & set(street_pair[1].nids)
-
             # Find the adjacent nodes for the shared node
             if len(shared_nids) > 0:
                 # Two paths merges at one node
@@ -349,9 +356,11 @@ class OSM(Network):
                 # Nodes are sorted by longitude (x-axis), so two paths should merge at the left-most node or the
                 # right most node.
                 if idx1 == 0 and idx2 == 0:
+                    # The case where shared node is at the left-end
                     adj_nid1 = street_pair[0].nids[1]
                     adj_nid2 = street_pair[1].nids[1]
                 else:
+                    # The case where sahred node is at the right-end
                     adj_nid1 = street_pair[0].nids[-2]
                     adj_nid2 = street_pair[1].nids[-2]
 
@@ -359,11 +368,11 @@ class OSM(Network):
                 adj_node2 = self.nodes.get(adj_nid2)
                 angle_to_node1 = math.degrees(shared_node.angle_to(adj_node1))
                 angle_to_node2 = math.degrees(shared_node.angle_to(adj_node2))
-                if ((angle_to_node1 - angle_to_node2) + 360.) % 180. > 90:
+
+                if abs(abs(angle_to_node1)-abs(angle_to_node2)) > 90:
                     # Paths are connected but they are not parallel lines
                     continue
             filtered_parallel_pairs.append(pair)
-
         return [(streets[pair[0]].id, streets[pair[1]].id) for pair in filtered_parallel_pairs]
 
     def segment_parallel_streets(self, street_pair):

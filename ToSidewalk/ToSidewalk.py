@@ -260,13 +260,15 @@ def main(street_network):
 
 if __name__ == "__main__":
     # filename = "../resources/SimpleWay_01.osm"
-    filename = "../resources/Simple4WayIntersection_01.osm"
+    # filename = "../resources/Simple4WayIntersection_01.osm"
     # filename = "../resources/SmallMap_01.osm"
     #filename = "../resources/ParallelLanes_03.osm"
     #filename = "../resources/MapPair_B_01.osm"
     # filename = "../resources/SegmentedStreet_01.osm"
     #filename = "../resources/ParallelLanes_03.osm"
-    #filename = "../resources/SmallMap_04.osm"
+
+    filename = "../resources/SmallMap_04.osm"
+    #filename = "../resources/benning.osm"
 
     street_network = parse(filename)
     street_network.preprocess()
