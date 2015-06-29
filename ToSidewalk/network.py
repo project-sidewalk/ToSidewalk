@@ -70,6 +70,30 @@ class Network(object):
         for way in ways:
             self.add_way(way)
 
+    def create_node(self, node_id, lat, lng):
+        """
+        Create a new node and add it to the network
+        :param node_id: A node id
+        :param lat: Latitude
+        :param lng: Longitude
+        :return: The new Node object
+        """
+        node = Node(node_id, lat, lng)
+        self.add_node(node)
+        return node
+
+    def create_street(self, street_id, nids, type=None):
+        """
+        Create a new street and add it to the network
+        :param street_id: A street id
+        :param nids: A list of node ids
+        :param type: A street type
+        :return: A new Street object
+        """
+        street = Street(street_id, nids, type)
+        self.add_way(street)
+        return street
+
     def get_adjacent_nodes(self, node):
         """
         Get adjacent nodes for the passed node
@@ -80,10 +104,8 @@ class Network(object):
         way_ids = node.get_way_ids()
 
         for way_id in way_ids:
-            try:
-                way = self.ways.get(way_id)
-            except AssertionError:
-                print("Debug")
+            way = self.get_way(way_id)
+
             # If the current intersection node is at the head of street.nids, then take the second node and push it
             # into adj_street_nodes. Otherwise, take the node that is second to the last in street.nids .
             if way.nids[0] == node.id:
@@ -93,6 +115,14 @@ class Network(object):
 
         return list(set(adj_nodes))
 
+    def get_way(self, way_id):
+        """
+        Get a Way object
+        :param way_id: A way id
+        :return: A Way object
+        """
+        return self.ways.get(way_id)
+
     def parse_intersections(self):
         node_list = self.nodes.get_list()
         intersection_node_ids = [node.id for node in node_list if node.is_intersection()]
@@ -100,11 +130,15 @@ class Network(object):
         return
 
     def remove_node(self, nid):
+        """
+        Remove a node from the network.
+        :param nid: A node id
+        """
         node = self.nodes.get(nid)
         for way_id in node.way_ids:
-            self.ways.get(way_id).remove_node(nid)
+            way = self.ways.get(way_id)
+            way.remove_node(nid)
         self.nodes.remove(nid)
-        return
 
     def remove_way(self, way_id):
         """
@@ -113,7 +147,6 @@ class Network(object):
         :return:
         """
         way = self.ways.get(way_id)
-
         for nid in way.get_node_ids():
             node = self.nodes.get(nid)
             node.remove_way_id(way_id)
@@ -611,8 +644,6 @@ class OSM(Network):
 
         # Merge parallel pairs
         for pair in parallel_pairs:
-
-
             #####
             try:
                 street_pair = (self.ways.get(pair[0]), self.ways.get(pair[1]))
@@ -676,16 +707,20 @@ class OSM(Network):
                             normal = np.array([- v[1], v[0]])
                         new_position = node.location() + normal * distance
 
-                        new_node = Node(None, new_position[0], new_position[1])
-                        self.add_node(new_node)
+                        # new_node = Node(None, new_position[0], new_position[1])
+                        # self.add_node(new_node)
+
+                        new_node = self.create_node(None, new_position[0], new_position[1])
                         new_street_nids.append(new_node.id)
                     except IndexError:
                         # Take care of the last node.
                         # Use the previous perpendicular vector but reverse the direction
                         node = self.nodes.get(nid)
                         new_position = node.location() - normal * distance
-                        new_node = Node(None, new_position[0], new_position[1])
-                        self.add_node(new_node)
+                        # new_node = Node(None, new_position[0], new_position[1])
+                        # self.add_node(new_node)
+
+                        new_node = self.create_node(None, new_position[0], new_position[1])
                         new_street_nids.append(new_node.id)
 
                 log.debug(pair)
@@ -693,9 +728,10 @@ class OSM(Network):
                 node_to[subset_nids[-1]] = new_street_nids[-1]
 
                 merged_street = Street(None, new_street_nids)
-                merged_street.distance_to_sidewalk *= 2
                 self.add_way(merged_street)
-                self.simplify(merged_street.id, 0.1)
+
+                merged_street.distance_to_sidewalk *= 2
+                # self.simplify(merged_street.id, 0.1)
                 streets_to_remove.append(street_pair[0].id)
                 streets_to_remove.append(street_pair[1].id)
 

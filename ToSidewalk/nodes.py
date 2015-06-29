@@ -106,29 +106,53 @@ class Nodes(object):
         return
 
     def add(self, node):
+        """
+        Add a Node object to self
+        :param node: A Node object
+        """
         node.parent_nodes = self
         self.nodes[node.id] = node
-        return
 
     def belongs_to(self):
+        """
+        Returns a parent network
+        :return: A parent Network object
+        """
         return self.parent_network
 
     def get(self, nid):
+        """
+        Get a Node object
+        :param nid: A node id
+        :return: A Node object
+        """
         if nid in self.nodes:
             return self.nodes[nid]
         else:
             return None
 
     def get_intersection_nodes(self):
+        """
+        Get a list of Node objects, in which each node is an intersection node.
+        :return: A list of Node objects
+        """
         return [self.nodes[nid] for nid in self.nodes if self.nodes[nid].is_intersection()]
 
     def get_list(self):
+        """
+        Get a list of node objects
+        :return: A list of Node objects
+        """
         return self.nodes.values()
 
     def remove(self, nid):
-        # http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
+        """
+        Remove a node from self.nodes
+        http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
+        :param nid:
+        :return:
+        """
         del self.nodes[nid]
-        return
 
     def update(self, nid, new_node):
         self.nodes[nid] = new_node

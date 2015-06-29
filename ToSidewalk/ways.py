@@ -19,7 +19,7 @@ class Way(object):
 
     def export(self):
         if self.parent_ways and self.parent_ways.parent_network:
-            geojson = {}
+            geojson = dict()
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
             feature = self.get_geojson_features()
@@ -27,7 +27,7 @@ class Way(object):
             return json.dumps(geojson)
 
     def get_geojson_features(self):
-        feature = {}
+        feature = dict()
         feature['properties'] = {
             'type': self.type,
             'id': self.id,
@@ -125,11 +125,13 @@ class Street(Way):
 
     def set_oneway_tag(self, oneway_tag):
         self.oneway = oneway_tag
+
     def set_ref_tag(self, ref_tag):
         self.ref = ref_tag
 
     def get_oneway_tag(self):
         return self.oneway
+
     def get_ref_tag(self):
         return self.ref
 
@@ -156,9 +158,11 @@ class Sidewalk(Way):
         super(Sidewalk, self).__init__(wid, nids, type)
 
     def set_street_id(self, street_id):
-        """  Set the parent street id """
+        """
+        Set the parent street id
+        :param street_id: A street id
+        """
         self.street_id = street_id
-        return
 
 class Sidewalks(Ways):
     def __init__(self):
