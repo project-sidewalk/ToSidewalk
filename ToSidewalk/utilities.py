@@ -17,6 +17,34 @@ def area(p1, p2, p3):
     area = np.cross(v1, v2) / 2
     return abs(area)
 
+def foot(x1, y1, a, b, c):
+    """
+    Get a foot M(x2, y2) drawn from a point (x1, y1) to the line ax + by + c = 0
+    http://math.stackexchange.com/questions/33868/foot-of-perpendicular-to-line
+    :param x: x coordinate
+    :param y: y coordinate
+    :param a:
+    :param b:
+    :param c:
+    :return: A point (x2, y2)
+    """
+    x2 = - a * (a * x1 + b * y1 + c) / (a * a + b * b) + x1
+    y2 = - b * (a * x1 + b * y1 + c) / (a * a + b * b) + y1
+    return x2, y2
+
+def points_to_line(p1, p2):
+    """
+    Given two points p1 and p2, return a line a*x + b*x + c = 0
+    Google "point-line duality"
+    :param p1: A point (x1, y1)
+    :param p2: A point (x2, y2)
+    :return: A line a, b, c
+    """
+    p1_star = np.array([p1[0], p1[1], 1])
+    p2_star = np.array([p2[0], p2[1], 1])
+    line = np.cross(p1_star, p2_star)
+    return line[0], line[1], line[2]
+
 def latlng_offset(lat_origin, lng_origin, **kwargs):
     """
     Given an original coordinate (lat, lng) and displacement (dx, dy) in meters,

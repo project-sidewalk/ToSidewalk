@@ -55,7 +55,8 @@ class Node(LatLng):
 
     def get_adjacent_nodes(self):
         """
-        :return: A list of Node objects that are adjacent to this Node object (self)
+        A list of Node objects that are adjacent to this Node object (self)
+        :return: A list of nodes
         """
         parent_nodes = self.belongs_to()
         network = parent_nodes.belongs_to()

@@ -1,6 +1,6 @@
 import json
 import numpy as np
-import logging as log
+
 class Way(object):
     def __init__(self, wid=None, nids=[], type=None):
         if wid is None:
