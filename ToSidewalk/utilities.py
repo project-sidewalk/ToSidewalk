@@ -2,6 +2,7 @@ from itertools import islice
 import math
 import numpy as np
 
+from types import *
 
 def area(p1, p2, p3):
     """
@@ -16,19 +17,56 @@ def area(p1, p2, p3):
     area = np.cross(v1, v2) / 2
     return abs(area)
 
-def latlng_offset(lat_origin, lng_origin, dx, dy):
+def latlng_offset(lat_origin, lng_origin, **kwargs):
     """
     Given an original coordinate (lat, lng) and displacement (dx, dy) in meters,
     return a new latlng coordinate.
     http://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
     :param lat_origin: Original latitude
     :param lng_origin: Original longitude
-    :param dx: Displacement along the x-axis in Cartesian coordinate
-    :param dy: Displacement along the y-axis in Cartesian coordinate
+    :param kwargs: Can take:
+        dx: Displacement along the x-axis in Cartesian coordinate
+        dy: Displacement along the y-axis in Cartesian coordinate
+        vector: A vector
+        distance: A size of the vector
+    :return: Returns a tuple of latlng position
     """
+
+    if 'dx' in kwargs and 'dy' in kwargs:
+        dx = kwargs['dx']
+        dy = kwargs['dy']
+    elif 'vector' in kwargs and 'distance' in kwargs:
+        assert kwargs['vector'] is ListType
+        v = np.array(kwargs['vector'])
+        v /= np.linalg.norm(v)
+        angle = math.atan2(v[1], v[0])
+        dx = kwargs['distance'] * math.cos(angle)
+        dy = kwargs['distance'] * math.sin(angle)
     dlat = float(dy) / 111111
     dlng = float(dx) / (111111 * math.cos(math.radians(lat_origin)))
-    return (lat_origin + dlat, lng_origin + dlng)
+    return lat_origin + dlat, lng_origin + dlng
+
+def latlng_offset_size(lat_origin, lng_origin, **kwargs):
+    """
+    Given an coordinate (lat, lng) and displacement (dx, dy) in meters, return the size of offset in latlng
+    :param lat_origin:
+    :param lng_origin:
+    :param kwargs:
+    :return: Returns a size of the offset
+    """
+    if 'dx' in kwargs and 'dy' in kwargs:
+        dx = kwargs['dx']
+        dy = kwargs['dy']
+    elif 'vector' in kwargs and 'distance' in kwargs:
+        assert kwargs['vector'] is ListType
+        v = np.array(kwargs['vector'])
+        v /= np.linalg.norm(v)
+        angle = math.atan2(v[1], v[0])
+        dx = kwargs['distance'] * math.cos(angle)
+        dy = kwargs['distance'] * math.sin(angle)
+    dlat = float(dy) / 111111
+    dlng = float(dx) / (111111 * math.cos(math.radians(lat_origin)))
+    return math.sqrt(dlat * dlat + dlng * dlng)
 
 def window(seq, n=2, padding=None):
     """

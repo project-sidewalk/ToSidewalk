@@ -8,24 +8,23 @@ class TestWayMethods(unittest.TestCase):
         """
         Test the constructor
         """
-        way = Way()
+        nids = [1, 2, 3]
+        way = Way(-1, nids)
         self.assertNotEqual(way.id, '0')
 
-        way = Way(0)
+        way = Way(0, nids)
         self.assertEqual(way.id, '0')
 
-        nids = (1, 2, 3)
-        way = Way(0, (1, 2, 3))
+        way = Way(0, nids)
         self.assertTrue(way.get_node_ids()[0], nids[0])
         self.assertTrue(way.get_node_ids()[1], nids[1])
         self.assertTrue(way.get_node_ids()[2], nids[2])
 
     def test_belongs_to(self):
-        myway = Way()
+        myway = Way(None, [1, 2])
         ways = Ways()
         ways.add(myway)
         self.assertEqual(myway.belongs_to(), ways)
-
 
 
 class TestWaysMethods(unittest.TestCase):

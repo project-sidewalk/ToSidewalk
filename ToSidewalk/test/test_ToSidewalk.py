@@ -118,7 +118,7 @@ class TestToSidewalkMethods(unittest.TestCase):
         crosswalk = Sidewalk('c', ['c1', 'c2', 'c3', 'c4', 'c1'])
         sidewalk_network.add_way(crosswalk)
 
-        connect_crosswalk_nodes(sidewalk_network, crosswalk)
+        connect_crosswalk_nodes(sidewalk_network, crosswalk.nids)
 
         for street in streets.get_list():
             # Sidewalks should not cross

@@ -3,6 +3,7 @@ import json
 import numpy as np
 import math
 import logging as log
+from types import *
 
 class Node(LatLng):
     def __init__(self, nid=None, lat=None, lng=None):
@@ -20,6 +21,8 @@ class Node(LatLng):
         self.crosswalk_distance = 0.00010
         self.parent_nodes = None
         self.confirmed = False
+
+        assert type(self.id) is StringType
         return
 
     def __str__(self):
@@ -50,6 +53,14 @@ class Node(LatLng):
                 geojson['features'].append(way.get_geojson_features())
             return json.dumps(geojson)
 
+    def get_adjacent_nodes(self):
+        """
+        :return: A list of Node objects that are adjacent to this Node object (self)
+        """
+        parent_nodes = self.belongs_to()
+        network = parent_nodes.belongs_to()
+        return network.get_adjacent_nodes(self)
+
     def get_way_ids(self):
         return self.way_ids
 
@@ -69,7 +80,8 @@ class Node(LatLng):
         return len(self.sidewalk_nodes) > 0
 
     def is_intersection(self):
-        return len(self.way_ids) >= self.min_intersection_cardinality
+        return len(self.get_adjacent_nodes()) >= self.min_intersection_cardinality
+        # return len(self.get_way_ids()) >= self.min_intersection_cardinality
 
     def remove_way_id(self, wid):
         if wid in self.way_ids:

@@ -2,15 +2,17 @@ import json
 import numpy as np
 import logging as log
 class Way(object):
-    def __init__(self, wid=None, nids=(), type=None):
+    def __init__(self, wid=None, nids=[], type=None):
         if wid is None:
             self.id = str(id(self))
         else:
             self.id = str(wid)
-        self.nids = nids
+        self.nids = list(nids)
         self.type = type
         self.user = 'test'
         self.parent_ways = None
+
+        assert len(self.nids) > 1
 
     def belongs_to(self):
         return self.parent_ways
@@ -86,6 +88,7 @@ class Ways(object):
         return self.parent_network
 
     def get(self, wid):
+        assert wid in self.ways
         return self.ways[wid]
 
     def get_list(self):
@@ -108,6 +111,7 @@ class Street(Way):
         self.distance_to_sidewalk = 0.00008
         self.oneway = 'undefined'
         self.ref = 'undefined'
+
     def getdirection(self):
         startnode=self.parent_ways.parent_network.nodes.get(self.get_node_ids()[0])
         endnode=self.parent_ways.parent_network.nodes.get(self.get_node_ids()[-1])

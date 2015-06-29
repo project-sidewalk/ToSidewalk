@@ -73,14 +73,17 @@ class Network(object):
     def get_adjacent_nodes(self, node):
         """
         Get adjacent nodes for the passed node
-        :param node:
-        :return:
+        :param node: A node object
+        :return: A list of Node objects that are adjacent to the passed Node object
         """
         adj_nodes = []
         way_ids = node.get_way_ids()
 
         for way_id in way_ids:
-            way = self.ways.get(way_id)
+            try:
+                way = self.ways.get(way_id)
+            except AssertionError:
+                print("Debug")
             # If the current intersection node is at the head of street.nids, then take the second node and push it
             # into adj_street_nodes. Otherwise, take the node that is second to the last in street.nids .
             if way.nids[0] == node.id:
@@ -88,7 +91,7 @@ class Network(object):
             else:
                 adj_nodes.append(self.nodes.get(way.nids[-2]))
 
-        return adj_nodes
+        return list(set(adj_nodes))
 
     def parse_intersections(self):
         node_list = self.nodes.get_list()
@@ -862,7 +865,7 @@ class OSM(Network):
                 else:
                     prev_idx = 0
                     for idx in intersection_indices:
-                        if idx != 0 and idx != len(way.nids):
+                        if idx != 0 and idx != len(way.nids) - 1:
                             new_nids = way.nids[prev_idx:idx + 1]
                             new_way = Street(None, new_nids, way.type)
                             # new_streets.add(new_way)

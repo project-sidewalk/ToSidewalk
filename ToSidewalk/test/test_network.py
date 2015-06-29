@@ -5,6 +5,33 @@ from ToSidewalk.ways import *
 
 
 class TestNetworkMethods(unittest.TestCase):
+
+    def test_get_adjacent_nodes(self):
+        """
+        Test
+        """
+        streets = Streets()
+        nodes = Nodes()
+        network = Network(nodes, streets)
+        n0 = Node(0, 0, 0)
+        n1 = Node(1, 0, 1)
+        n2 = Node(2, 1, 0)
+        n3 = Node(3, 0, -1)
+        network.add_nodes([n0, n1, n2, n3])
+        s1 = Street(1, [n0.id, n1.id])
+        s2_1 = Street('2_1', [n0.id, n2.id])
+        s2_2 = Street('2_2', [n0.id, n2.id])
+
+        network.add_ways([s1, s2_1, s2_2])
+
+        adj = network.get_adjacent_nodes(n0)
+        self.assertEqual(len(adj), 2)
+
+        s3 = Street('3', [n0.id, n3.id])
+        network.add_way(s3)
+        adj = network.get_adjacent_nodes(n0)
+        self.assertEqual(len(adj), 3)
+
     def test_segment_parallel_streets(self):
         """
         Test segment parallel streets
