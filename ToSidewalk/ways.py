@@ -15,9 +15,17 @@ class Way(object):
         assert len(self.nids) > 1
 
     def belongs_to(self):
+        """
+        Returns a parent Ways object
+        :return:
+        """
         return self.parent_ways
 
     def export(self):
+        """
+        A utility method to export the data as a geojson dump
+        :return: A geojson data in a string format.
+        """
         if self.parent_ways and self.parent_ways.parent_network:
             geojson = dict()
             geojson['type'] = "FeatureCollection"
@@ -27,6 +35,10 @@ class Way(object):
             return json.dumps(geojson)
 
     def get_geojson_features(self):
+        """
+        A utilitie method to export the data as a geojson dump
+        :return: A dictionary of geojson features
+        """
         feature = dict()
         feature['properties'] = {
             'type': self.type,
@@ -50,11 +62,18 @@ class Way(object):
         return feature
 
     def get_node_ids(self):
+        """
+        Get a list of node ids
+        :return: A list of node ids
+        """
         return self.nids
 
     def get_shared_node_ids(self, other):
         """
-        Other could be either a list of node ids or a Way object
+        Get node ids that are shared between two Way objects. other could be either
+        a list of node ids or a Way object.
+        :param other: A list of node ids or a Way object
+        :return: A list of node ids
         """
         if type(other) == list:
             return list(set(self.nids) & set(other))
@@ -62,11 +81,19 @@ class Way(object):
             return list(set(self.nids) & set(other.get_node_ids()))
 
     def remove_node(self, nid_to_remove):
-        # http://stackoverflow.com/questions/2793324/is-there-a-simple-way-to-delete-a-list-element-by-value-in-python
+        """
+        Remove a node from the data structure
+        http://stackoverflow.com/questions/2793324/is-there-a-simple-way-to-delete-a-list-element-by-value-in-python
+        :param nid_to_remove: A node id
+        """
         self.nids = [nid for nid in self.nids if nid != nid_to_remove]
 
     def swap_nodes(self, nid_from, nid_to):
-
+        """
+        Swap a node that forms the way with another node
+        :param nid_from: A node id
+        :param nid_to: A node id
+        """
         index_from = self.nids.index(nid_from)
         self.nids[index_from] = nid_to
 
@@ -81,23 +108,43 @@ class Ways(object):
         return id(self) == id(other)
 
     def add(self, way):
+        """
+        Add a Way object
+        :param way: A Way object
+        """
         way.parent_ways = self
         self.ways[way.id] = way
 
     def belongs_to(self):
+        """
+        Return a parent network
+        :return: A Network object
+        """
         return self.parent_network
 
     def get(self, wid):
+        """
+        Search and return a Way object by its id
+        :param wid: A way id
+        :return: A Way object
+        """
         assert wid in self.ways
         return self.ways[wid]
 
     def get_list(self):
+        """
+        Get a list of all Way objects in the data structure
+        :return: A list of Way objects
+        """
         return self.ways.values()
 
     def remove(self, wid):
-        # http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
+        """
+        Remove a way from the data structure
+        http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
+        :param wid: A way id
+        """
         del self.ways[wid]
-        return
 
     def set_intersection_node_ids(self, nids):
         self.intersection_node_ids = nids
