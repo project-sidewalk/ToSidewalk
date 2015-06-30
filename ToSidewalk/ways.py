@@ -134,7 +134,7 @@ class Way(object):
         angle = math.degrees(math.atan2(vector[0], vector[1]))
         return angle
 
-    def is_parallel_to(self, other, threshold=15.):
+    def is_parallel_to(self, other, threshold=10.):
         """
         Check if this way is parallel to another one
         :param other: A Way object or a way id

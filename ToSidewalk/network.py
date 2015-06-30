@@ -374,6 +374,11 @@ class OSM(Network):
         print("Begin merging parallel street segments" + str(datetime.now()))
         # self.merge_parallel_street_segments(parallel_segments_filtered)
 
+        self.split_streets()
+        self.update_ways()
+        self.merge_nodes()
+        self.clean_street_segmentation()
+
         self.merge_parallel_street_segments2()
         self.clean_nodes()
 
@@ -1097,7 +1102,7 @@ class OSM(Network):
             self.remove_way(way_id)
             self.join_connected_ways(segments_to_merge)
 
-    def parallel(self, way1, way2, threshold=15.):
+    def parallel(self, way1, way2, threshold=10.):
         """
         Checks if two ways are parallel to each other
         :param way1:
