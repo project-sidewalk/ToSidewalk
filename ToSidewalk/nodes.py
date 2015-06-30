@@ -92,9 +92,10 @@ class Node(LatLng):
         Check if this node is an intersection or not
         :return: Boolean
         """
-        adj_nodes = self.get_adjacent_nodes()
-        return len(adj_nodes) >= self.min_intersection_cardinality
-        # return len(self.get_way_ids()) >= self.min_intersection_cardinality
+        # adj_nodes = self.get_adjacent_nodes()
+        # return len(adj_nodes) >= self.min_intersection_cardinality
+        way_ids = self.get_way_ids()
+        return len(way_ids) >= self.min_intersection_cardinality
 
     def remove_way_id(self, wid):
         """

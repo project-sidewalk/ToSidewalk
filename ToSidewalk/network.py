@@ -123,7 +123,6 @@ class Network(object):
                 else:
                     adj_nodes.append(self.nodes.get(way.nids[-2]))
             except AttributeError:
-                assert way is None
                 log.exception("Way does not exist. way_id=%s" % way_id)
                 # continue
                 raise
@@ -330,14 +329,21 @@ class OSM(Network):
                     try:
                         way1 = self.ways.get(str(short_ways_to_join[0]))
                         way2 = self.ways.get(str(short_way))
+
+                        if way1 is None or way2 is None:
+                            continue
+
                         if way1.getdirection() == way2.getdirection():
                             self.join_ways(str(short_ways_to_join[0]), str(short_way))
                             # Keep track of way IDs that are no longer valid
                             removed_ways.append(short_way)
-                    except (KeyError, AttributeError):
+                    except KeyError:
+                        log.exception("This should no longer happen")
+                        raise
+                    except AttributeError:
                         log.exception("way 1 or way 2 is None")
                         assert way1 is None or way2 is None  # Due to prior deletion
-                        continue
+                        raise
         # Build new list of pairs to merge, excluding pairs with IDs that are no longer valid
 
         new_segments_to_merge = []
@@ -362,7 +368,7 @@ class OSM(Network):
         :return:
         """
         print("Finding parallel street segments" + str(datetime.now()))
-        parallel_segments = self.find_parallel_street_segments()
+        # parallel_segments = self.find_parallel_street_segments()
         print("Finished finding parallel street segments" + str(datetime.now()))
         # parallel_segments_filtered = self.join_connected_ways(parallel_segments)
         print("Begin merging parallel street segments" + str(datetime.now()))
@@ -1075,38 +1081,23 @@ class OSM(Network):
         return
 
     def merge_parallel_street_segments2(self):
-        while True:
-            no_parallel_streets = True
-            streets = self.ways.get_list()
-            street_combinations = combinations(streets, 2)
+        ways_to_remove = []
+        streets = self.ways.get_list()
+        street_combinations = combinations(streets, 2)
 
-            ways_to_remove = []
+        segments_to_merge = []
+        for street1, street2 in street_combinations:
+            if self.parallel(street1, street2) and not street1.on_same_street(street2):
+                street1.merge(street2)
+                segments_to_merge.append((street1.id, street2.id))
+                ways_to_remove.append(street1.id)
+                ways_to_remove.append(street2.id)
 
-            segments_to_merge = []
-            for street1, street2 in street_combinations:
-                if self.parallel(street1, street2) and not street1.on_same_street(street2):
-                    street1.merge(street2)
-                    segments_to_merge.append((street1.id, street2.id))
-                    # ways_to_remove.append(street1.id)
-                    # ways_to_remove.append(street2.id)
-            #             self.remove_way(street1.id)
-            #             self.remove_way(street2.id)
-            #             no_parallel_streets = False
-            #             break
-            #
-            #
-            #     if no_parallel_streets:
-            #         break
-            # except ValueError:
-
-            #
-            #
-            # for way_id in ways_to_remove:
-            #     self.remove_way(way_id)
+        for way_id in set(ways_to_remove):
+            self.remove_way(way_id)
             self.join_connected_ways(segments_to_merge)
-            break
 
-    def parallel(self, way1, way2, threshold=10.):
+    def parallel(self, way1, way2, threshold=15.):
         """
         Checks if two ways are parallel to each other
         :param way1:
@@ -1128,6 +1119,11 @@ class OSM(Network):
         elif node2_1 == node2_2:
             node2_2 = self.get_node(way2.nids[-2])
 
+        # Not sure why this happens... I'll need to check. Todo
+        if node1_1 == node1_2:
+            return False
+        if node2_1 == node2_2:
+            return False
         assert node1_1 != node1_2
         assert node2_1 != node2_2
         # Create polygons and get angles of ways
@@ -1244,7 +1240,7 @@ class OSM(Network):
                             new_way = self.create_street(None, new_nids)
                             prev_idx = idx
                     new_nids = way.nids[prev_idx:]
-                    new_way = self.create_street(None, new_nids)
+                    self.create_street(None, new_nids)
                     self.remove_way(way.id)
         # self.ways = new_streets
 
