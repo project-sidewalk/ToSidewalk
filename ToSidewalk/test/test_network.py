@@ -32,7 +32,7 @@ class TestNetworkMethods(unittest.TestCase):
         adj = network.get_adjacent_nodes(n0)
         self.assertEqual(len(adj), 3)
 
-    def test_segment_parallel_streets(self):
+    def test_segment_parallel_streets_1(self):
         """
         Test segment parallel streets
         """
@@ -83,7 +83,6 @@ class TestNetworkMethods(unittest.TestCase):
         # l2:  *---*------------*------*
         #
         # And returns segmentation
-
         network = OSM.create_network("street-network")
         network.create_node('l1-1', 1, 4)
         network.create_node('l1-2', 1, 6)
@@ -118,7 +117,7 @@ class TestNetworkMethods(unittest.TestCase):
         self.assertEqual(len(street2_segmentation[1]), 2)
         self.assertEqual(len(street2_segmentation[2]), 2)
 
-
+    def test_segment_parallel_streets_2(self):
         # The following pair of line segments:
         #
         # l1:    *------*-----*
@@ -132,8 +131,41 @@ class TestNetworkMethods(unittest.TestCase):
         # l2:  *--------------*-------*
         #
         # And returns segmentation
-        # Todo
+        network = OSM.create_network("street-network")
+        network.create_node('l1-1', 1, 4)
+        network.create_node('l1-2', 1, 6)
+        network.create_node('l1-3', 1, 8)
+        network.create_node('l2-1', 0, 0)
+        network.create_node('l2-2', 0, 10)
+        network.create_street('l1', ['l2-1', 'l1-1', 'l1-2', 'l1-3'])
+        network.create_street('l2', ['l2-1', 'l2-2'])
+        overlapping_segment, street1_segmentation, street2_segmentation = network.segment_parallel_streets(['l1', 'l2'])
+        self.assertEqual(len(overlapping_segment), 5)
+        self.assertEqual(len(street1_segmentation[0]), 0)
+        self.assertEqual(len(street1_segmentation[1]), 4)
+        self.assertEqual(len(street1_segmentation[2]), 0)
+        self.assertEqual(len(street2_segmentation[0]), 0)
+        self.assertEqual(len(street2_segmentation[1]), 2)
+        self.assertEqual(len(street2_segmentation[2]), 2)
 
+        network = OSM.create_network("street-network")
+        network.create_node('l1-1', 1, 4)
+        network.create_node('l1-2', 1, 6)
+        network.create_node('l1-3', 1, 8)
+        network.create_node('l2-1', 0, 0)
+        network.create_node('l2-2', 0, 10)
+        network.create_street('l1', ['l2-1', 'l1-1', 'l1-2', 'l1-3'])
+        network.create_street('l2', ['l2-1', 'l2-2'])
+        overlapping_segment, street2_segmentation, street1_segmentation = network.segment_parallel_streets(['l2', 'l1'])
+        self.assertEqual(len(overlapping_segment), 5)
+        self.assertEqual(len(street1_segmentation[0]), 0)
+        self.assertEqual(len(street1_segmentation[1]), 4)
+        self.assertEqual(len(street1_segmentation[2]), 0)
+        self.assertEqual(len(street2_segmentation[0]), 0)
+        self.assertEqual(len(street2_segmentation[1]), 2)
+        self.assertEqual(len(street2_segmentation[2]), 2)
+
+    def test_segment_parallel_streets_3(self):
         # The following pair of line segments:
         #
         # l1:     *------*-----*
@@ -147,10 +179,99 @@ class TestNetworkMethods(unittest.TestCase):
         # l2:  *--*--------------*
         #
         # And returns segmentation
-        # Todo
+        network = OSM.create_network("street-network")
+        network.create_node('l1-1', 1, 4)
+        network.create_node('l1-2', 1, 6)
+        network.create_node('l1-3', 1, 8)
+        network.create_node('l2-1', 0, 0)
+        network.create_node('l2-2', 0, 10)
+        network.create_street('l1', ['l1-1', 'l1-2', 'l1-3', 'l2-2'])
+        network.create_street('l2', ['l2-1', 'l2-2'])
+        overlapping_segment, street1_segmentation, street2_segmentation = network.segment_parallel_streets(['l1', 'l2'])
+        self.assertEqual(len(overlapping_segment), 5)
+        self.assertEqual(len(street1_segmentation[0]), 0)
+        self.assertEqual(len(street1_segmentation[1]), 4)
+        self.assertEqual(len(street1_segmentation[2]), 0)
+        self.assertEqual(len(street2_segmentation[0]), 2)
+        self.assertEqual(len(street2_segmentation[1]), 2)
+        self.assertEqual(len(street2_segmentation[2]), 0)
+
+        network = OSM.create_network("street-network")
+        network.create_node('l1-1', 1, 4)
+        network.create_node('l1-2', 1, 6)
+        network.create_node('l1-3', 1, 8)
+        network.create_node('l2-1', 0, 0)
+        network.create_node('l2-2', 0, 10)
+        network.create_street('l1', ['l1-1', 'l1-2', 'l1-3', 'l2-2'])
+        network.create_street('l2', ['l2-1', 'l2-2'])
+        overlapping_segment, street2_segmentation, street1_segmentation = network.segment_parallel_streets(['l2', 'l1'])
+        self.assertEqual(len(overlapping_segment), 5)
+        self.assertEqual(len(street1_segmentation[0]), 0)
+        self.assertEqual(len(street1_segmentation[1]), 4)
+        self.assertEqual(len(street1_segmentation[2]), 0)
+        self.assertEqual(len(street2_segmentation[0]), 2)
+        self.assertEqual(len(street2_segmentation[1]), 2)
+        self.assertEqual(len(street2_segmentation[2]), 0)
+
+    def test_segment_parallel_streets_4(self):
+        # The following pair of line segments:
+        #
+        # l1:    *
+        #       /
+        # l2:  *-----*
+        network = OSM.create_network("street-network")
+        network.create_node('l1-1', 1, 4)
+        network.create_node('l2-1', 0, 0)
+        network.create_node('l2-2', 0, 10)
+        network.create_street('l1', ['l2-1', 'l1-1'])
+        network.create_street('l2', ['l2-1', 'l2-2'])
+        overlapping_segment, street1_segmentation, street2_segmentation = network.segment_parallel_streets(['l1', 'l2'])
+        self.assertEqual(len(overlapping_segment), 3)
+        self.assertEqual(len(street1_segmentation[0]), 0)
+        self.assertEqual(len(street1_segmentation[1]), 2)
+        self.assertEqual(len(street1_segmentation[2]), 0)
+        self.assertEqual(len(street2_segmentation[0]), 0)
+        self.assertEqual(len(street2_segmentation[1]), 2)
+        self.assertEqual(len(street2_segmentation[2]), 2)
+
+    def test_segment_parallel_streets_5(self):
+        # The following pair of line segments:
+        #
+        # l1:     *
+        #          \
+        # l2:  *----*
+        network = OSM.create_network("street-network")
+        network.create_node('l1-1', 1, 4)
+        network.create_node('l2-1', 0, 0)
+        network.create_node('l2-2', 0, 10)
+        network.create_street('l1', ['l1-1', 'l2-2'])
+        network.create_street('l2', ['l2-1', 'l2-2'])
+        overlapping_segment, street1_segmentation, street2_segmentation = network.segment_parallel_streets(['l1', 'l2'])
+        self.assertEqual(len(overlapping_segment), 3)
+        self.assertEqual(len(street1_segmentation[0]), 0)
+        self.assertEqual(len(street1_segmentation[1]), 2)
+        self.assertEqual(len(street1_segmentation[2]), 0)
+        self.assertEqual(len(street2_segmentation[0]), 2)
+        self.assertEqual(len(street2_segmentation[1]), 2)
+        self.assertEqual(len(street2_segmentation[2]), 0)
 
         return
-
+    
+    def test_segment_parallel_streets_6(self):
+        # The following pair of line segments:
+        #
+        # l1:     *------*-----*
+        #        /               \
+        # l2:   *-----------------*
+        #
+        # turns into something like
+        #
+        # l1:     *------*-----*
+        #        /              \
+        # l2:   *-*------------*-*
+        #
+        # And returns segmentation
+        pass
 
     def test_segment_parallel_streets2(self):
         """
