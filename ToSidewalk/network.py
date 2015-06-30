@@ -1122,6 +1122,14 @@ class OSM(Network):
         node2_1 = self.get_node(way2.nids[0])
         node2_2 = self.get_node(way2.nids[-1])
 
+        # Check if the way is cyclic
+        if node1_1 == node1_2:
+            node1_2 = self.get_node(way1.nids[-2])
+        elif node2_1 == node2_2:
+            node2_2 = self.get_node(way2.nids[-2])
+
+        assert node1_1 != node1_2
+        assert node2_1 != node2_2
         # Create polygons and get angles of ways
         poly1 = self.nodes.create_polygon(node1_1, node1_2)
         poly2 = self.nodes.create_polygon(node2_1, node2_2)

@@ -258,7 +258,11 @@ class Way(object):
                 non_intersecting_pairs.append(pair)
 
         # Join pieces of streets that you want to intersect
-        my_ways_to_join, other_ways_to_join = zip(*intersecting_pairs)
+        try:
+            my_ways_to_join, other_ways_to_join = zip(*intersecting_pairs)
+        except ValueError:
+            assert len(intersecting_pairs) == 0
+            return
 
         my_node_ids_to_join = []
         for way in set(my_ways_to_join):
