@@ -13,7 +13,7 @@ class LatLng(object):
         return haversine(radians(self.lng), radians(self.lat), radians(latlng.lng), radians(latlng.lat))
 
     def location(self):
-        return (self.lat, self.lng)
+        return self.lat, self.lng
 
     def __str__(self):
         return str(self.lat) + "," + str(self.lng)

@@ -1,23 +1,32 @@
 from xml.etree import cElementTree as ET
 from shapely.geometry import Polygon, Point, LineString
 from datetime import datetime
+from types import StringType
+from itertools import combinations
+from heapq import heappush, heappop, heapify
+
 import json
 import logging as log
 import math
 import numpy as np
 
-from nodes import Node, Nodes
-from ways import Street, Streets
-from utilities import window, area, foot
 
-from itertools import combinations
-from heapq import heappush, heappop, heapify
+from nodes import Node, Nodes
+from ways import Street, Streets, Ways
+from utilities import window, area, foot, points_to_line
 
 
 class Network(object):
-    def __init__(self, nodes, ways):
-        self.nodes = nodes
-        self.ways = ways
+    def __init__(self, nodes=None, ways=None):
+        if nodes is None:
+            self.nodes = Nodes()
+        else:
+            self.nodes = nodes
+
+        if ways is None:
+            self.ways = Ways()
+        else:
+            self.ways = ways
 
         self.ways.parent_network = self
         self.nodes.parent_network = self
@@ -115,6 +124,14 @@ class Network(object):
 
         return list(set(adj_nodes))
 
+    def get_node(self, node_id):
+        """
+        Get a Node object
+        :param node_id: A node id
+        :return: A Node object
+        """
+        return self.nodes.get(node_id)
+
     def get_way(self, way_id):
         """
         Get a Way object
@@ -199,6 +216,21 @@ class Network(object):
 
 
 class OSM(Network):
+    @staticmethod
+    def create_network(type="street-network", bounding_box=None):
+        """
+        Create a network
+        :param type: Network type
+        :param bounding_box: A bounding box
+        :return: A Network object
+        """
+        nodes = Nodes()
+
+        if type == "street-network":
+            ways = Streets()
+        else:
+            ways = Ways()
+        return OSM(nodes, ways, bounding_box)
 
     def __init__(self, nodes, ways, bounds):
         # self.nodes = nodes
@@ -471,7 +503,7 @@ class OSM(Network):
 
             poly = Polygon([p1, p2, p3, p4])
             poly.angle = math.degrees(math.atan2(vector[0], vector[1]))
-            poly.nids = set((start_node_id, end_node_id))
+            poly.nids = [start_node_id, end_node_id]
             street_polygons.append(poly)
 
         # Find pair of polygons that intersect each other.
@@ -535,9 +567,13 @@ class OSM(Network):
         """
         First find parts of the street pairs that you want to merge (you don't want to merge entire streets
         because, for example, one could be much longer than the other and it doesn't make sense to merge
-        :param street_pair:
-        :return:
+        :param street_pair: A pair of street ids or street objects
+        :return: A set of three lists; overlapping_segment, street1_segmentation, street2_segmentation
         """
+
+        if type(street_pair[0]) == StringType:
+            street_pair = [self.get_way(street_pair[0]), self.get_way(street_pair[1])]
+
         # Take the two points from street_pair[0], and use it as a base vector.
         # Project all the points along the base vector and sort them.
         base_node0 = self.nodes.get(street_pair[0].nids[0])
@@ -578,7 +614,7 @@ class OSM(Network):
         # Find the last occurrence of True in the list
         end_idx = len(all_nids_street_switch) - 1 - all_nids_street_switch[::-1].index(True)
 
-        overlapping_segment = all_nids[begin_idx:end_idx]
+        overlapping_segment = all_nids[begin_idx + 1:end_idx + 1]
 
         begin_nid = all_nids[begin_idx]
         if begin_nid in street_pair[0].nids:
@@ -590,6 +626,29 @@ class OSM(Network):
         street1_begin_idx = street_pair[0].nids.index(street1_begin_nid)
         street2_begin_idx = street_pair[1].nids.index(street2_begin_nid)
 
+        # Create a foot from a first node to the segment on the other side
+        if begin_nid in street_pair[1].nids:
+            begin_node = self.get_node(begin_nid)
+            street2_node_2 = self.get_node(street2_begin_nid)
+            street2_node_1_nid = street_pair[1].nids[street2_begin_idx - 1]
+            street2_node_1 = self.get_node(street2_node_1_nid)
+            line = points_to_line((street2_node_1.lng, street2_node_1.lat), (street2_node_2.lng, street2_node_2.lat))
+            foot_lng, foot_lat = foot(begin_node.lng, begin_node.lat, line[0], line[1], line[2])
+            foot_node = self.create_node(None, foot_lat, foot_lng)
+            street_pair[1].insert_node(street2_begin_idx + 1, foot_node.id)
+            street2_begin_idx += 1
+        else:
+            begin_node = self.get_node(begin_nid)
+            street1_node_2 = self.get_node(street2_begin_nid)
+            street1_node_1_nid = street_pair[0].nids[street1_begin_idx - 1]
+            street1_node_1 = self.get_node(street1_node_1_nid)
+            line = points_to_line((street1_node_1.lng, street1_node_1.lat), (street1_node_2.lng, street1_node_2.lat))
+            foot_lng, foot_lat = foot(begin_node.lng, begin_node.lat, line[0], line[1], line[2])
+            foot_node = self.create_node(None, foot_lat, foot_lng)
+            street_pair[0].insert_node(street1_begin_idx, foot_node.id)
+            street1_begin_idx += 1
+        overlapping_segment.insert(0, foot_node.id)
+
         end_nid = all_nids[end_idx]
         if end_nid in street_pair[0].nids:
             street1_end_nid = end_nid
@@ -599,6 +658,29 @@ class OSM(Network):
             street2_end_nid = end_nid
         street1_end_idx = street_pair[0].nids.index(street1_end_nid)
         street2_end_idx = street_pair[1].nids.index(street2_end_nid)
+
+        # Create a foot from the last node to the segment on the other side
+        if end_nid in street_pair[0].nids:
+            end_node = self.get_node(end_nid)
+            street2_node_2 = self.get_node(street2_end_nid)
+            street2_node_1_nid = street_pair[1].nids[street2_end_idx - 1]
+            street2_node_1 = self.get_node(street2_node_1_nid)
+            line = points_to_line((street2_node_1.lng, street2_node_1.lat), (street2_node_2.lng, street2_node_2.lat))
+            foot_lng, foot_lat = foot(end_node.lng, end_node.lat, line[0], line[1], line[2])
+            foot_node = self.create_node(None, foot_lat, foot_lng)
+            street_pair[1].insert_node(street2_end_idx, foot_node.id)
+            # street2_end_idx -= 2
+        else:
+            end_node = self.get_node(end_nid)
+            street1_node_2 = self.get_node(street2_end_nid)
+            street1_node_1_nid = street_pair[0].nids[street1_end_idx - 1]
+            street1_node_1 = self.get_node(street1_node_1_nid)
+            line = points_to_line((street1_node_1.lng, street1_node_1.lat), (street1_node_2.lng, street1_node_2.lat))
+            foot_lng, foot_lat = foot(end_node.lng, end_node.lat, line[0], line[1], line[2])
+            foot_node = self.create_node(None, foot_lat, foot_lng)
+            street_pair[0].insert_node(street1_end_idx, foot_node.id)
+            # street1_end_idx -= 2
+        overlapping_segment.append(foot_node.id)
 
         # Street 1 is divided into three segments - beginning segment, overlapping segment, and end segment
         street1_segmentation = [street_pair[0].nids[:street1_begin_idx],

@@ -36,41 +36,121 @@ class TestNetworkMethods(unittest.TestCase):
         """
         Test segment parallel streets
         """
-        segment1_coordinates = [(float(i + 1), float(i)) for i in range(0, 7)]
-        segment2_coordinates = [(float(i + 1), float(i)) for i in range(0, 7)]
+        # segment1_coordinates = [(float(i + 1), float(i)) for i in range(0, 7)]
+        # segment2_coordinates = [(float(i + 1), float(i)) for i in range(0, 7)]
+        #
+        # nodes = Nodes()
+        # segment1_nodes = [Node('s1_' + str(i), coord[1], coord[0]) for i, coord in enumerate(segment1_coordinates)]
+        # segment2_nodes = [Node('s2_' + str(i), coord[1], coord[0]) for i, coord in enumerate(segment2_coordinates)]
+        # # answer_segment_nodes = [Node(None, LatLng(coord[1], coord[0])) for coord in answer_segment_coordinates]
+        #
+        # for node in segment1_nodes:
+        #     nodes.add(node)
+        # for node in segment2_nodes:
+        #     nodes.add(node)
+        #
+        # segment1_node_ids = [node.id for node in segment1_nodes]
+        # segment2_node_ids = [node.id for node in segment2_nodes]
+        # # answer_segment_node_ids = [node.id for node in answer_segment_nodes]
+        #
+        # street1 = Street(1, segment1_node_ids)
+        # street2 = Street(2, segment2_node_ids)
+        # # answer_street = Street(None, answer_segment_node_ids)
+        #
+        # streets = Streets()
+        # streets.add(street1)
+        # streets.add(street2)
+        #
+        # network = OSM(nodes, streets, None)
+        #
+        # overlap, segments1, segments2 = network.segment_parallel_streets([street1, street2])
+        #
+        # self.assertEqual(segments1[0], [])
+        # self.assertEqual(segments1[2], [])
+        # self.assertListEqual(segments1[1], segment1_node_ids)
+        # self.assertEqual(segments2[0], [])
+        # self.assertEqual(segments2[2], [])
+        # self.assertListEqual(segments2[1], segment2_node_ids)
 
-        nodes = Nodes()
-        segment1_nodes = [Node('s1_' + str(i), coord[1], coord[0]) for i, coord in enumerate(segment1_coordinates)]
-        segment2_nodes = [Node('s2_' + str(i), coord[1], coord[0]) for i, coord in enumerate(segment2_coordinates)]
-        # answer_segment_nodes = [Node(None, LatLng(coord[1], coord[0])) for coord in answer_segment_coordinates]
+        # The following pair of line segments:
+        #
+        # l1:      *------*-----*
+        # l2:  *-----------------------*
+        #
+        # turns into something like
+        #
+        # l1:      *------*-----*
+        # l2:  *---*------------*------*
+        #
+        # And returns segmentation
 
-        for node in segment1_nodes:
-            nodes.add(node)
-        for node in segment2_nodes:
-            nodes.add(node)
+        network = OSM.create_network("street-network")
+        network.create_node('l1-1', 1, 4)
+        network.create_node('l1-2', 1, 6)
+        network.create_node('l1-3', 1, 8)
+        network.create_node('l2-1', 0, 0)
+        network.create_node('l2-2', 0, 10)
+        network.create_street('l1', ['l1-1', 'l1-2', 'l1-3'])
+        network.create_street('l2', ['l2-1', 'l2-2'])
+        overlapping_segment, street1_segmentation, street2_segmentation = network.segment_parallel_streets(['l1', 'l2'])
+        self.assertEqual(len(overlapping_segment), 5)
+        self.assertEqual(len(street1_segmentation[0]), 0)
+        self.assertEqual(len(street1_segmentation[1]), 3)
+        self.assertEqual(len(street1_segmentation[2]), 0)
+        self.assertEqual(len(street2_segmentation[0]), 2)
+        self.assertEqual(len(street2_segmentation[1]), 2)
+        self.assertEqual(len(street2_segmentation[2]), 2)
 
-        segment1_node_ids = [node.id for node in segment1_nodes]
-        segment2_node_ids = [node.id for node in segment2_nodes]
-        # answer_segment_node_ids = [node.id for node in answer_segment_nodes]
+        network = OSM.create_network("street-network")
+        network.create_node('l1-1', 1, 4)
+        network.create_node('l1-2', 1, 6)
+        network.create_node('l1-3', 1, 8)
+        network.create_node('l2-1', 0, 0)
+        network.create_node('l2-2', 0, 10)
+        network.create_street('l1', ['l1-1', 'l1-2', 'l1-3'])
+        network.create_street('l2', ['l2-1', 'l2-2'])
+        overlapping_segment, street2_segmentation, street1_segmentation = network.segment_parallel_streets(['l2', 'l1'])
+        self.assertEqual(len(overlapping_segment), 5)
+        self.assertEqual(len(street1_segmentation[0]), 0)
+        self.assertEqual(len(street1_segmentation[1]), 3)
+        self.assertEqual(len(street1_segmentation[2]), 0)
+        self.assertEqual(len(street2_segmentation[0]), 2)
+        self.assertEqual(len(street2_segmentation[1]), 2)
+        self.assertEqual(len(street2_segmentation[2]), 2)
 
-        street1 = Street(1, segment1_node_ids)
-        street2 = Street(2, segment2_node_ids)
-        # answer_street = Street(None, answer_segment_node_ids)
 
-        streets = Streets()
-        streets.add(street1)
-        streets.add(street2)
+        # The following pair of line segments:
+        #
+        # l1:    *------*-----*
+        #       /
+        # l2:  *-----------------------*
+        #
+        # turns into something like
+        #
+        # l1:    *------*-----*
+        #       /
+        # l2:  *--------------*-------*
+        #
+        # And returns segmentation
+        # Todo
 
-        network = OSM(nodes, streets, None)
+        # The following pair of line segments:
+        #
+        # l1:     *------*-----*
+        #                       \
+        # l2:  *-----------------*
+        #
+        # turns into something like
+        #
+        # l1:     *------*-----*
+        #                       \
+        # l2:  *--*--------------*
+        #
+        # And returns segmentation
+        # Todo
 
-        overlap, segments1, segments2 = network.segment_parallel_streets([street1, street2])
+        return
 
-        self.assertEqual(segments1[0], [])
-        self.assertEqual(segments1[2], [])
-        self.assertListEqual(segments1[1], segment1_node_ids)
-        self.assertEqual(segments2[0], [])
-        self.assertEqual(segments2[2], [])
-        self.assertListEqual(segments2[1], segment2_node_ids)
 
     def test_segment_parallel_streets2(self):
         """
