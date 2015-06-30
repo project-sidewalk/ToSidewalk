@@ -4,6 +4,8 @@ import numpy as np
 import math
 import logging as log
 from types import *
+from shapely.geometry import Polygon, LineString, Point
+from utilities import latlng_offset_size, window
 
 class Node(LatLng):
     def __init__(self, nid=None, lat=None, lng=None):
@@ -37,6 +39,11 @@ class Node(LatLng):
         self.sidewalk_nodes.setdefault(way_id, []).append(node)
 
     def append_way(self, wid):
+        """
+        Add a way id to the list that keeps track of which ways are connected to the node
+        :param wid:
+        :return:
+        """
         if wid not in self.way_ids:
             self.way_ids.append(wid)
 
@@ -81,13 +88,24 @@ class Node(LatLng):
         return len(self.sidewalk_nodes) > 0
 
     def is_intersection(self):
-        return len(self.get_adjacent_nodes()) >= self.min_intersection_cardinality
+        """
+        Check if this node is an intersection or not
+        :return: Boolean
+        """
+        adj_nodes = self.get_adjacent_nodes()
+        return len(adj_nodes) >= self.min_intersection_cardinality
         # return len(self.get_way_ids()) >= self.min_intersection_cardinality
 
     def remove_way_id(self, wid):
+        """
+        Remove a way id from the list that keeps track of what ways are connected to this node
+        :param wid:
+        :return:
+        """
         if wid in self.way_ids:
             self.way_ids.remove(wid)
-        return
+            return wid
+        return None
 
     def vector(self):
         return np.array(self.location())
@@ -121,6 +139,40 @@ class Nodes(object):
         """
         return self.parent_network
 
+    def clean(self):
+        """
+        Remove all the nodes from the data structure if they are not connected to any ways
+        :return:
+        """
+        nodes = self.get_list()
+        for node in nodes:
+            if len(node.get_way_ids()) == 0:
+                self.remove(node.id)
+
+    def create_polygon(self, node1, node2, r=15):
+        """
+        Create a rectangular polygon from two nodes passed
+        :param nid1:
+        :param nid2:
+        :return:
+        """
+        if type(node1) == StringType:
+            node1 = self.get(node1)
+            node2 = self.get(node2)
+
+        # start_node = network.get_node(self.nids[0])
+        # end_node = network.get_node(self.nids[-1])
+        vector = node1.vector_to(node2, normalize=True)
+        perpendicular = np.array([vector[1], - vector[0]])
+        distance = latlng_offset_size(node1.lat, vector=perpendicular, distance=r)
+        p1 = node1.vector() + perpendicular * distance
+        p2 = node2.vector() + perpendicular * distance
+        p3 = node2.vector() - perpendicular * distance
+        p4 = node1.vector() - perpendicular * distance
+
+        poly = Polygon([p1, p2, p3, p4])
+        return poly
+
     def get(self, nid):
         """
         Get a Node object
@@ -148,7 +200,7 @@ class Nodes(object):
 
     def remove(self, nid):
         """
-        Remove a node from self.nodes
+        Remove a node from the data structure
         http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
         :param nid:
         :return:

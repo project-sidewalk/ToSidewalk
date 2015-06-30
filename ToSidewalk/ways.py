@@ -1,9 +1,11 @@
 import json
 import math
 import numpy as np
+import itertools
 from shapely.geometry import Polygon, LineString, Point
 from utilities import latlng_offset_size, window
 from types import *
+from nodes import Node
 
 class Way(object):
     def __init__(self, wid=None, nids=[], type=None):
@@ -132,27 +134,6 @@ class Way(object):
         angle = math.degrees(math.atan2(vector[0], vector[1]))
         return angle
 
-    def polygon(self, distance_to_sidewalk=15):
-        """
-        Get a polygon
-        :param distance_to_sidewalk:
-        :return:
-        """
-        ways = self.belongs_to()
-        network = ways.belongs_to()
-        start_node = network.get_node(self.nids[0])
-        end_node = network.get_node(self.nids[-1])
-        vector = start_node.vector_to(end_node, normalize=True)
-        perpendicular = np.array([vector[1], - vector[0]])
-        distance = latlng_offset_size(start_node.lat, vector=perpendicular, distance=distance_to_sidewalk)
-        p1 = start_node.vector() + perpendicular * distance
-        p2 = end_node.vector() + perpendicular * distance
-        p3 = end_node.vector() - perpendicular * distance
-        p4 = start_node.vector() - perpendicular * distance
-
-        poly = Polygon([p1, p2, p3, p4])
-        return poly
-
     def is_parallel_to(self, other, threshold=10.):
         """
         Check if this way is parallel to another one
@@ -229,15 +210,16 @@ class Way(object):
         :param other:
         :return:
         """
-        network = self.belongs_to().belongs_to()
-        from network import Network
-        import itertools
-        temp_network = Network()
+        ways = self.belongs_to()
+        network = ways.belongs_to()
         my_nodes = self.get_nodes()
         other_nodes = other.get_nodes()
-        temp_network.add_nodes(my_nodes)
-        temp_network.add_nodes(other_nodes)
-        base_vector = my_nodes[0].vector_to(my_nodes[-1], normalize=True)
+
+        # Create a base vector that defines the direction of a parallel line
+        v1 = my_nodes[0].vector_to(my_nodes[-1], normalize=True)
+        v2 = other_nodes[0].vector_to(other_nodes[-1], normalize=True)
+        base_vector = v1 + v2
+        base_vector /= np.linalg.norm(base_vector)
 
         def cmp_with_projection(n1, n2):
             dot_product1 = np.dot(n1.vector(), base_vector)
@@ -249,40 +231,53 @@ class Way(object):
             else:
                 return 0
 
-        my_ways = [temp_network.create_street(None, [pair[0].id, pair[1].id]) for pair in window(my_nodes, 2)]
-        other_ways = [temp_network.create_street(None, [pair[0].id, pair[1].id]) for i, pair in enumerate(window(other_nodes, 2))]
+        # Chop this way and the way to merge into pieces of smaller ways to find what regions of
+        # those ways you want to merge together
+        my_ways = [Street(None, [pair[0].id, pair[1].id]) for pair in window(my_nodes, 2)]
+        other_ways = [Street(None, [pair[0].id, pair[1].id]) for pair in window(other_nodes, 2)]
 
-        # Find intersecting segments
+        # Find intersecting regions. Create all the combinations between pieces of streets
+        # in my_ways and other_ways using itertools.product. Check if polygons formed by each pair
+        # intersect to each other. If they do, count them as intersecting pairs.
         intersecting_pairs = []
         non_intersecting_pairs = []
         for pair in itertools.product(my_ways, other_ways):
-            poly1 = pair[0].polygon()
-            poly2 = pair[1].polygon()
+            way1 = pair[0]
+            way2 = pair[1]
+            node1_1 = network.get_node(way1.nids[0])
+            node1_2 = network.get_node(way1.nids[-1])
+            node2_1 = network.get_node(way2.nids[0])
+            node2_2 = network.get_node(way2.nids[-1])
+
+            poly1 = network.nodes.create_polygon(node1_1, node1_2)
+            poly2 = network.nodes.create_polygon(node2_1, node2_2)
+
             if poly1.intersects(poly2):
                 intersecting_pairs.append(pair)
             else:
                 non_intersecting_pairs.append(pair)
 
-        # Join connected segments of ways following Anthony's code
-
+        # Join pieces of streets that you want to intersect
         my_ways_to_join, other_ways_to_join = zip(*intersecting_pairs)
 
-        new_nodes = []
-        my_nodes_to_join = []
+        my_node_ids_to_join = []
         for way in set(my_ways_to_join):
-            my_nodes_to_join.append(way.get_nodes()[0])
-        my_nodes_to_join.append(way.get_nodes()[1])
+            my_node_ids_to_join.append(way.get_node_ids()[0])
+        my_node_ids_to_join.append(way.get_node_ids()[1])
+        my_nodes_to_join = [network.get_node(nid) for nid in my_node_ids_to_join]
         my_nodes_to_join = sorted(list(set(my_nodes_to_join)), cmp=cmp_with_projection)
 
-        other_nodes_to_join = []
+        other_node_ids_to_join = []
         for way in set(other_ways_to_join):
-            other_nodes_to_join.append(way.get_nodes()[0])
-        other_nodes_to_join.append(way.get_nodes()[1])
+            other_node_ids_to_join.append(way.get_node_ids()[0])
+        other_node_ids_to_join.append(way.get_node_ids()[1])
+        other_nodes_to_join = [network.get_node(nid) for nid in other_node_ids_to_join]
         other_nodes_to_join = sorted(list(set(other_nodes_to_join)), cmp=cmp_with_projection)
 
+        # Define a origin. The nodes that constitute the merged way will be created at locations
+        # relative to this origin.
         lat_origin = (my_nodes_to_join[0].lat + other_nodes_to_join[0].lat) / 2
         lng_origin = (my_nodes_to_join[0].lng + other_nodes_to_join[0].lng) / 2
-        from nodes import Node
         origin = Node(None, lat_origin, lng_origin)
 
         new_nodes = my_nodes_to_join + other_nodes_to_join
@@ -295,6 +290,8 @@ class Way(object):
             node = network.create_node(None, new_lat, new_lng)
             new_node_ids.append(node.id)
         network.create_street(None, new_node_ids)
+
+        # print non_intersecting_pairs
 
 
 class Ways(object):
@@ -361,12 +358,16 @@ class Street(Way):
         self.ref = 'undefined'
 
     def getdirection(self):
-        startnode=self.parent_ways.parent_network.nodes.get(self.get_node_ids()[0])
-        endnode=self.parent_ways.parent_network.nodes.get(self.get_node_ids()[-1])
-        startlat=startnode.lat
+        """
+        Get a direction of the street
+        :return:
+        """
+        startnode = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[0])
+        endnode = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[-1])
+        startlat = startnode.lat
         endlat = endnode.lat
 
-        if startlat>endlat:
+        if startlat > endlat:
             return 1
         else:
             return -1

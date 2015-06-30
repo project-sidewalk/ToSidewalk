@@ -113,14 +113,20 @@ class Network(object):
         way_ids = node.get_way_ids()
 
         for way_id in way_ids:
-            way = self.get_way(way_id)
+            try:
+                way = self.get_way(way_id)
 
-            # If the current intersection node is at the head of street.nids, then take the second node and push it
-            # into adj_street_nodes. Otherwise, take the node that is second to the last in street.nids .
-            if way.nids[0] == node.id:
-                adj_nodes.append(self.nodes.get(way.nids[1]))
-            else:
-                adj_nodes.append(self.nodes.get(way.nids[-2]))
+                # If the current intersection node is at the head of street.nids, then take the second node and push it
+                # into adj_street_nodes. Otherwise, take the node that is second to the last in street.nids .
+                if way.nids[0] == node.id:
+                    adj_nodes.append(self.nodes.get(way.nids[1]))
+                else:
+                    adj_nodes.append(self.nodes.get(way.nids[-2]))
+            except AttributeError:
+                assert way is None
+                log.exception("Way does not exist. way_id=%s" % way_id)
+                # continue
+                raise
 
         return list(set(adj_nodes))
 
@@ -161,7 +167,7 @@ class Network(object):
         :param nid: A node id
         """
         node = self.nodes.get(nid)
-        for way_id in node.way_ids:
+        for way_id in node.get_way_ids():
             way = self.ways.get(way_id)
             way.remove_node(nid)
         self.nodes.remove(nid)
@@ -175,12 +181,18 @@ class Network(object):
         way = self.ways.get(way_id)
         if way:
             for nid in way.get_node_ids():
-                node = self.nodes.get(nid)
-                node.remove_way_id(way_id)
-                way_ids = node.get_way_ids()
-                # Delete the node if it is no longer associated with any ways
-                if len(way_ids) == 0:
-                    self.nodes.remove(nid)
+                try:
+                    node = self.nodes.get(nid)
+                    node.remove_way_id(way_id)
+                    way_ids = node.get_way_ids()
+                    # Delete the node if it is no longer associated with any ways
+                    if len(way_ids) == 0:
+                        self.remove_node(nid)
+                    # if len(way_ids) == 0:
+                    #     self.nodes.remove(nid)
+                except AttributeError:
+                    assert node is None
+                    log.exception("Node does not exist. nid=%s" % nid)
             self.ways.remove(way_id)
 
     def join_ways(self, way_id_1, way_id_2):
@@ -203,10 +215,11 @@ class Network(object):
                 node.append_way(way_id_1)
                 node.remove_way_id(way_id_2)
             # Remove way 2
-            self.ways.remove(way_id_2)
+            self.remove_way(way_id_2)
+            # self.ways.remove(way_id_2)
         except KeyError:
             log.exception("Join failed, skipping...")
-            pass
+            raise
 
     def swap_nodes(self, nid_from, nid_to):
         """
@@ -215,11 +228,15 @@ class Network(object):
         :param nid_to:
         :return:
         """
-        node = self.nodes.get(nid_from)
+        # node = self.nodes.get(nid_from)
+        node = self.get_node(nid_from)
         if node and node.way_ids:
             for way_id in node.way_ids:
-                self.ways.get(way_id).swap_nodes(nid_from, nid_to)
-            self.nodes.remove(nid_from)
+                way = self.get_way(way_id)
+                way.swap_nodes(nid_from, nid_to)
+                # self.ways.get(way_id).swap_nodes(nid_from, nid_to)
+            # self.nodes.remove(nid_from)
+            self.remove_node(nid_from)
         return
 
     def vector(self, nid_from, nid_to, normalize=False):
@@ -261,11 +278,12 @@ class OSM(Network):
 
     def join_connected_ways(self, segments_to_merge):
         """
-        This methods searches through the pairs of ways that need to be merged, and checks to see if there
+        This methods searches through the pairs of way ids that need to be merged, and checks to see if there
         are any ways that appear in multiple pairs. A way that appears in multiple pairs is likely a long
         way that needs to be merged with several short ways that run alongside it. The merge method will fail
         in this case, so as a workaround this method will join the short ways together into a single way to
         allow the merge method to work properly.
+
         :param segments_to_merge: List of pairs of ways that need to be merged. This likely comes from
         find_parallel_pairs().
         :return: A new list of pairs of ways to merge. Note: A new list is necessary because once ways are joined,
@@ -278,7 +296,7 @@ class OSM(Network):
         ways_to_merge_2 = []
         # Add the ways IDs to the above lists
         for pair in segments_to_merge:
-            ways_to_merge_1.append(int(pair[0]))
+            ways_to_merge_1.append(int(pair[0]))  # KH: Way id?
             ways_to_merge_2.append(int(pair[1]))
             # See if ways share a node
         # Combine the two above lists
@@ -316,8 +334,10 @@ class OSM(Network):
                             self.join_ways(str(short_ways_to_join[0]), str(short_way))
                             # Keep track of way IDs that are no longer valid
                             removed_ways.append(short_way)
-                    except KeyError:
-                        pass
+                    except (KeyError, AttributeError):
+                        log.exception("way 1 or way 2 is None")
+                        assert way1 is None or way2 is None  # Due to prior deletion
+                        continue
         # Build new list of pairs to merge, excluding pairs with IDs that are no longer valid
 
         new_segments_to_merge = []
@@ -328,6 +348,13 @@ class OSM(Network):
             else:
                 new_segments_to_merge.append(pair)
         return new_segments_to_merge
+
+    def clean_nodes(self):
+        """
+        Clean up dangling nodes that are not connected to any ways
+        :return:
+        """
+        self.nodes.clean()
 
     def preprocess(self):
         """
@@ -340,6 +367,10 @@ class OSM(Network):
         # parallel_segments_filtered = self.join_connected_ways(parallel_segments)
         print("Begin merging parallel street segments" + str(datetime.now()))
         # self.merge_parallel_street_segments(parallel_segments_filtered)
+
+        self.merge_parallel_street_segments2()
+        self.clean_nodes()
+
         print("Finished merging parallel street segments, beginning split streets" + str(datetime.now()))
         self.split_streets()
         print("Finished split streets, beginning update_ways" + str(datetime.now()))
@@ -449,8 +480,13 @@ class OSM(Network):
 
                 coordinates = []
                 for nid in way.nids:
-                    node = self.nodes.get(nid)
-                    coordinates.append([node.lng, node.lat])
+                    try:
+                        node = self.nodes.get(nid)
+                        coordinates.append([node.lng, node.lat])
+                    except AttributeError:
+                        assert node is None
+                        log.exception("Node does not exist, nid=%s" % nid)
+
                 feature['geometry'] = {
                     'type': 'LineString',
                     'coordinates': coordinates
@@ -839,7 +875,7 @@ class OSM(Network):
                 try:
                     street2_segmentation[0].append(street2_segmentation[1][0])
                 except IndexError:
-                    print "Debug"
+                    log.debug("Debug")
                 # if street2_segmentation[1]:
                 #     street2_segmentation[0].append(street2_segmentation[1][0])
                 # elif street2_segmentation[2]:
@@ -849,7 +885,7 @@ class OSM(Network):
                 try:
                     street2_segmentation[2].insert(0, street2_segmentation[1][-1])
                 except IndexError:
-                    print "Debug"
+                    log.debug("Debug")
                 # if street2_segmentation[1]:
                 #     street2_segmentation[2].insert(0, street2_segmentation[1][-1])
                 # elif street2_segmentation[0]:
@@ -1046,11 +1082,13 @@ class OSM(Network):
 
             ways_to_remove = []
 
+            segments_to_merge = []
             for street1, street2 in street_combinations:
-                if street1.is_parallel_to(street2) and not street1.on_same_street(street2):
+                if self.parallel(street1, street2) and not street1.on_same_street(street2):
                     street1.merge(street2)
-                    ways_to_remove.append(street1.id)
-                    ways_to_remove.append(street2.id)
+                    segments_to_merge.append((street1.id, street2.id))
+                    # ways_to_remove.append(street1.id)
+                    # ways_to_remove.append(street2.id)
             #             self.remove_way(street1.id)
             #             self.remove_way(street2.id)
             #             no_parallel_streets = False
@@ -1061,9 +1099,43 @@ class OSM(Network):
             #         break
             # except ValueError:
 
-            for way_id in ways_to_remove:
-                self.remove_way(way_id)
+            #
+            #
+            # for way_id in ways_to_remove:
+            #     self.remove_way(way_id)
+            self.join_connected_ways(segments_to_merge)
             break
+
+    def parallel(self, way1, way2, threshold=10.):
+        """
+        Checks if two ways are parallel to each other
+        :param way1:
+        :param way2:
+        :return:
+        """
+        if type(way1) == StringType:
+            way1 = self.get_way(way1)
+            way2 = self.get_way(way2)
+
+        node1_1 = self.get_node(way1.nids[0])
+        node1_2 = self.get_node(way1.nids[-1])
+        node2_1 = self.get_node(way2.nids[0])
+        node2_2 = self.get_node(way2.nids[-1])
+
+        # Create polygons and get angles of ways
+        poly1 = self.nodes.create_polygon(node1_1, node1_2)
+        poly2 = self.nodes.create_polygon(node2_1, node2_2)
+
+        angle1 = way1.angle()
+        angle2 = way2.angle()
+        angle_diff = (angle1 - angle2 + 360) % 360
+        angle_diff = min(angle_diff, 360 - angle_diff)
+        is_parallel = angle_diff < threshold or angle_diff > 180 - threshold
+        try:
+            does_intersect = poly1.intersects(poly2)
+        except ValueError:
+            raise
+        return is_parallel and does_intersect
 
     def simplify(self, way_id, threshold=0.5):
         """
@@ -1135,8 +1207,16 @@ class OSM(Network):
         Split ways into segments at intersections
         """
         # new_streets = Streets()
-        for way in self.ways.get_list():
-            intersection_nids = [nid for nid in way.nids if self.get_node(nid).is_intersection()]
+        # for way in self.ways.get_list():
+        for way in self.get_ways():
+            intersection_nids = []
+            for node in way.get_nodes():
+                try:
+                    if node.is_intersection():
+                        intersection_nids.append(node.id)
+                except:
+                    log.debug("Debug")
+            # intersection_nids = [nid for nid in way.nids if self.get_node(nid).is_intersection()]
             intersection_indices = [way.nids.index(nid) for nid in intersection_nids]
             if len(intersection_indices) > 0:
                 # Do not split streets if (i) there is only one intersection node and it is the on the either end of the
@@ -1153,14 +1233,10 @@ class OSM(Network):
                     for idx in intersection_indices:
                         if idx != 0 and idx != len(way.nids) - 1:
                             new_nids = way.nids[prev_idx:idx + 1]
-                            new_way = Street(None, new_nids, way.type)
-                            # new_streets.add(new_way)
-                            self.add_way(new_way)
+                            new_way = self.create_street(None, new_nids)
                             prev_idx = idx
                     new_nids = way.nids[prev_idx:]
-                    new_way = Street(None, new_nids, way.type)
-                    # new_streets.add(new_way)
-                    self.add_way(new_way)
+                    new_way = self.create_street(None, new_nids)
                     self.remove_way(way.id)
         # self.ways = new_streets
 
