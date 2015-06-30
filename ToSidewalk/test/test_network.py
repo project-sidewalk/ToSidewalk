@@ -256,7 +256,7 @@ class TestNetworkMethods(unittest.TestCase):
         self.assertEqual(len(street2_segmentation[2]), 0)
 
         return
-    
+
     def test_segment_parallel_streets_6(self):
         # The following pair of line segments:
         #

@@ -478,7 +478,6 @@ class OSM(Network):
         return
 
     def find_parallel_street_segments(self):
-
         """
         This method finds parallel segments and returns a list of pair of way ids
         :return: A list of pair of parallel way ids
@@ -814,7 +813,10 @@ class OSM(Network):
                 street1_segmentation[2].insert(0, street1_segmentation[1][-1])
             # If street 2 has a beginning segment...
             if street2_segmentation[0]:
-                street2_segmentation[0].append(street2_segmentation[1][0])
+                try:
+                    street2_segmentation[0].append(street2_segmentation[1][0])
+                except IndexError:
+                    print "Debug"
                 # if street2_segmentation[1]:
                 #     street2_segmentation[0].append(street2_segmentation[1][0])
                 # elif street2_segmentation[2]:
@@ -1077,7 +1079,7 @@ class OSM(Network):
         """
         # new_streets = Streets()
         for way in self.ways.get_list():
-            intersection_nids = [nid for nid in way.nids if self.nodes.get(nid).is_intersection()]
+            intersection_nids = [nid for nid in way.nids if self.get_node(nid).is_intersection()]
             intersection_indices = [way.nids.index(nid) for nid in intersection_nids]
             if len(intersection_indices) > 0:
                 # Do not split streets if (i) there is only one intersection node and it is the on the either end of the
