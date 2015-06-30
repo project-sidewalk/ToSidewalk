@@ -18,7 +18,6 @@ class LatLng(object):
     def __str__(self):
         return str(self.lat) + "," + str(self.lng)
 
-
 def haversine(lon1, lat1, lon2, lat2):
     """
     Calculate the great circle distance between two points

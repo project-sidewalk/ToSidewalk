@@ -323,6 +323,17 @@ def main(street_network):
     return sidewalk_network
 
 if __name__ == "__main__":
+    # filename = "../resources/ParallelLanes_03.osm"
+    filename = "../resources/SmallMap_04.osm"
+    # filename = "../resources/tests/out2340_3134.pbfr"
+    street_network = parse(filename)
+    street_network.parse_intersections()
+    street_network.preprocess()
+
+    # street_network.merge_parallel_street_segments2()
+    print street_network.export()
+
+    """
     # filename = "../resources/SimpleWay_01.osm"
     # filename = "../resources/Simple4WayIntersection_01.osm"
     # filename = "../resources/SmallMap_01.osm"
@@ -340,14 +351,14 @@ if __name__ == "__main__":
     #files.append("../resources/tests/out2339_3134.pbfr")
     #files.append("../resources/tests/out2339_3135.pbfr")
     #files.append("../resources/tests/out2340_3133.pbfr")
-    # files.append("../resources/tests/out2340_3134.pbfr")  # Causes sidewalk network join error
+    files.append("../resources/tests/out2340_3134.pbfr")  # Causes sidewalk network join error
     #files.append("../resources/tests/out2340_3135.pbfr")
     #files.append("../resources/tests/out2341_3132.pbfr")
     # files.append("../resources/tests/out2341_3133.pbfr")  # Causes error
     # files.append("../resources/tests/out2341_3134.pbfr")  # Causes error
     #files.append("../resources/tests/out2341_3135.pbfr")
     #files.append("../resources/tests/out2342_3133.pbfr")  # Causes error
-    files.append("../resources/tests/out2342_3134.pbfr")  # Causes math domain error
+    # files.append("../resources/tests/out2342_3134.pbfr")  # Causes math domain error
     #files.append("../resources/tests/out2342_3135.pbfr")
     #files.append("../resources/tests/out2343_3133.pbfr")
     #files.append("../resources/tests/out2343_3134.pbfr")
@@ -373,12 +384,10 @@ if __name__ == "__main__":
     sidewalk_network_main = sidewalk_networks[0]
     print("2")
     for sidewalk_network in sidewalk_networks[1:]:
-        sidewalk_network_main = merge_sidewalks(sidewalk_network_main,sidewalk_network)
+        sidewalk_network_main = merge_sidewalks(sidewalk_network_main, sidewalk_network)
     print("3")
     geojson = sidewalk_network_main.export(format="geojson")
-    #sidewalk_network2 = main(street_network2)
 
-    #merged_sidewalk_network = merge_sidewalks(sidewalk_network1, sidewalk_network2)
-    #geojson = merged_sidewalk_network.export(format='geojson')
     f = open('output.txt','w')
     print >>f, geojson
+    """

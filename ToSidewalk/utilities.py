@@ -72,9 +72,9 @@ def latlng_offset(lat_origin, lng_origin, **kwargs):
         dy = kwargs['distance'] * math.sin(angle)
     dlat = float(dy) / 111111
     dlng = float(dx) / (111111 * math.cos(math.radians(lat_origin)))
-    return lat_origin + dlat, lng_origin + dlng
+    return dlat, dlng
 
-def latlng_offset_size(lat_origin, lng_origin, **kwargs):
+def latlng_offset_size(lat_origin, **kwargs):
     """
     Given an coordinate (lat, lng) and displacement (dx, dy) in meters, return the size of offset in latlng
     :param lat_origin:
@@ -86,7 +86,6 @@ def latlng_offset_size(lat_origin, lng_origin, **kwargs):
         dx = kwargs['dx']
         dy = kwargs['dy']
     elif 'vector' in kwargs and 'distance' in kwargs:
-        assert kwargs['vector'] is ListType
         v = np.array(kwargs['vector'])
         v /= np.linalg.norm(v)
         angle = math.atan2(v[1], v[0])
