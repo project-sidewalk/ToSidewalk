@@ -140,6 +140,13 @@ class Network(object):
         """
         return self.ways.get(way_id)
 
+    def get_ways(self):
+        """
+        Get all the way objects
+        :return:
+        """
+        return self.ways.get_list()
+
     def parse_intersections(self):
         """
         TBD
@@ -166,14 +173,15 @@ class Network(object):
         :return:
         """
         way = self.ways.get(way_id)
-        for nid in way.get_node_ids():
-            node = self.nodes.get(nid)
-            node.remove_way_id(way_id)
-            way_ids = node.get_way_ids()
-            # Delete the node if it is no longer associated with any ways
-            if len(way_ids) == 0:
-                self.nodes.remove(nid)
-        self.ways.remove(way_id)
+        if way:
+            for nid in way.get_node_ids():
+                node = self.nodes.get(nid)
+                node.remove_way_id(way_id)
+                way_ids = node.get_way_ids()
+                # Delete the node if it is no longer associated with any ways
+                if len(way_ids) == 0:
+                    self.nodes.remove(nid)
+            self.ways.remove(way_id)
 
     def join_ways(self, way_id_1, way_id_2):
         """
@@ -213,6 +221,17 @@ class Network(object):
                 self.ways.get(way_id).swap_nodes(nid_from, nid_to)
             self.nodes.remove(nid_from)
         return
+
+    def vector(self, nid_from, nid_to, normalize=False):
+        """
+        Get a vector from one node to another
+        :param nid_from: A source node id
+        :param nid_to: A target node id
+        :return: A vector (2D np.array)
+        """
+        node_from = self.get_node(nid_from)
+        node_to = self.get_node(nid_to)
+        return node_from.vector_to(node_to, normalize)
 
 
 class OSM(Network):
@@ -318,9 +337,9 @@ class OSM(Network):
         print("Finding parallel street segments" + str(datetime.now()))
         parallel_segments = self.find_parallel_street_segments()
         print("Finished finding parallel street segments" + str(datetime.now()))
-        parallel_segments_filtered = self.join_connected_ways(parallel_segments)
+        # parallel_segments_filtered = self.join_connected_ways(parallel_segments)
         print("Begin merging parallel street segments" + str(datetime.now()))
-        self.merge_parallel_street_segments(parallel_segments_filtered)
+        # self.merge_parallel_street_segments(parallel_segments_filtered)
         print("Finished merging parallel street segments, beginning split streets" + str(datetime.now()))
         self.split_streets()
         print("Finished split streets, beginning update_ways" + str(datetime.now()))
@@ -605,6 +624,10 @@ class OSM(Network):
         # Condition in list comprehension
         # http://stackoverflow.com/questions/4260280/python-if-else-in-list-comprehension
         all_nids_street_indices = [0 if nid in street_pair[0].nids else 1 for nid in all_nids]
+
+        # Return if they are not actually parallel
+
+
         all_nids_street_switch = [idx_pair[0] != idx_pair[1] for idx_pair in window(all_nids_street_indices, 2)]
 
         if all_nids[0] == all_nids[1]:
@@ -823,7 +846,10 @@ class OSM(Network):
                 #     street2_segmentation[0].append(street2_segmentation[2][0])
             # If street 2 has an ending segment...
             if street2_segmentation[2]:
-                street2_segmentation[2].insert(0, street2_segmentation[1][-1])
+                try:
+                    street2_segmentation[2].insert(0, street2_segmentation[1][-1])
+                except IndexError:
+                    print "Debug"
                 # if street2_segmentation[1]:
                 #     street2_segmentation[2].insert(0, street2_segmentation[1][-1])
                 # elif street2_segmentation[0]:
@@ -921,9 +947,9 @@ class OSM(Network):
                         new_node = self.create_node(None, new_position[0], new_position[1])
                         new_street_nids.append(new_node.id)
 
-                log.debug(pair)
-                node_to[subset_nids[0]] = new_street_nids[0]
-                node_to[subset_nids[-1]] = new_street_nids[-1]
+                # log.debug(pair)
+                # node_to[subset_nids[0]] = new_street_nids[0]
+                # node_to[subset_nids[-1]] = new_street_nids[-1]
 
                 merged_street = self.create_street(None, new_street_nids)
                 merged_street.distance_to_sidewalk *= 2
@@ -934,79 +960,110 @@ class OSM(Network):
 
                 # Create streets from the unmerged nodes.
                 # Todo for KH: I think this part of the code can be prettier
-                if street1_segment[0] or street2_segment[0]:
-                    if street1_segment[0] and street2_segment[0]:
-                        if street1_segment[0][0] == street2_segment[0][0]:
-                            # The two segments street1 and street2 share a common node. Just connect one of them to the
-                            # new merged street.
-                            if subset_nids[0] in street1_segment[1]:
-                                street1_segment[0][-1] = node_to[street1_segment[0][-1]]
-                                self.create_street(None, street1_segment[0])
-                            else:
-                                street2_segment[0][-1] = node_to[street2_segment[0][-1]]
-                                self.create_street(None, street2_segment[0])
-                        else:
-                            # Both street1_segment and street2_segment exist, but they do not share a common node
-                            street1_segment[0][-1] = node_to[street1_segment[0][-1]]
-                            street2_segment[0][-1] = node_to[street2_segment[0][-1]]
-                            try:
-                                self.create_street(None, street1_segment[0])
-                                self.create_street(None, street2_segment[0])
-                            except KeyError:
-                                print("Debug")
+                # if street1_segment[0] or street2_segment[0]:
+                #     if street1_segment[0] and street2_segment[0]:
+                #         if street1_segment[0][0] == street2_segment[0][0]:
+                #             # The two segments street1 and street2 share a common node. Just connect one of them to the
+                #             # new merged street.
+                #             if subset_nids[0] in street1_segment[1]:
+                #                 street1_segment[0][-1] = node_to[street1_segment[0][-1]]
+                #                 self.create_street(None, street1_segment[0])
+                #             else:
+                #                 street2_segment[0][-1] = node_to[street2_segment[0][-1]]
+                #                 self.create_street(None, street2_segment[0])
+                #         else:
+                #             # Both street1_segment and street2_segment exist, but they do not share a common node
+                #             street1_segment[0][-1] = node_to[street1_segment[0][-1]]
+                #             street2_segment[0][-1] = node_to[street2_segment[0][-1]]
+                #             try:
+                #                 self.create_street(None, street1_segment[0])
+                #                 self.create_street(None, street2_segment[0])
+                #             except KeyError:
+                #                 print("Debug")
+                #
+                #     elif street1_segment[0]:
+                #         # Only street1_segment exists
+                #         try:
+                #
+                #             street1_segment[0][-1] = node_to[street1_segment[0][-1]]
+                #         except KeyError:
+                #             print "Debug"
+                #         self.create_street(None, street1_segment[0])
+                #     else:
+                #         # Only street2_segment exists
+                #         try:
+                #             street2_segment[0][-1] = node_to[street2_segment[0][-1]]
+                #             # Todo: Bug: Sometimes the node_to dictionary does not contain street2_segment[0][-1] causing error. Use the wilson.osm
+                #             self.create_street(None, street2_segment[0])
+                #         except KeyError:
+                #             print("Debug")
 
-                    elif street1_segment[0]:
-                        # Only street1_segment exists
-                        street1_segment[0][-1] = node_to[street1_segment[0][-1]]
-                        self.create_street(None, street1_segment[0])
-                    else:
-                        # Only street2_segment exists
-                        try:
-                            street2_segment[0][-1] = node_to[street2_segment[0][-1]]
-                            # Todo: Bug: Sometimes the node_to dictionary does not contain street2_segment[0][-1] causing error. Use the wilson.osm
-                            self.create_street(None, street2_segment[0])
-                        except KeyError:
-                            print("Debug")
-
-                if street1_segment[2] or street2_segment[2]:
-                    if street1_segment[2] and street2_segment[2]:
-                        if street1_segment[2][-1] == street2_segment[2][-1]:
-                            # The two segments street1 and street2 share a common node. Just connect one of them to the
-                            # new merged street.
-                            if subset_nids[-1] in street1_segment[1]:
-                                street1_segment[2][0] = node_to[subset_nids[-1]]
-                                self.create_street(None, street1_segment[2])
-                            else:
-                                street2_segment[2][0] = node_to[subset_nids[-1]]
-                                self.create_street(None, street2_segment[2])
-                        else:
-                            # Both street1_segment and street2_segment exist, but they do not share a common node
-                            street1_segment[2][0] = node_to[subset_nids[-1]]
-                            street2_segment[2][0] = node_to[subset_nids[-1]]
-                            self.create_street(None, street1_segment[2])
-                            self.create_street(None, street2_segment[2])
-                    elif street1_segment[2]:
-                        # Only street1_segment exists
-                        street1_segment[2][0] = node_to[subset_nids[-1]]
-                        self.create_street(None, street1_segment[2])
-                    else:
-                        # Only street2_segment exists
-                        street2_segment[2][0] = node_to[subset_nids[-1]]
-                        self.create_street(None, street2_segment[2])
-
+        #         if street1_segment[2] or street2_segment[2]:
+        #             if street1_segment[2] and street2_segment[2]:
+        #                 if street1_segment[2][-1] == street2_segment[2][-1]:
+        #                     # The two segments street1 and street2 share a common node. Just connect one of them to the
+        #                     # new merged street.
+        #                     if subset_nids[-1] in street1_segment[1]:
+        #                         street1_segment[2][0] = node_to[subset_nids[-1]]
+        #                         self.create_street(None, street1_segment[2])
+        #                     else:
+        #                         street2_segment[2][0] = node_to[subset_nids[-1]]
+        #                         self.create_street(None, street2_segment[2])
+        #                 else:
+        #                     # Both street1_segment and street2_segment exist, but they do not share a common node
+        #                     street1_segment[2][0] = node_to[subset_nids[-1]]
+        #                     street2_segment[2][0] = node_to[subset_nids[-1]]
+        #                     self.create_street(None, street1_segment[2])
+        #                     self.create_street(None, street2_segment[2])
+        #             elif street1_segment[2]:
+        #                 # Only street1_segment exists
+        #                 street1_segment[2][0] = node_to[subset_nids[-1]]
+        #                 self.create_street(None, street1_segment[2])
+        #             else:
+        #                 # Only street2_segment exists
+        #                 street2_segment[2][0] = node_to[subset_nids[-1]]
+        #                 self.create_street(None, street2_segment[2])
+        #
             except Exception as e:
                 log.exception("Something went wrong while merging street segment, so skipping...")
                 continue
             ######
-        for street_id in set(streets_to_remove):
-            for nid in self.ways.get(street_id).nids:
-                node = self.nodes.get(nid)
-                for parent in node.way_ids:
-                    if not parent in streets_to_remove:
-                        # FIXME Add the node to the way we're about to add
-                        pass
-            self.remove_way(street_id)
+        # for street_id in set(streets_to_remove):
+        #     for nid in self.ways.get(street_id).nids:
+        #         node = self.nodes.get(nid)
+        #         for parent in node.way_ids:
+        #             if not parent in streets_to_remove:
+        #                 # FIXME Add the node to the way we're about to add
+        #                 pass
+        #     self.remove_way(street_id)
         return
+
+    def merge_parallel_street_segments2(self):
+        while True:
+            no_parallel_streets = True
+            streets = self.ways.get_list()
+            street_combinations = combinations(streets, 2)
+
+            ways_to_remove = []
+
+            for street1, street2 in street_combinations:
+                if street1.is_parallel_to(street2) and not street1.on_same_street(street2):
+                    street1.merge(street2)
+                    ways_to_remove.append(street1.id)
+                    ways_to_remove.append(street2.id)
+            #             self.remove_way(street1.id)
+            #             self.remove_way(street2.id)
+            #             no_parallel_streets = False
+            #             break
+            #
+            #
+            #     if no_parallel_streets:
+            #         break
+            # except ValueError:
+
+            for way_id in ways_to_remove:
+                self.remove_way(way_id)
+            break
 
     def simplify(self, way_id, threshold=0.5):
         """

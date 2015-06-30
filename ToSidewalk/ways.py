@@ -1,5 +1,9 @@
 import json
+import math
 import numpy as np
+from shapely.geometry import Polygon, LineString, Point
+from utilities import latlng_offset_size, window
+from types import *
 
 class Way(object):
     def __init__(self, wid=None, nids=[], type=None):
@@ -68,6 +72,16 @@ class Way(object):
         """
         return self.nids
 
+    def get_nodes(self):
+        """
+        Get nodes
+        :return:
+        """
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+        node_ids = self.get_node_ids()
+        return [network.get_node(nid) for nid in node_ids]
+
     def get_shared_node_ids(self, other):
         """
         Get node ids that are shared between two Way objects. other could be either
@@ -105,6 +119,183 @@ class Way(object):
         index_from = self.nids.index(nid_from)
         self.nids[index_from] = nid_to
 
+    def angle(self):
+        """
+        Get an angle formed by a vector from the first node to the last one.
+        :return:
+        """
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+        start_node = network.get_node(self.nids[0])
+        end_node = network.get_node(self.nids[-1])
+        vector = start_node.vector_to(end_node, normalize=True)
+        angle = math.degrees(math.atan2(vector[0], vector[1]))
+        return angle
+
+    def polygon(self, distance_to_sidewalk=15):
+        """
+        Get a polygon
+        :param distance_to_sidewalk:
+        :return:
+        """
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+        start_node = network.get_node(self.nids[0])
+        end_node = network.get_node(self.nids[-1])
+        vector = start_node.vector_to(end_node, normalize=True)
+        perpendicular = np.array([vector[1], - vector[0]])
+        distance = latlng_offset_size(start_node.lat, vector=perpendicular, distance=distance_to_sidewalk)
+        p1 = start_node.vector() + perpendicular * distance
+        p2 = end_node.vector() + perpendicular * distance
+        p3 = end_node.vector() - perpendicular * distance
+        p4 = start_node.vector() - perpendicular * distance
+
+        poly = Polygon([p1, p2, p3, p4])
+        return poly
+
+    def is_parallel_to(self, other, threshold=10.):
+        """
+        Check if this way is parallel to another one
+        :param other: A Way object or a way id
+        :return:
+        """
+        if type(other) == StringType:
+            streets = self.belongs_to()
+            other = streets.get(other)
+
+        poly1 = self.polygon()
+        poly2 = other.polygon()
+        angle1 = self.angle()
+        angle2 = other.angle()
+        angle_diff = (angle1 - angle2 + 360) % 360
+        angle_diff = min(angle_diff, 360 - angle_diff)
+        return (angle_diff < threshold or angle_diff > 180 - threshold) and poly1.intersects(poly2)
+
+    def on_same_street(self, other):
+        """
+        Is on the same street
+        :param other:
+        :return:
+        """
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+        base_node0 = network.get_node(self.nids[0])
+        base_node1 = network.get_node(other.nids[-1])
+        base_vector = base_node0.vector_to(base_node1, normalize=True)
+
+        def cmp_with_projection(n1, n2):
+            dot_product1 = np.dot(n1.vector(), base_vector)
+            dot_product2 = np.dot(n2.vector(), base_vector)
+            if dot_product1 < dot_product2:
+                return -1
+            elif dot_product2 < dot_product1:
+                return 1
+            else:
+                return 0
+
+        # Sort the nodes in the second street
+        street_2_nodes = [network.get_node(nid) for nid in other.nids]
+        sorted_street2_nodes = sorted(street_2_nodes, cmp=cmp_with_projection)
+        if street_2_nodes[0].id != sorted_street2_nodes[0].id:
+            other.nids = list(reversed(other.nids))
+
+        if self.nids[0] == other.nids[-1] or self.nids[-1] == other.nids[0]:
+            return True
+
+        # Check if they are on the same street or not.
+        all_nodes = [network.get_node(nid) for nid in self.nids] + [network.get_node(nid) for nid in other.nids]
+        all_nodes = sorted(all_nodes, cmp=cmp_with_projection)
+        all_nids = [node.id for node in all_nodes]
+
+        if all_nids[0] == all_nids[1]:
+            # Two ways share the first node, then forks
+            return False
+        elif all_nids[-1] == all_nids[-2]:
+            # Two ways share the last node, then forks
+            return False
+
+        all_nids_street_indices = [0 if nid in self.nids else 1 for nid in all_nids]
+        all_nids_street_switch = [idx_pair[0] != idx_pair[1] for idx_pair in window(all_nids_street_indices, 2)]
+
+        # Check if there is any parallel region between two ways
+        if sum(all_nids_street_switch) == 1:
+            return True
+        else:
+            return False
+
+    def merge(self, other):
+        """
+        Merge two ways
+        :param other:
+        :return:
+        """
+        network = self.belongs_to().belongs_to()
+        from network import Network
+        import itertools
+        temp_network = Network()
+        my_nodes = self.get_nodes()
+        other_nodes = other.get_nodes()
+        temp_network.add_nodes(my_nodes)
+        temp_network.add_nodes(other_nodes)
+        base_vector = my_nodes[0].vector_to(my_nodes[-1], normalize=True)
+
+        def cmp_with_projection(n1, n2):
+            dot_product1 = np.dot(n1.vector(), base_vector)
+            dot_product2 = np.dot(n2.vector(), base_vector)
+            if dot_product1 < dot_product2:
+                return -1
+            elif dot_product2 < dot_product1:
+                return 1
+            else:
+                return 0
+
+        my_ways = [temp_network.create_street(None, [pair[0].id, pair[1].id]) for pair in window(my_nodes, 2)]
+        other_ways = [temp_network.create_street(None, [pair[0].id, pair[1].id]) for i, pair in enumerate(window(other_nodes, 2))]
+
+        # Find intersecting segments
+        intersecting_pairs = []
+        non_intersecting_pairs = []
+        for pair in itertools.product(my_ways, other_ways):
+            poly1 = pair[0].polygon()
+            poly2 = pair[1].polygon()
+            if poly1.intersects(poly2):
+                intersecting_pairs.append(pair)
+            else:
+                non_intersecting_pairs.append(pair)
+
+        # Join connected segments of ways following Anthony's code
+
+        my_ways_to_join, other_ways_to_join = zip(*intersecting_pairs)
+
+        new_nodes = []
+        my_nodes_to_join = []
+        for way in set(my_ways_to_join):
+            my_nodes_to_join.append(way.get_nodes()[0])
+        my_nodes_to_join.append(way.get_nodes()[1])
+        my_nodes_to_join = sorted(list(set(my_nodes_to_join)), cmp=cmp_with_projection)
+
+        other_nodes_to_join = []
+        for way in set(other_ways_to_join):
+            other_nodes_to_join.append(way.get_nodes()[0])
+        other_nodes_to_join.append(way.get_nodes()[1])
+        other_nodes_to_join = sorted(list(set(other_nodes_to_join)), cmp=cmp_with_projection)
+
+        lat_origin = (my_nodes_to_join[0].lat + other_nodes_to_join[0].lat) / 2
+        lng_origin = (my_nodes_to_join[0].lng + other_nodes_to_join[0].lng) / 2
+        from nodes import Node
+        origin = Node(None, lat_origin, lng_origin)
+
+        new_nodes = my_nodes_to_join + other_nodes_to_join
+        new_nodes = sorted(new_nodes, cmp=cmp_with_projection)
+        new_node_ids = []
+        for node in new_nodes:
+            v = origin.vector_to(node)
+            d = np.dot(v, base_vector)
+            new_lat, new_lng = origin.vector() + base_vector * d
+            node = network.create_node(None, new_lat, new_lng)
+            new_node_ids.append(node.id)
+        network.create_street(None, new_node_ids)
+
 
 class Ways(object):
     def __init__(self):
@@ -136,8 +327,10 @@ class Ways(object):
         :param wid: A way id
         :return: A Way object
         """
-        assert wid in self.ways
-        return self.ways[wid]
+        if wid in self.ways:
+            return self.ways[wid]
+        else:
+            return None
 
     def get_list(self):
         """
