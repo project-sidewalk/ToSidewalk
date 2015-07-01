@@ -150,7 +150,7 @@ class Nodes(object):
             if len(node.get_way_ids()) == 0:
                 self.remove(node.id)
 
-    def create_polygon(self, node1, node2, r=15):
+    def create_polygon(self, node1, node2, r=15.):
         """
         Create a rectangular polygon from two nodes passed
         :param nid1:

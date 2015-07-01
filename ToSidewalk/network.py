@@ -379,7 +379,7 @@ class OSM(Network):
         self.merge_nodes()
         self.clean_street_segmentation()
 
-        self.merge_parallel_street_segments2()
+        self.merge_parallel_street_segments3()
         self.clean_nodes()
 
         print("Finished merging parallel street segments, beginning split streets" + str(datetime.now()))
@@ -387,7 +387,10 @@ class OSM(Network):
         print("Finished split streets, beginning update_ways" + str(datetime.now()))
         self.update_ways()
         print("Finished update_ways, beginning merge_nodes" + str(datetime.now()))
-        self.merge_nodes()
+        try:
+            self.merge_nodes()
+        except AttributeError:
+            pass
         print("Finished merge_nodes, beginning clean_street_segmentation" + str(datetime.now()))
         # Clean up and so I can make a sidewalk network
         self.clean_street_segmentation()
@@ -1101,6 +1104,89 @@ class OSM(Network):
         for way_id in set(ways_to_remove):
             self.remove_way(way_id)
             self.join_connected_ways(segments_to_merge)
+
+    def merge_parallel_street_segments3(self, threshold=0.5):
+        streets = self.ways.get_list()
+        for street1 in streets:
+            overlap_list = []  # store tuples of (index, area_overlap pair)
+            for street2 in streets:
+                if street1 == street2:
+                    continue
+
+                # If street1 and street2 overlaps, calculate the overlap value (divided by poly area)
+                # and store it into overlap list
+                if self.parallel(street1, street2) and not street1.on_same_street(street2):
+                    street1_nodes = street1.get_nodes()
+                    street2_nodes = street2.get_nodes()
+                    node1_1, node1_2 = street1_nodes[0], street1_nodes[-1]
+                    node2_1, node2_2 = street2_nodes[0], street2_nodes[-1]
+                    poly1 = self.nodes.create_polygon(node1_1, node1_2)
+                    poly2 = self.nodes.create_polygon(node2_1, node2_2)
+                    area_intersection = poly1.intersection(poly2).area
+                    my_area = max(area_intersection / poly1.area, area_intersection / poly2.area)
+                    overlap_list.append((my_area, street2))
+
+            # Merge the streets that have the largest overlap (that has overlap over 0.5)
+            # and remove unnecessary streets
+            overlap_list.sort(key=lambda x: - x[0])
+            if overlap_list and overlap_list[0][0] > threshold:
+                nodes = self.merge_streets(street1, overlap_list[0][1])
+                self.add_nodes(nodes)
+                new_street = self.create_street(None, [node.id for node in nodes])
+                streets.remove(street1)
+                streets.remove(overlap_list[0][1])
+                self.remove_way(street1.id)
+                self.remove_way(overlap_list[0][1].id)
+                streets.append(new_street)
+
+                print overlap_list
+
+    def merge_streets(self, street1, street2):
+        """
+        Merge two streets. You should pass two parallel segments
+        :param street1:
+        :param street2:
+        :return: A new street
+        """
+        # Create a base vector that defines the direction of a parallel line
+        nodes1 = [self.get_node(nid) for nid in street1.get_node_ids()]
+        nodes2 = [self.get_node(nid) for nid in street2.get_node_ids()]
+        v1 = nodes1[0].vector_to(nodes1[-1], normalize=True)
+        v2 = nodes2[0].vector_to(nodes1[-1], normalize=True)
+        base_vector = v1 + v2
+        base_vector /= np.linalg.norm(base_vector)
+
+        # Create a node that serves as an origin by taking the average (lat, lng) of all the nodes.
+        lat_origin = 0
+        lng_origin = 0
+        for node in nodes1 + nodes2:
+            lat_origin += node.lat
+            lng_origin += node.lng
+        lat_origin /= len(nodes1 + nodes2)
+        lng_origin /= len(nodes1 + nodes2)
+        origin = Node(None, lat_origin, lng_origin)
+
+        # Create a set of new nodes
+        new_nodes = []
+        for node in nodes1 + nodes2:
+            vec = origin.vector_to(node)
+            d = np.dot(base_vector, vec)
+            lat_new, lng_new = origin.vector() + d * base_vector
+            node_new = Node(None, lat_new, lng_new)
+            new_nodes.append(node_new)
+
+        def cmp_with_projection(n1, n2):
+            dot_product1 = np.dot(n1.vector(), base_vector)
+            dot_product2 = np.dot(n2.vector(), base_vector)
+            if dot_product1 < dot_product2:
+                return -1
+            elif dot_product2 < dot_product1:
+                return 1
+            else:
+                return 0
+
+        new_nodes = sorted(new_nodes, cmp=cmp_with_projection)
+        return new_nodes
 
     def parallel(self, way1, way2, threshold=10.):
         """
