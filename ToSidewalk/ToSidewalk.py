@@ -218,7 +218,7 @@ def make_crosswalks(street_network, sidewalk_network):
     :param street_network: Street network object
     :param sidewalk_network: Sidewalk network object
     """
-    
+
     intersection_nodes = street_network.nodes.get_intersection_nodes()
     # intersection_nodes = [street_network.nodes.get(nid) for nid in intersection_node_ids]
 
@@ -344,16 +344,31 @@ def main(street_network):
 
 if __name__ == "__main__":
     # filename = "../resources/SmallMap_03.osm"
+    filename = "../resources/SmallMap_04.osm"
+    # filename = "../resources/ParallelLanes_03.osm"
+    # filename = "../resources/tests/out2340_3134.pbfr"
+    street_network = parse(filename)
+    # street_network.parse_intersections()
+    street_network.preprocess()
+    sidewalk_network = main(street_network)
+
+    # street_network.merge_parallel_street_segments2()
+    print sidewalk_network.export()
+
+
     #filename = "../resources/SmallMap_04.osm"
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/tests/out2340_3134.pbfr"
 
-    
-    
+
+
+
 
     # filename = "../resources/SimpleWay_01.osm"
     # filename = "../resources/Simple4WayIntersection_01.osm"
-    # filename = "../resources/SmallMap_01.osm"
+    filename = "../resources/SmallMap_01.osm"
+    filename = "../resources/SmallMap_02.osm"
+
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/MapPair_B_01.osm"
     # filename = "../resources/SegmentedStreet_01.osm"
@@ -364,6 +379,7 @@ if __name__ == "__main__":
     #filename = "../resources/ParallelLanes_03.osm"
 
     #filename = "../resources/SmallMap_04.osm"
+
 
     # Clear the data directory before beginning
     shutil.rmtree('data/')
@@ -401,9 +417,9 @@ if __name__ == "__main__":
         except:
             log.debug("Error preprocessing this street network. Skipping.")
             continue
-        
+
         street_network.parse_intersections()
-        
+
     print("Merging sidewalk networks...")
     sidewalk_networks = []
     print("1")
@@ -422,4 +438,3 @@ if __name__ == "__main__":
 
     f = open('output.txt','w')
     print >>f, geojson
-    
