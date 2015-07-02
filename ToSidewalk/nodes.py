@@ -3,6 +3,9 @@ import json
 import numpy as np
 import math
 import logging as log
+from types import *
+from shapely.geometry import Polygon, LineString, Point
+from utilities import latlng_offset_size, window
 
 class Node(LatLng):
     def __init__(self, nid=None, lat=None, lng=None):
@@ -17,10 +20,13 @@ class Node(LatLng):
         self.way_ids = []
         self.sidewalk_nodes = {}
         self.min_intersection_cardinality = 2
-        self.crosswalk_distance = 0.00006
-        self.parents = ()
-        self.parent_nodes = None
+        self.crosswalk_distance = 0.00010
         self.confirmed = False
+        self.made_from = []  # A list of nodes that this node is made from
+
+        self._parent_nodes = None  # Parent Nodes data structure
+
+        assert type(self.id) is StringType
         return
 
     def __str__(self):
@@ -35,20 +41,34 @@ class Node(LatLng):
         self.sidewalk_nodes.setdefault(way_id, []).append(node)
 
     def append_way(self, wid):
-        self.way_ids.append(wid)
+        """
+        Add a way id to the list that keeps track of which ways are connected to the node
+        :param wid:
+        :return:
+        """
+        if wid not in self.way_ids:
+            self.way_ids.append(wid)
 
     def belongs_to(self):
-        return self.parent_nodes
+        return self._parent_nodes
 
     def export(self):
-        if self.parent_nodes and self.parent_nodes.parent_network:
+        if self._parent_nodes and self._parent_nodes.parent_network:
             geojson = {}
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
             for way_id in self.way_ids:
-                way = self.parent_nodes.parent_network.ways.get(way_id)
+                way = self._parent_nodes.parent_network.ways.get(way_id)
                 geojson['features'].append(way.get_geojson_features())
             return json.dumps(geojson)
+
+    def get_adjacent_nodes(self):
+        """
+        A list of Node objects that are adjacent to this Node object (self)
+        :return: A list of nodes
+        """
+        network = _parent_nodes.belongs_to()
+        return network.get_adjacent_nodes(self)
 
     def get_way_ids(self):
         return self.way_ids
@@ -69,12 +89,25 @@ class Node(LatLng):
         return len(self.sidewalk_nodes) > 0
 
     def is_intersection(self):
-        return len(self.way_ids) >= self.min_intersection_cardinality
+        """
+        Check if this node is an intersection or not
+        :return: Boolean
+        """
+        # adj_nodes = self.get_adjacent_nodes()
+        # return len(adj_nodes) >= self.min_intersection_cardinality
+        way_ids = self.get_way_ids()
+        return len(way_ids) >= self.min_intersection_cardinality
 
     def remove_way_id(self, wid):
+        """
+        Remove a way id from the list that keeps track of what ways are connected to this node
+        :param wid:
+        :return:
+        """
         if wid in self.way_ids:
             self.way_ids.remove(wid)
-        return
+            return wid
+        return None
 
     def vector(self):
         return np.array(self.location())
@@ -90,33 +123,91 @@ class Nodes(object):
     def __init__(self):
         self.nodes = {}
         self.crosswalk_node_ids = []
-        self.parent_network = None
+        self._parent_network = None
         return
 
     def add(self, node):
-        node.parent_nodes = self
+        """
+        Add a Node object to self
+        :param node: A Node object
+        """
+        node._parent_nodes = self
         self.nodes[node.id] = node
-        return
 
     def belongs_to(self):
-        return self.parent_network
+        """
+        Returns a parent network
+        :return: A parent Network object
+        """
+        return self._parent_network
+
+    def clean(self):
+        """
+        Remove all the nodes from the data structure if they are not connected to any ways
+        :return:
+        """
+        nodes = self.get_list()
+        for node in nodes:
+            if len(node.get_way_ids()) == 0:
+                self.remove(node.id)
+
+    def create_polygon(self, node1, node2, r=15.):
+        """
+        Create a rectangular polygon from two nodes passed
+        :param nid1:
+        :param nid2:
+        :return:
+        """
+        if type(node1) == StringType:
+            node1 = self.get(node1)
+            node2 = self.get(node2)
+
+        # start_node = network.get_node(self.nids[0])
+        # end_node = network.get_node(self.nids[-1])
+        vector = node1.vector_to(node2, normalize=True)
+        perpendicular = np.array([vector[1], - vector[0]])
+        distance = latlng_offset_size(node1.lat, vector=perpendicular, distance=r)
+        p1 = node1.vector() + perpendicular * distance
+        p2 = node2.vector() + perpendicular * distance
+        p3 = node2.vector() - perpendicular * distance
+        p4 = node1.vector() - perpendicular * distance
+
+        poly = Polygon([p1, p2, p3, p4])
+        return poly
 
     def get(self, nid):
+        """
+        Get a Node object
+        :param nid: A node id
+        :return: A Node object
+        """
         if nid in self.nodes:
             return self.nodes[nid]
         else:
             return None
 
     def get_intersection_nodes(self):
+        """
+        Get a list of Node objects, in which each node is an intersection node.
+        :return: A list of Node objects
+        """
         return [self.nodes[nid] for nid in self.nodes if self.nodes[nid].is_intersection()]
 
     def get_list(self):
+        """
+        Get a list of node objects
+        :return: A list of Node objects
+        """
         return self.nodes.values()
 
     def remove(self, nid):
-        # http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
+        """
+        Remove a node from the data structure
+        http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
+        :param nid:
+        :return:
+        """
         del self.nodes[nid]
-        return
 
     def update(self, nid, new_node):
         self.nodes[nid] = new_node

@@ -9,15 +9,14 @@ class LatLng(object):
     def __eq__(self, other):
         return self.lat == other.lat and self.lng == other.lng
 
+    def __str__(self):
+        return str(self.lat) + "," + str(self.lng)
+
     def distance_to(self, latlng):
         return haversine(radians(self.lng), radians(self.lat), radians(latlng.lng), radians(latlng.lat))
 
     def location(self):
-        return (self.lat, self.lng)
-
-    def __str__(self):
-        return str(self.lat) + "," + str(self.lng)
-
+        return self.lat, self.lng
 
 def haversine(lon1, lat1, lon2, lat2):
     """

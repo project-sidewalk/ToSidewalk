@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" generator="osmconvert 0.8.2">
+	<bounds minlat="38.8910328" minlon="-77.2119141" maxlat="38.9252291" maxlon="-77.1679687"/>
+	<node id="63329887" lat="38.9000871" lon="-77.156761">
+		<tag k="crossing" v="traffic_signals"/>
+		<tag k="highway" v="traffic_signals"/>
+	</node>
+	<node id="63333932" lat="38.8992251" lon="-77.1599257"/>
+	<node id="63335602" lat="38.8987054" lon="-77.1606392"/>
+	<node id="63340154" lat="38.8980812" lon="-77.1614546"/>
+	<node id="63345829" lat="38.8959542" lon="-77.1646047"/>
+	<node id="63345837" lat="38.8957851" lon="-77.165007"/>
+	<node id="63348272" lat="38.8997345" lon="-77.1588206"/>
+	<node id="63352098" lat="38.8964676" lon="-77.1635413"/>
+	<node id="63356196" lat="38.8973652" lon="-77.1623987"/>
+	<node id="63358953" lat="38.8948039" lon="-77.167244"/>
+	<node id="63359769" lat="38.8999245" lon="-77.1576309"/>
+	<node id="63359773" lat="38.8998722" lon="-77.1581501"/>
+	<node id="63359775" lat="38.8998138" lon="-77.1585256"/>
+	<node id="63359777" lat="38.8995884" lon="-77.1592578"/>
+	<node id="63359779" lat="38.8994047" lon="-77.1596441"/>
+	<node id="63359782" lat="38.8962421" lon="-77.1639651"/>
+	<node id="63359786" lat="38.894282" lon="-77.1683919"/>
+	<node id="63627725" lat="38.894327" lon="-77.178205"/>
+	<node id="210379230" lat="38.891489" lon="-77.182604">
+		<tag k="highway" v="crossing"/>
+	</node>
+	<node id="248134901" lat="38.891394" lon="-77.181946"/>
+	<node id="248134902" lat="38.891298" lon="-77.181261"/>
+	<node id="248134903" lat="38.891231" lon="-77.180791"/>
+	<node id="248134904" lat="38.891142" lon="-77.180149"/>
+	<node id="248134905" lat="38.891086" lon="-77.179783"/>
+	<node id="248134906" lat="38.891023" lon="-77.179367"/>
+	<node id="248134907" lat="38.890945" lon="-77.17886"/>
+	<node id="248134908" lat="38.890814" lon="-77.178062"/>
+	<node id="248134909" lat="38.890746" lon="-77.177668"/>
+	<node id="248134911" lat="38.89065" lon="-77.177083"/>
+	<node id="248134913" lat="38.890438" lon="-77.175846"/>
+	<node id="248134914" lat="38.890276" lon="-77.174968"/>
+	<node id="248134915" lat="38.890162" lon="-77.174338"/>
+	<node id="248134916" lat="38.8899656" lon="-77.1733349"/>
+	<node id="248134918" lat="38.889698" lon="-77.172086"/>
+	<node id="248134919" lat="38.88956" lon="-77.171406"/>
+	<node id="248134920" lat="38.889411" lon="-77.170717"/>
+	<node id="248134921" lat="38.889225" lon="-77.169868"/>
+	<node id="248134922" lat="38.889099" lon="-77.169276"/>
+	<node id="248134923" lat="38.888943" lon="-77.168594"/>
+	<node id="248134924" lat="38.888735" lon="-77.167699"/>
+	<node id="248134925" lat="38.888616" lon="-77.167193"/>
+	<node id="248134926" lat="38.888522" lon="-77.166808"/>
+	<node id="248134927" lat="38.888402" lon="-77.166281"/>
+	<node id="248134928" lat="38.888243" lon="-77.165606"/>
+	<node id="248134929" lat="38.888136" lon="-77.16515"/>
+	<node id="248134930" lat="38.88794" lon="-77.164357"/>
+	<node id="248134931" lat="38.887742" lon="-77.163655"/>
+	<node id="248134932" lat="38.887611" lon="-77.1632"/>
+	<node id="248134933" lat="38.887531" lon="-77.162906"/>
+	<node id="248134934" lat="38.8874706" lon="-77.1626569"/>
+	<node id="248134935" lat="38.887471" lon="-77.162458"/>
+	<node id="248134936" lat="38.887511" lon="-77.162368"/>
+	<node id="248134937" lat="38.887457" lon="-77.162239"/>
+	<node id="248134938" lat="38.8873307" lon="-77.1620454"/>
+	<node id="248134939" lat="38.8871553" lon="-77.1617879"/>
+	<node id="248134940" lat="38.8870155" lon="-77.1613641"/>
+	<node id="248134941" lat="38.8868985" lon="-77.1608786"/>
+	<node id="248134942" lat="38.8868672" lon="-77.160648"/>
+	<node id="248134943" lat="38.886691" lon="-77.160254"/>
+	<node id="248134944" lat="38.886537" lon="-77.159812"/>
+	<node id="248134945" lat="38.886318" lon="-77.15915"/>
+	<node id="248134946" lat="38.88616" lon="-77.15863"/>
+	<node id="248134947" lat="38.886038" lon="-77.158231"/>
+	<node id="248134948" lat="38.88579" lon="-77.157404"/>
+	<node id="248134949" lat="38.8857176" lon="-77.15716"/>
+	<node id="263617525" lat="38.873066" lon="-77.153725"/>
+	<node id="263618613" lat="38.878883" lon="-77.173637"/>
+	<node id="263623494" lat="38.879467" lon="-77.180717"/>
+	<node id="263632965" lat="38.873486" lon="-77.151939"/>
+	<node id="263634449" lat="38.8786747" lon="-77.1878799"/>
+	<node id="263634459" lat="38.873455" lon="-77.150162"/>
+	<node id="263636678" lat="38.873894" lon="-77.149559"/>
+	<node id="263638651" lat="38.875057" lon="-77.163116"/>
+	<node id="263641136" lat="38.886066" lon="-77.194107"/>
+	<node id="263641302" lat="38.872635" lon="-77.154922"/>
+	<node id="263643420" lat="38.879116" lon="-77.18605"/>
+	<node id="263645601" lat="38.878277" lon="-77.189621"/>
+	<node id="263646023" lat="38.873146" lon="-77.15786"/>
+	<node id="263651219" lat="38.891006" lon="-77.191582"/>
+	<node id="263654865" lat="38.8755797" lon="-77.1498019"/>
+	<node id="263654948" lat="38.8962351" lon="-77.1888355"/>
+	<node id="263656662" lat="38.8932346" lon="-77.1723197">
+		<tag k="historic" v="marker"/>
+		<tag k="name" v="DC Cornerstone SWx"/>
+	</node>
+	<node id="263659084" lat="38.879414" lon="-77.177765"/>
+	<node id="263660748" lat="38.873055" lon="-77.153137"/>
+	<node id="735983200" lat="38.8999212" lon="-77.1572376"/>
+	<node id="1124877190" lat="38.8883154" lon="-77.1659134"/>
+	<node id="1124877195" lat="38.8874215" lon="-77.1621817">
+		<tag k="bicycle" v="yes"/>
+		<tag k="crossing" v="traffic_signals"/>
+		<tag k="highway" v="crossing"/>
+		<tag k="source" v="bing"/>
+	</node>
+	<node id="1124877198" lat="38.8867268" lon="-77.1603221"/>
+	<node id="1124877203" lat="38.8868317" lon="-77.1605219"/>
+	<node id="1124877205" lat="38.8871992" lon="-77.1618684"/>
+	<node id="1124877207" lat="38.8874669" lon="-77.1625574"/>
+	<node id="1124877209" lat="38.8906992" lon="-77.1773826">
+		<tag k="highway" v="crossing"/>
+	</node>
+	<node id="1124877210" lat="38.8910546" lon="-77.1795754">
+		<tag k="highway" v="crossing"/>
+	</node>
+	<node id="1825859626" lat="38.8785886" lon="-77.1882568"/>
+	<node id="2184444834" lat="38.8999001" lon="-77.1573783"/>
+	<node id="2190854468" lat="38.8899848" lon="-77.1734331"/>
+	<node id="2205668403" lat="38.8736758" lon="-77.159317"/>
+	<node id="2205668497" lat="38.873592" lon="-77.1590866"/>
+	<node id="2213963952" lat="38.8998972" lon="-77.1575111"/>
+	<node id="2213963953" lat="38.8999469" lon="-77.1570592"/>
+	<node id="2213963955" lat="38.8999931" lon="-77.1568663"/>
+	<node id="2451199059" lat="38.8941584" lon="-77.1687621"/>
+	<node id="2623040020" lat="38.8935279" lon="-77.1739339"/>
+	<node id="3024270025" lat="38.9000359" lon="-77.1568051"/>
+	<node id="3247279200" lat="38.8937417" lon="-77.1749976"/>
+	<way id="59338830">
+		<nd ref="63329887"/>
+		<nd ref="3024270025"/>
+		<nd ref="2213963955"/>
+		<nd ref="2213963953"/>
+		<nd ref="735983200"/>
+		<nd ref="2184444834"/>
+		<nd ref="2213963952"/>
+		<nd ref="63359769"/>
+		<nd ref="63359773"/>
+		<nd ref="63359775"/>
+		<nd ref="63348272"/>
+		<nd ref="63359777"/>
+		<nd ref="63359779"/>
+		<nd ref="63333932"/>
+		<nd ref="63335602"/>
+		<nd ref="63340154"/>
+		<nd ref="63356196"/>
+		<nd ref="63352098"/>
+		<nd ref="63359782"/>
+		<nd ref="63345829"/>
+		<nd ref="63345837"/>
+		<nd ref="63358953"/>
+		<nd ref="63359786"/>
+		<nd ref="2451199059"/>
+		<tag k="bicycle" v="designated"/>
+		<tag k="cycleway" v="lane"/>
+		<tag k="highway" v="residential"/>
+		<tag k="name" v="North Williamsburg Boulevard"/>
+	</way>
+	<way id="61973770">
+		<nd ref="263656662"/>
+		<nd ref="2623040020"/>
+		<nd ref="3247279200"/>
+		<nd ref="63627725"/>
+		<nd ref="263654948"/>
+		<nd ref="263651219"/>
+		<nd ref="263641136"/>
+		<nd ref="263645601"/>
+		<nd ref="1825859626"/>
+		<nd ref="263634449"/>
+		<nd ref="263643420"/>
+		<nd ref="263623494"/>
+		<nd ref="263659084"/>
+		<nd ref="263618613"/>
+		<nd ref="263638651"/>
+		<nd ref="2205668403"/>
+		<nd ref="2205668497"/>
+		<nd ref="263646023"/>
+		<nd ref="263641302"/>
+		<nd ref="263617525"/>
+		<nd ref="263660748"/>
+		<nd ref="263632965"/>
+		<nd ref="263634459"/>
+		<nd ref="263636678"/>
+		<nd ref="263654865"/>
+		<tag k="admin_level" v="6"/>
+		<tag k="attribution" v="USGS 2001 County Boundary"/>
+		<tag k="border_type" v="county"/>
+		<tag k="boundary" v="administrative"/>
+		<tag k="nist:fips_code" v="51059"/>
+		<tag k="nist:state_fips" v="51"/>
+		<tag k="source" v="county_import_v0.1_20080508235459"/>
+	</way>
+	<way id="169913733">
+		<nd ref="248134949"/>
+		<nd ref="248134948"/>
+		<nd ref="248134947"/>
+		<nd ref="248134946"/>
+		<nd ref="248134945"/>
+		<nd ref="248134944"/>
+		<nd ref="248134943"/>
+		<nd ref="1124877198"/>
+		<nd ref="1124877203"/>
+		<nd ref="248134942"/>
+		<nd ref="248134941"/>
+		<nd ref="248134940"/>
+		<nd ref="248134939"/>
+		<nd ref="1124877205"/>
+		<nd ref="248134938"/>
+		<nd ref="1124877195"/>
+		<nd ref="248134937"/>
+		<nd ref="248134936"/>
+		<nd ref="248134935"/>
+		<nd ref="1124877207"/>
+		<nd ref="248134934"/>
+		<nd ref="248134933"/>
+		<nd ref="248134932"/>
+		<nd ref="248134931"/>
+		<nd ref="248134930"/>
+		<nd ref="248134929"/>
+		<nd ref="248134928"/>
+		<nd ref="1124877190"/>
+		<nd ref="248134927"/>
+		<nd ref="248134926"/>
+		<nd ref="248134925"/>
+		<nd ref="248134924"/>
+		<nd ref="248134923"/>
+		<nd ref="248134922"/>
+		<nd ref="248134921"/>
+		<nd ref="248134920"/>
+		<nd ref="248134919"/>
+		<nd ref="248134918"/>
+		<nd ref="248134916"/>
+		<nd ref="2190854468"/>
+		<nd ref="248134915"/>
+		<nd ref="248134914"/>
+		<nd ref="248134913"/>
+		<nd ref="248134911"/>
+		<nd ref="1124877209"/>
+		<nd ref="248134909"/>
+		<nd ref="248134908"/>
+		<nd ref="248134907"/>
+		<nd ref="248134906"/>
+		<nd ref="1124877210"/>
+		<nd ref="248134905"/>
+		<nd ref="248134904"/>
+		<nd ref="248134903"/>
+		<nd ref="248134902"/>
+		<nd ref="248134901"/>
+		<nd ref="210379230"/>
+		<tag k="bicycle" v="yes"/>
+		<tag k="comment" v="James surveyed the section of this trail east of Oak Grove and combined it with the original Tiger import"/>
+		<tag k="foot" v="yes"/>
+		<tag k="highway" v="cycleway"/>
+		<tag k="horse" v="yes"/>
+		<tag k="name" v="Washington &#38; Old Dominion Trail"/>
+		<tag k="note:old_railway_operator" v="leased from Southern"/>
+		<tag k="old_railway_operator" v="W&#38;OD"/>
+		<tag k="railway" v="abandoned"/>
+		<tag k="source" v="Garmin Forerunner 305"/>
+		<tag k="tiger:cfcc" v="A71"/>
+		<tag k="tiger:name_base" v="Washington &#38; Old Dominion Bike"/>
+		<tag k="tiger:name_type" v="Trl"/>
+		<tag k="tiger:reviewed" v="no"/>
+	</way>
+	<relation id="962188">
+		<member type="way" ref="61973770" role="outer"/>
+		<member type="way" ref="39229243" role="outer"/>
+		<member type="way" ref="39229147" role="outer"/>
+		<tag k="admin_level" v="6"/>
+		<tag k="attribution" v="USGS 2001 County Boundary"/>
+		<tag k="border_type" v="county"/>
+		<tag k="boundary" v="administrative"/>
+		<tag k="name" v="Falls Church City"/>
+		<tag k="nist:fips_code" v="51610"/>
+		<tag k="nist:state_fips" v="51"/>
+		<tag k="type" v="boundary"/>
+	</relation>
+</osm>

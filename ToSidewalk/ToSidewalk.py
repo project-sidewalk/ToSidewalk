@@ -5,12 +5,13 @@ import numpy as np
 from latlng import LatLng
 from nodes import Node, Nodes
 from ways import Sidewalk, Sidewalks, Street
-from utilities import window
+from utilities import window, latlng_offset_size
 from network import OSM, parse
-
+from datetime import datetime
 log.basicConfig(format="", level=log.DEBUG)
 
-dummy_street = Street()
+# dummy_street = Street()
+distance_to_sidewalk = 0.00008
 
 def make_sidewalk_nodes(street, prev_node, curr_node, next_node):
     if prev_node is None:
@@ -169,38 +170,43 @@ def connect_crosswalk_nodes(sidewalk_network, crosswalk_node_ids):
     # crosswalk_node_ids = crosswalk.get_node_ids()[:-1]  # Crosswalk has a redundant node at the end.
 
     for crosswalk_node_id in crosswalk_node_ids[:-1]:
-        # Get the intersection node and two nodes that created the intersection sidewalk node
-        crosswalk_node = sidewalk_network.nodes.get(crosswalk_node_id)
-        intersection_node, adjacent_street_node1, adjacent_street_node2 = crosswalk_node.parents
+        try:
+            # Get the intersection node and two nodes that created the intersection sidewalk node
+            crosswalk_node = sidewalk_network.nodes.get(crosswalk_node_id)
+            intersection_node, adjacent_street_node1, adjacent_street_node2 = crosswalk_node.parents
 
-        # Connect sidewalk nodes created from adjacent_street_node1 and adjacent_street_node2
-        # Get sidewalk nodes that are created from the street node, and
-        # identify which one should be connected to crosswalk_node
-        for adjacent_street_node in [adjacent_street_node1, adjacent_street_node2]:
-            # Skip the dummy node
-            if len(adjacent_street_node.get_way_ids()) == 0:
-                continue
+            # Connect sidewalk nodes created from adjacent_street_node1 and adjacent_street_node2
+            # Get sidewalk nodes that are created from the street node, and
+            # identify which one should be connected to crosswalk_node
+            for adjacent_street_node in [adjacent_street_node1, adjacent_street_node2]:
+                # Skip the dummy node
+                if len(adjacent_street_node.get_way_ids()) == 0:
+                    continue
 
-            # Create a vector from the intersection node to the adjacent street node.
-            # Then also create a vector from the intersection node to the sidewalk node
-            v_adjacent_street_node = intersection_node.vector_to(adjacent_street_node, normalize=True)
-            shared_street_id = intersection_node.get_shared_way_ids(adjacent_street_node)[0]
-            sidewalk_node_1_from_intersection, sidewalk_node_2_from_intersection = intersection_node.get_sidewalk_nodes(shared_street_id)
-            v_sidewalk_node_1_from_intersection = intersection_node.vector_to(sidewalk_node_1_from_intersection, normalize=True)
+                # Create a vector from the intersection node to the adjacent street node.
+                # Then also create a vector from the intersection node to the sidewalk node
+                v_adjacent_street_node = intersection_node.vector_to(adjacent_street_node, normalize=True)
+                shared_street_id = intersection_node.get_shared_way_ids(adjacent_street_node)[0]
+                # TODO: Bug: sometimes both sidewalk nodes are empty causing error.
+                sidewalk_node_1_from_intersection, sidewalk_node_2_from_intersection = intersection_node.get_sidewalk_nodes(shared_street_id)
+                v_sidewalk_node_1_from_intersection = intersection_node.vector_to(sidewalk_node_1_from_intersection, normalize=True)
 
-            # Check which one of sidewalk_node_1_from_intersection and sidewalk_node_2_from_intersection are
-            # on the same side of the road with crosswalk_node.
-            # If the sign of the cross product from v_adjacent_street_node to v_crosswalk_node is same as
-            # that of v_adjacent_street_node to v_sidewalk_node_1_from_intersection, then
-            # sidewalk_node_1_from_intersection should be on the same side.
-            # Otherwise, sidewalk_node_2_from_intersection should be on the same side with crosswalk_node.
-            v_crosswalk_node = intersection_node.vector_to(crosswalk_node, normalize=True)
-            if np.cross(v_adjacent_street_node, v_crosswalk_node) * np.cross(v_adjacent_street_node, v_sidewalk_node_1_from_intersection) > 0:
-                node_to_swap = sidewalk_node_1_from_intersection
-            else:
-                node_to_swap = sidewalk_node_2_from_intersection
+                # Check which one of sidewalk_node_1_from_intersection and sidewalk_node_2_from_intersection are
+                # on the same side of the road with crosswalk_node.
+                # If the sign of the cross product from v_adjacent_street_node to v_crosswalk_node is same as
+                # that of v_adjacent_street_node to v_sidewalk_node_1_from_intersection, then
+                # sidewalk_node_1_from_intersection should be on the same side.
+                # Otherwise, sidewalk_node_2_from_intersection should be on the same side with crosswalk_node.
+                v_crosswalk_node = intersection_node.vector_to(crosswalk_node, normalize=True)
+                if np.cross(v_adjacent_street_node, v_crosswalk_node) * np.cross(v_adjacent_street_node, v_sidewalk_node_1_from_intersection) > 0:
+                    node_to_swap = sidewalk_node_1_from_intersection
+                else:
+                    node_to_swap = sidewalk_node_2_from_intersection
 
-            sidewalk_network.swap_nodes(node_to_swap.id, crosswalk_node.id)
+                sidewalk_network.swap_nodes(node_to_swap.id, crosswalk_node.id)
+        except ValueError:
+            log.exception("Error while connecting crosswalk nodes, so skipping...")
+            continue
     return
 
 def make_crosswalks(street_network, sidewalk_network):
@@ -215,49 +221,63 @@ def make_crosswalks(street_network, sidewalk_network):
 
     # Create sidewalk nodes for each intersection node and overwrite the adjacency information
     for intersection_node in intersection_nodes:
-        adj_street_nodes = street_network.get_adjacent_nodes(intersection_node)
-        adj_street_nodes = sort_nodes(intersection_node, adj_street_nodes)
-        v_curr = intersection_node.vector()
+        try:
+            adj_street_nodes = street_network.get_adjacent_nodes(intersection_node)
+            adj_street_nodes = sort_nodes(intersection_node, adj_street_nodes)
+            v_curr = intersection_node.vector()
 
-        if len(adj_street_nodes) == 3:
-            # Take care of the case where len(adj_nodes) == 3.
-            # Identify the largest angle that are formed by three segments
-            # Make a dummy node between two vectors that form the largest angle
-            # Using the four nodes (3 original nodes and a dummy node), create crosswalk nodes
-            vectors = [intersection_node.vector_to(adj_street_node, normalize=True) for adj_street_node in adj_street_nodes]
-            angles = [math.acos(np.dot(vectors[i - 1], vectors[i])) for i in range(3)]
+            if len(adj_street_nodes) == 3:
+                # Take care of the case where len(adj_nodes) == 3.
+                # Identify the largest angle that are formed by three segments
+                # Make a dummy node between two vectors that form the largest angle
+                # Using the four nodes (3 original nodes and a dummy node), create crosswalk nodes
+                vectors = [intersection_node.vector_to(adj_street_node, normalize=True) for adj_street_node in adj_street_nodes]
+                try:
+                    angles = [math.acos(np.dot(vectors[i - 1], vectors[i])) for i in range(3)]  # Todo. Math domain errors #9
+                except ValueError:
+                    print "Debug"
 
-            idx = np.argmax(angles)
-            vec_idx = (idx + 1) % 3
-            dummy_vector = - vectors[vec_idx] * dummy_street.distance_to_sidewalk
-            dummy_coordinate_vector = v_curr + dummy_vector
-            dummy_node = Node(None, dummy_coordinate_vector[0], dummy_coordinate_vector[1])
-            adj_street_nodes.insert(idx, dummy_node)
+                idx = np.argmax(angles)
+                vec_idx = (idx + 1) % 3
+                dummy_vector = - vectors[vec_idx] * distance_to_sidewalk
+                inverse_vec = - vectors[vec_idx]
+                # dummy_vector = inverse_vec * latlng_offset_size(vectors[vec_idx][1], vectors[vec_idx][0],
+                #                                                 vector=inverse_vec,
+                #                                                 distance=distance_to_sidewalk)
+                dummy_coordinate_vector = v_curr + dummy_vector
+                dummy_node = Node(None, dummy_coordinate_vector[0], dummy_coordinate_vector[1])
+                adj_street_nodes.insert(idx, dummy_node)
 
-        # Create crosswalk nodes and add a cross walk to the data structure
-        crosswalk_nodes = make_crosswalk_nodes(intersection_node, adj_street_nodes)
-        crosswalk_node_ids = [node.id for node in crosswalk_nodes]
-        crosswalk_node_ids.append(crosswalk_node_ids[0])
-        # crosswalk = Sidewalk(None, crosswalk_node_ids, "crosswalk")
+            # Create crosswalk nodes and add a cross walk to the data structure
+            try:
+                crosswalk_nodes = make_crosswalk_nodes(intersection_node, adj_street_nodes)
+            except ValueError:
+                print "Debug"
+            crosswalk_node_ids = [node.id for node in crosswalk_nodes]
+            crosswalk_node_ids.append(crosswalk_node_ids[0])
+            # crosswalk = Sidewalk(None, crosswalk_node_ids, "crosswalk")
 
-        # Add nodes to the network
-        for crosswalk_node in crosswalk_nodes:
-            sidewalk_network.add_node(crosswalk_node)
-            sidewalk_network.nodes.crosswalk_node_ids.append(crosswalk_node.id)
+            # Add nodes to the network
+            for crosswalk_node in crosswalk_nodes:
+                sidewalk_network.add_node(crosswalk_node)
+                sidewalk_network.nodes.crosswalk_node_ids.append(crosswalk_node.id)
 
-        # Add crosswalks to the network
-        crosswalk_node_id_pairs = window(crosswalk_node_ids, 2)
-        for node_id_pair in crosswalk_node_id_pairs:
-            n1 = sidewalk_network.nodes.get(node_id_pair[0])
-            n2 = sidewalk_network.nodes.get(node_id_pair[1])
-            if len(n1.get_way_ids()) == 1 and len(n2.get_way_ids()) == 1:
-                crosswalk = Sidewalk(None, node_id_pair, "footway")
-            else:
-                crosswalk = Sidewalk(None, node_id_pair, "crosswalk")
-            sidewalk_network.add_way(crosswalk)
+            # Add crosswalks to the network
+            crosswalk_node_id_pairs = window(crosswalk_node_ids, 2)
+            for node_id_pair in crosswalk_node_id_pairs:
+                n1 = sidewalk_network.nodes.get(node_id_pair[0])
+                n2 = sidewalk_network.nodes.get(node_id_pair[1])
+                if len(n1.get_way_ids()) == 1 and len(n2.get_way_ids()) == 1:
+                    crosswalk = Sidewalk(None, list(node_id_pair), "footway")
+                else:
+                    crosswalk = Sidewalk(None, list(node_id_pair), "crosswalk")
+                sidewalk_network.add_way(crosswalk)
 
-        # Connect the crosswalk nodes with correct sidewalk nodes
-        connect_crosswalk_nodes(sidewalk_network, crosswalk_node_ids)
+            # Connect the crosswalk nodes with correct sidewalk nodes
+            connect_crosswalk_nodes(sidewalk_network, crosswalk_node_ids)
+        except ValueError:
+            log.exception("ValueError in make_sidewalks, so skipping...")
+            continue
     return
 
 
@@ -303,10 +323,23 @@ def main(street_network):
     return sidewalk_network
 
 if __name__ == "__main__":
+    # filename = "../resources/SmallMap_03.osm"
+    filename = "../resources/SmallMap_04.osm"
+    # filename = "../resources/ParallelLanes_03.osm"
+    # filename = "../resources/tests/out2340_3134.pbfr"
+    street_network = parse(filename)
+    # street_network.parse_intersections()
+    street_network.preprocess()
+
+    # street_network.merge_parallel_street_segments2()
+    print street_network.export()
+
+    """
     # filename = "../resources/SimpleWay_01.osm"
     # filename = "../resources/Simple4WayIntersection_01.osm"
     filename = "../resources/SmallMap_01.osm"
     filename = "../resources/SmallMap_02.osm"
+
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/MapPair_B_01.osm"
     # filename = "../resources/SegmentedStreet_01.osm"
@@ -315,26 +348,49 @@ if __name__ == "__main__":
     #filename = "../resources/MapPair_B_01.osm"
     # filename = "../resources/SegmentedStreet_01.osm"
     #filename = "../resources/ParallelLanes_03.osm"
+    #filename = "../resources/SmallMap_04.osm"
+    files = []
+    #files.append("../resources/tests/out2339_3133.pbfr")
+    #files.append("../resources/tests/out2339_3134.pbfr")
+    #files.append("../resources/tests/out2339_3135.pbfr")
+    #files.append("../resources/tests/out2340_3133.pbfr")
+    files.append("../resources/tests/out2340_3134.pbfr")  # Causes sidewalk network join error
+    #files.append("../resources/tests/out2340_3135.pbfr")
+    #files.append("../resources/tests/out2341_3132.pbfr")
+    # files.append("../resources/tests/out2341_3133.pbfr")  # Causes error
+    # files.append("../resources/tests/out2341_3134.pbfr")  # Causes error
+    #files.append("../resources/tests/out2341_3135.pbfr")
+    #files.append("../resources/tests/out2342_3133.pbfr")  # Causes error
+    # files.append("../resources/tests/out2342_3134.pbfr")  # Causes math domain error
+    #files.append("../resources/tests/out2342_3135.pbfr")
+    #files.append("../resources/tests/out2343_3133.pbfr")
+    #files.append("../resources/tests/out2343_3134.pbfr")
+    #files.append("../resources/tests/out2343_3135.pbfr")
+    #files.append("../resources/tests/out2343_3136.pbfr")
+    #files.append("../resources/tests/out2344_3133.pbfr")
+    #files.append("../resources/tests/out2344_3134.pbfr")
+    #files.append("../resources/tests/wilson.osm")  # Causes error
+    #files.append("../resources/tests/jefferson.osm")  # Causes error
+    street_networks = []
+    for filename in files:
+        street_networks.append(parse(filename))
+    for street_network in street_networks:
+        street_network.preprocess()
+        print("Beginning to parse intersections")
+        street_network.parse_intersections()
+        print("Finished parsing intersections")
+    print("Beginning to merge sidewalk networks")
+    sidewalk_networks = []
+    print("1")
+    for street_network in street_networks:
+        sidewalk_networks.append(main(street_network))
+    sidewalk_network_main = sidewalk_networks[0]
+    print("2")
+    for sidewalk_network in sidewalk_networks[1:]:
+        sidewalk_network_main = merge_sidewalks(sidewalk_network_main, sidewalk_network)
+    print("3")
+    geojson = sidewalk_network_main.export(format="geojson")
 
-    # filename = "../resources/SmallMap_04.osm"
-    #filename = "../resources/benning.osm"
-
-    #filename = "../resources/MapPair_A_01.osm"
-    #filename2 = "../resources/MapPair_B_01.osm"
-
-    street_network1 = parse(filename)
-    street_network1.preprocess()
-    street_network1.parse_intersections()
-
-    #street_network2 = parse(filename2)
-    #street_network2.preprocess()
-    #street_network2.parse_intersections()
-
-    sidewalk_network1 = main(street_network1)
-    geojson = sidewalk_network1.export(format="geojson")
-    #sidewalk_network2 = main(street_network2)
-
-    #merged_sidewalk_network = merge_sidewalks(sidewalk_network1, sidewalk_network2)
-    #geojson = merged_sidewalk_network.export(format='geojson')
-
-    print geojson
+    f = open('output.txt','w')
+    print >>f, geojson
+    """
