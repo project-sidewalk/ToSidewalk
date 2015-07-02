@@ -1420,6 +1420,7 @@ def parse(filename):
         bounds_elem = tree.find(".//bounds")
         bounds = [bounds_elem.get("minlat"), bounds_elem.get("minlon"), bounds_elem.get("maxlat"), bounds_elem.get("maxlon")]
 
+    log.debug("Start parsing the file: %s" % filename)
     # Parse nodes and ways. Only read the ways that have the tags specified in valid_highways
     streets = Streets()
     street_nodes = Nodes()
