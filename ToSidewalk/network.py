@@ -44,6 +44,7 @@ class Network(object):
     def add_node(self, node):
         """
         Add a node to this network
+
         :param node: A Node object to add
         :return:
         """
@@ -52,17 +53,17 @@ class Network(object):
     def add_nodes(self, nodes):
         """
         Add a list of nodes to this network
-        :param nodes:
-        :return:
+
+        :param nodes: A list of Node objects
         """
         for node in nodes:
             self.add_node(node)
 
     def add_way(self, way):
         """
-        Add a way to this network
+        Add a Way object into this network
+
         :param way: A Way object to add
-        :return:
         """
         self.ways.add(way)
         for nid in way.nids:
@@ -72,9 +73,9 @@ class Network(object):
 
     def add_ways(self, ways):
         """
-        Add a list of ways to this network
-        :param ways:
-        :return:
+        Add a list of Way objects to this network
+
+        :param ways: A list of way objects
         """
         for way in ways:
             self.add_way(way)
@@ -82,6 +83,7 @@ class Network(object):
     def create_node(self, node_id, lat, lng):
         """
         Create a new node and add it to the network
+
         :param node_id: A node id
         :param lat: Latitude
         :param lng: Longitude
@@ -94,6 +96,7 @@ class Network(object):
     def create_street(self, street_id, nids, type=None):
         """
         Create a new street and add it to the network
+
         :param street_id: A street id
         :param nids: A list of node ids
         :param type: A street type
@@ -106,6 +109,7 @@ class Network(object):
     def get_adjacent_nodes(self, node):
         """
         Get adjacent nodes for the passed node
+
         :param node: A node object
         :return: A list of Node objects that are adjacent to the passed Node object
         """
@@ -132,6 +136,7 @@ class Network(object):
     def get_node(self, node_id):
         """
         Get a Node object
+
         :param node_id: A node id
         :return: A Node object
         """
@@ -140,6 +145,7 @@ class Network(object):
     def get_way(self, way_id):
         """
         Get a Way object
+
         :param way_id: A way id
         :return: A Way object
         """
@@ -148,7 +154,8 @@ class Network(object):
     def get_ways(self):
         """
         Get all the way objects
-        :return:
+
+        :return: A list of all the ways in the network
         """
         return self.ways.get_list()
 
@@ -163,6 +170,7 @@ class Network(object):
     def remove_node(self, nid):
         """
         Remove a node from the network.
+
         :param nid: A node id
         """
         node = self.nodes.get(nid)
@@ -174,6 +182,7 @@ class Network(object):
     def remove_way(self, way_id):
         """
         Remove a way object from this network
+
         :param way_id: A way id
         :return:
         """
@@ -195,6 +204,7 @@ class Network(object):
         """
         Join two ways together to form a single way. Intended for use when a single long street is divided
         into multiple ways, which can cause issues with merging.
+
         :param way_id_1: ID of first way to merge. Must be passed as a string.
         :param way_id_2: ID of second way to merge. Must be passed as a string.
         :return:
@@ -220,6 +230,7 @@ class Network(object):
     def swap_nodes(self, nid_from, nid_to):
         """
         Swap the node in all the ways
+
         :param nid_from:
         :param nid_to:
         :return:
@@ -238,6 +249,7 @@ class Network(object):
     def vector(self, nid_from, nid_to, normalize=False):
         """
         Get a vector from one node to another
+
         :param nid_from: A source node id
         :param nid_to: A target node id
         :return: A vector (2D np.array)
@@ -252,6 +264,7 @@ class OSM(Network):
     def create_network(type="street-network", bounding_box=None):
         """
         Create a network
+
         :param type: Network type
         :param bounding_box: A bounding box
         :return: A Network object
@@ -1464,7 +1477,7 @@ if __name__ == "__main__":
     # filename = "../resources/SegmentedStreet_01.osm"
     filename = "../resources/ParallelLanes_01.osm"
     print("Beginning parse..." + str(datetime.now()))
-    
+
     street_network = parse(filename)
     print("Parse finished, beginning preprocess..." + str(datetime.now()))
     street_network.preprocess()
@@ -1475,4 +1488,3 @@ if __name__ == "__main__":
     geojson = street_network.export(format='geojson')
     print("Export finished" + str(datetime.now()))
     #print geojson
-
