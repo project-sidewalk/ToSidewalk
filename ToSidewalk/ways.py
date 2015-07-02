@@ -20,6 +20,9 @@ class Way(object):
 
         assert len(self.nids) > 1
 
+    def __eq__(self, other):
+        return set(other.nids) == set(self.nids)
+
     def belongs_to(self):
         """
         Returns a parent Ways object

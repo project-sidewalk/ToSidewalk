@@ -177,21 +177,18 @@ class Network(object):
         :param way_id: A way id
         :return:
         """
-        way = self.ways.get(way_id)
+        way = self.get_way(way_id)
         if way:
             for nid in way.get_node_ids():
-                try:
-                    node = self.nodes.get(nid)
+
+                node = self.get_node(nid)
+                if node:
                     node.remove_way_id(way_id)
                     way_ids = node.get_way_ids()
                     # Delete the node if it is no longer associated with any ways
                     if len(way_ids) == 0:
                         self.remove_node(nid)
-                    # if len(way_ids) == 0:
-                    #     self.nodes.remove(nid)
-                except AttributeError:
-                    assert node is None
-                    log.exception("Node does not exist. nid=%s" % nid)
+
             self.ways.remove(way_id)
 
     def join_ways(self, way_id_1, way_id_2):
@@ -1106,40 +1103,65 @@ class OSM(Network):
             self.join_connected_ways(segments_to_merge)
 
     def merge_parallel_street_segments3(self, threshold=0.5):
-        streets = self.ways.get_list()
-        for street1 in streets:
-            overlap_list = []  # store tuples of (index, area_overlap pair)
-            for street2 in streets:
-                if street1 == street2:
-                    continue
+        """
+        My freaking third attempt to merge parallel segemnts.
+        :param threshold:
+        :return:
+        """
+        streets = self.get_ways()
+        while True:
+            streets = sorted(streets, key=lambda x: self.get_node(x.nids[0]).lat)
+            do_break = True
+            for street1 in streets:
+                overlap_list = []  # store tuples of (index, area_overlap pair)
+                for street2 in streets:
+                    if street1 == street2:
+                        continue
 
-                # If street1 and street2 overlaps, calculate the overlap value (divided by poly area)
-                # and store it into overlap list
-                if self.parallel(street1, street2) and not street1.on_same_street(street2):
-                    street1_nodes = street1.get_nodes()
-                    street2_nodes = street2.get_nodes()
-                    node1_1, node1_2 = street1_nodes[0], street1_nodes[-1]
-                    node2_1, node2_2 = street2_nodes[0], street2_nodes[-1]
-                    poly1 = self.nodes.create_polygon(node1_1, node1_2)
-                    poly2 = self.nodes.create_polygon(node2_1, node2_2)
-                    area_intersection = poly1.intersection(poly2).area
-                    my_area = max(area_intersection / poly1.area, area_intersection / poly2.area)
-                    overlap_list.append((my_area, street2))
+                    # If street1 and street2 overlaps, calculate the overlap value (divided by poly area)
+                    # and store it into overlap list
+                    if self.parallel(street1, street2) and not street1.on_same_street(street2):
+                        street1_nodes = street1.get_nodes()
+                        street2_nodes = street2.get_nodes()
+                        node1_1, node1_2 = street1_nodes[0], street1_nodes[-1]
+                        node2_1, node2_2 = street2_nodes[0], street2_nodes[-1]
+                        poly1 = self.nodes.create_polygon(node1_1, node1_2)
+                        poly2 = self.nodes.create_polygon(node2_1, node2_2)
+                        area_intersection = poly1.intersection(poly2).area
+                        my_area = max(area_intersection / poly1.area, area_intersection / poly2.area)
+                        overlap_list.append((my_area, street2))
 
-            # Merge the streets that have the largest overlap (that has overlap over 0.5)
-            # and remove unnecessary streets
-            overlap_list.sort(key=lambda x: - x[0])
-            if overlap_list and overlap_list[0][0] > threshold:
-                nodes = self.merge_streets(street1, overlap_list[0][1])
-                self.add_nodes(nodes)
-                new_street = self.create_street(None, [node.id for node in nodes])
-                streets.remove(street1)
-                streets.remove(overlap_list[0][1])
-                self.remove_way(street1.id)
-                self.remove_way(overlap_list[0][1].id)
-                streets.append(new_street)
+                # Merge the streets that have the largest overlap (that has overlap over 0.5)
+                # and remove unnecessary streets
+                overlap_list.sort(key=lambda x: - x[0])
+                if overlap_list and overlap_list[0][0] > threshold:
+                    street2 = overlap_list[0][1]
+                    merged_nodes_list = self.merge_streets(street1, street2)
 
-                print overlap_list
+                    flattened = []
+                    for nodes in merged_nodes_list:
+                        flattened += nodes
+                    flattened = list(set(flattened))
+                    self.add_nodes(flattened)
+
+                    new_streets = []
+                    for nodes in merged_nodes_list:
+                        print [node.id for node in nodes]
+                        new_node_ids = [node.id for node in nodes]
+                        new_street = self.create_street(None, new_node_ids)
+                        new_streets.append(new_street)
+
+                    streets.remove(street1)
+                    streets.remove(street2)
+
+                    self.remove_way(street1.id)
+                    self.remove_way(street2.id)
+                    for new_street in new_streets:
+                        streets.append(new_street)
+
+                    do_break = False
+            if do_break:
+                break
 
     def merge_streets(self, street1, street2):
         """
@@ -1152,18 +1174,29 @@ class OSM(Network):
         nodes1 = [self.get_node(nid) for nid in street1.get_node_ids()]
         nodes2 = [self.get_node(nid) for nid in street2.get_node_ids()]
         v1 = nodes1[0].vector_to(nodes1[-1], normalize=True)
-        v2 = nodes2[0].vector_to(nodes1[-1], normalize=True)
+        v2 = nodes2[0].vector_to(nodes2[-1], normalize=True)
+
+        if np.dot(v1, v2) < 0:
+            v2 = - v2
         base_vector = v1 + v2
         base_vector /= np.linalg.norm(base_vector)
 
         # Create a node that serves as an origin by taking the average (lat, lng) of all the nodes.
-        lat_origin = 0
-        lng_origin = 0
-        for node in nodes1 + nodes2:
-            lat_origin += node.lat
-            lng_origin += node.lng
-        lat_origin /= len(nodes1 + nodes2)
-        lng_origin /= len(nodes1 + nodes2)
+        lat_origin1, lng_origin1, lat_origin2, lng_origin2 = 0, 0, 0, 0
+        for node in nodes1:
+            lat_origin1 += node.lat
+            lng_origin1 += node.lng
+        lat_origin1 /= len(nodes1)
+        lng_origin1 /= len(nodes1)
+        for node in nodes2:
+            lat_origin2 += node.lat
+            lng_origin2 += node.lng
+        lat_origin2 /= len(nodes2)
+        lng_origin2 /= len(nodes2)
+
+        lat_origin = (lat_origin1 + lat_origin2) / 2
+        lng_origin = (lng_origin1 + lng_origin2) / 2
+
         origin = Node(None, lat_origin, lng_origin)
 
         # Create a set of new nodes
@@ -1172,7 +1205,8 @@ class OSM(Network):
             vec = origin.vector_to(node)
             d = np.dot(base_vector, vec)
             lat_new, lng_new = origin.vector() + d * base_vector
-            node_new = Node(None, lat_new, lng_new)
+            node_new = Node(node.id, lat_new, lng_new)
+            node_new.made_from.append(node)
             new_nodes.append(node_new)
 
         def cmp_with_projection(n1, n2):
@@ -1186,7 +1220,20 @@ class OSM(Network):
                 return 0
 
         new_nodes = sorted(new_nodes, cmp=cmp_with_projection)
-        return new_nodes
+        new_nids = [node.id for node in new_nodes]
+        indices = [new_nids.index(nid) for nid in [street1.nids[0], street1.nids[-1], street2.nids[0], street2.nids[-1]]]
+        indices = sorted(list(set(indices)))
+
+        ret = []
+        if len(indices) == 4:
+            ret.append(new_nodes[:indices[1] + 1])
+            ret.append(new_nodes[indices[1]:indices[2] + 1])
+            ret.append(new_nodes[indices[2]:])
+        else:
+            ret.append(new_nodes[:indices[1] + 1])
+            ret.append(new_nodes[indices[1]:])
+
+        return ret
 
     def parallel(self, way1, way2, threshold=10.):
         """
@@ -1203,6 +1250,9 @@ class OSM(Network):
         node1_2 = self.get_node(way1.nids[-1])
         node2_1 = self.get_node(way2.nids[0])
         node2_2 = self.get_node(way2.nids[-1])
+
+        if node1_1 is None or node1_2 is None or node2_1 is None or node2_2 is None:
+            return False
 
         # Check if the way is cyclic
         if node1_1 == node1_2:
@@ -1345,7 +1395,10 @@ class OSM(Network):
             node.min_intersection_cardinality = 3
         for street in self.ways.get_list():
             for nid in street.nids:
-                self.nodes.get(nid).append_way(street.id)
+                node = self.nodes.get(nid)
+
+                if node:
+                    node.append_way(street.id)
 
 
 def parse(filename):

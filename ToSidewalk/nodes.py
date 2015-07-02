@@ -21,8 +21,10 @@ class Node(LatLng):
         self.sidewalk_nodes = {}
         self.min_intersection_cardinality = 2
         self.crosswalk_distance = 0.00010
-        self.parent_nodes = None
         self.confirmed = False
+        self.made_from = []  # A list of nodes that this node is made from
+
+        self._parent_nodes = None  # Parent Nodes data structure
 
         assert type(self.id) is StringType
         return
@@ -48,15 +50,15 @@ class Node(LatLng):
             self.way_ids.append(wid)
 
     def belongs_to(self):
-        return self.parent_nodes
+        return self._parent_nodes
 
     def export(self):
-        if self.parent_nodes and self.parent_nodes.parent_network:
+        if self._parent_nodes and self._parent_nodes.parent_network:
             geojson = {}
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
             for way_id in self.way_ids:
-                way = self.parent_nodes.parent_network.ways.get(way_id)
+                way = self._parent_nodes.parent_network.ways.get(way_id)
                 geojson['features'].append(way.get_geojson_features())
             return json.dumps(geojson)
 
@@ -65,8 +67,7 @@ class Node(LatLng):
         A list of Node objects that are adjacent to this Node object (self)
         :return: A list of nodes
         """
-        parent_nodes = self.belongs_to()
-        network = parent_nodes.belongs_to()
+        network = _parent_nodes.belongs_to()
         return network.get_adjacent_nodes(self)
 
     def get_way_ids(self):
@@ -122,7 +123,7 @@ class Nodes(object):
     def __init__(self):
         self.nodes = {}
         self.crosswalk_node_ids = []
-        self.parent_network = None
+        self._parent_network = None
         return
 
     def add(self, node):
@@ -130,7 +131,7 @@ class Nodes(object):
         Add a Node object to self
         :param node: A Node object
         """
-        node.parent_nodes = self
+        node._parent_nodes = self
         self.nodes[node.id] = node
 
     def belongs_to(self):
@@ -138,7 +139,7 @@ class Nodes(object):
         Returns a parent network
         :return: A parent Network object
         """
-        return self.parent_network
+        return self._parent_network
 
     def clean(self):
         """
