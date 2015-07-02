@@ -1,7 +1,10 @@
 import logging as log
 import math
 import numpy as np
-
+import os
+import gzip
+import glob
+import shutil
 from latlng import LatLng
 from nodes import Node, Nodes
 from ways import Sidewalk, Sidewalks, Street
@@ -280,14 +283,18 @@ def make_crosswalks(street_network, sidewalk_network):
             continue
     return
 
-
+def split_large_osm_file(filename):
+    command = "java -Xmx4000M -jar splitter.jar --output=xml --output-dir=data --max-nodes=15000 " + filename + " > splitter.log"
+    os.system(command)
 def merge_sidewalks(sidewalk_network1, sidewalk_network2):
     """Returns a merged sidewalk network
 
     Takes two sidewalk networks and merges them without duplicating sidewalk data"""
+
     for node in sidewalk_network1.nodes.get_list():
         node.confirmed = True
 
+    '''
     # add new nodes from sidewalk_network2 to sidewalk_network1
     for sidewalk_node in sidewalk_network2.nodes.get_list():
         in_other = False
@@ -296,10 +303,22 @@ def merge_sidewalks(sidewalk_network1, sidewalk_network2):
             if sidewalk_node.location() == other_sidewalk_node.location():
                 in_other = True
                 same_node = other_sidewalk_node
-        if not in_other:
+        if not in_other: # If street network 2 contains the node but street network 1 does not
+            sidewalk_network1.add_node(sidewalk_node) # Add node from street network 2 to street network 1
+        else: # If both networks contain the node
+            sidewalk_network2.nodes.update(sidewalk_node.id, same_node)
+    '''
+    # add new nodes from sidewalk_network2 to sidewalk_network1
+
+    network1_dict = {}
+    for sidewalk_node in sidewalk_network1.nodes.get_list():
+        network1_dict[sidewalk_node.location] = sidewalk_node
+
+    for sidewalk_node in sidewalk_network2.nodes.get_list():
+        if sidewalk_node.location not in network1_dict:
             sidewalk_network1.add_node(sidewalk_node)
         else:
-            sidewalk_network2.nodes.update(sidewalk_node.id, same_node)
+            sidewalk_network2.nodes.update(sidewalk_node.id, network1_dict[sidewalk_node.location])
 
     # add new ways from sidewalk_network2 to sidewalk_network1
     for way in sidewalk_network2.ways.get_list():
@@ -314,6 +333,7 @@ def merge_sidewalks(sidewalk_network1, sidewalk_network2):
                 has_confirmed_parents = True
         if not has_confirmed_parents:
             sidewalk_network1.add_way(way)
+
     return sidewalk_network1
 
 def main(street_network):
@@ -335,7 +355,15 @@ if __name__ == "__main__":
     # street_network.merge_parallel_street_segments2()
     print sidewalk_network.export()
 
-    """
+
+    #filename = "../resources/SmallMap_04.osm"
+    # filename = "../resources/ParallelLanes_03.osm"
+    # filename = "../resources/tests/out2340_3134.pbfr"
+
+
+
+
+
     # filename = "../resources/SimpleWay_01.osm"
     # filename = "../resources/Simple4WayIntersection_01.osm"
     filename = "../resources/SmallMap_01.osm"
@@ -349,42 +377,58 @@ if __name__ == "__main__":
     #filename = "../resources/MapPair_B_01.osm"
     # filename = "../resources/SegmentedStreet_01.osm"
     #filename = "../resources/ParallelLanes_03.osm"
+
     #filename = "../resources/SmallMap_04.osm"
-    files = []
-    #files.append("../resources/tests/out2339_3133.pbfr")
-    #files.append("../resources/tests/out2339_3134.pbfr")
-    #files.append("../resources/tests/out2339_3135.pbfr")
-    #files.append("../resources/tests/out2340_3133.pbfr")
-    files.append("../resources/tests/out2340_3134.pbfr")  # Causes sidewalk network join error
-    #files.append("../resources/tests/out2340_3135.pbfr")
-    #files.append("../resources/tests/out2341_3132.pbfr")
-    # files.append("../resources/tests/out2341_3133.pbfr")  # Causes error
-    # files.append("../resources/tests/out2341_3134.pbfr")  # Causes error
-    #files.append("../resources/tests/out2341_3135.pbfr")
-    #files.append("../resources/tests/out2342_3133.pbfr")  # Causes error
-    # files.append("../resources/tests/out2342_3134.pbfr")  # Causes math domain error
-    #files.append("../resources/tests/out2342_3135.pbfr")
-    #files.append("../resources/tests/out2343_3133.pbfr")
-    #files.append("../resources/tests/out2343_3134.pbfr")
-    #files.append("../resources/tests/out2343_3135.pbfr")
-    #files.append("../resources/tests/out2343_3136.pbfr")
-    #files.append("../resources/tests/out2344_3133.pbfr")
-    #files.append("../resources/tests/out2344_3134.pbfr")
-    #files.append("../resources/tests/wilson.osm")  # Causes error
-    #files.append("../resources/tests/jefferson.osm")  # Causes error
+
+
+    # Clear the data directory before beginning
+    shutil.rmtree('data/')
+    filename = "../resources/smallmapv2.osm"
+
+    split_large_osm_file(filename)
+
+    files = glob.glob("data/*.gz")
+    log.debug("Working with " + str(files))
+    # Decompress each GZ file
+    for filename in files:
+        f = gzip.open(filename, 'rb')
+        file_content = f.read()
+        log.debug("writing to "+filename+".osm")
+        outfile = open(filename+".osm", "w")
+        outfile.write(file_content)
+        outfile.close()
+    files = glob.glob("data/*.osm")
+
     street_networks = []
     for filename in files:
-        street_networks.append(parse(filename))
+        log.debug("Parsing " + filename)
+        try:
+            new_street_network = parse(filename)
+            street_networks.append(new_street_network)
+        except:
+            log.exception("Failed to create this street network, skipping...")
+            continue
+
+    print("Preprocessing street networks...")
     for street_network in street_networks:
-        street_network.preprocess()
-        print("Beginning to parse intersections")
+        try:
+            street_network.preprocess()
+            print(street_network.export())
+        except:
+            log.debug("Error preprocessing this street network. Skipping.")
+            continue
+
         street_network.parse_intersections()
-        print("Finished parsing intersections")
-    print("Beginning to merge sidewalk networks")
+
+    print("Merging sidewalk networks...")
     sidewalk_networks = []
     print("1")
     for street_network in street_networks:
-        sidewalk_networks.append(main(street_network))
+        try:
+            sidewalk_networks.append(main(street_network))
+        except:
+            log.exception("Uh oh, creating this sidewalk network failed. Skipping...")
+            continue
     sidewalk_network_main = sidewalk_networks[0]
     print("2")
     for sidewalk_network in sidewalk_networks[1:]:
@@ -394,4 +438,3 @@ if __name__ == "__main__":
 
     f = open('output.txt','w')
     print >>f, geojson
-    """
