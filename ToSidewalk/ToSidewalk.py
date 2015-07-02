@@ -290,10 +290,10 @@ def merge_sidewalks(sidewalk_network1, sidewalk_network2):
     """Returns a merged sidewalk network
 
     Takes two sidewalk networks and merges them without duplicating sidewalk data"""
-    log.debug("Merge 1")
+
     for node in sidewalk_network1.nodes.get_list():
         node.confirmed = True
-    log.debug("Merge 2")
+
     '''
     # add new nodes from sidewalk_network2 to sidewalk_network1
     for sidewalk_node in sidewalk_network2.nodes.get_list():
@@ -309,17 +309,17 @@ def merge_sidewalks(sidewalk_network1, sidewalk_network2):
             sidewalk_network2.nodes.update(sidewalk_node.id, same_node)
     '''
     # add new nodes from sidewalk_network2 to sidewalk_network1
-    log.debug("Merge 3")
+
     network1_dict = {}
     for sidewalk_node in sidewalk_network1.nodes.get_list():
         network1_dict[sidewalk_node.location] = sidewalk_node
-    log.debug("Merge 4")
+
     for sidewalk_node in sidewalk_network2.nodes.get_list():
         if sidewalk_node.location not in network1_dict:
             sidewalk_network1.add_node(sidewalk_node)
         else:
             sidewalk_network2.nodes.update(sidewalk_node.id, network1_dict[sidewalk_node.location])
-    log.debug("Merge 5")
+
     # add new ways from sidewalk_network2 to sidewalk_network1
     for way in sidewalk_network2.ways.get_list():
         # ensure all ways have correct nids, if incorrect update to correct nid from network1
@@ -333,7 +333,7 @@ def merge_sidewalks(sidewalk_network1, sidewalk_network2):
                 has_confirmed_parents = True
         if not has_confirmed_parents:
             sidewalk_network1.add_way(way)
-    log.debug("Merge 6")
+
     return sidewalk_network1
 
 def main(street_network):
@@ -367,7 +367,7 @@ if __name__ == "__main__":
 
     # Clear the data directory before beginning
     shutil.rmtree('data/')
-    filename = "../resources/dc-whole.osm"
+    filename = "../resources/smallmapv2.osm"
 
     split_large_osm_file(filename)
 
@@ -387,14 +387,17 @@ if __name__ == "__main__":
     for filename in files:
         log.debug("Parsing " + filename)
         try:
-            street_networks.append(parse(filename))
+            new_street_network = parse(filename)
+            street_networks.append(new_street_network)
         except:
-            log.debug("Failed, skipping")
+            log.exception("Failed to create this street network, skipping...")
             continue
+
     print("Preprocessing street networks...")
     for street_network in street_networks:
         try:
             street_network.preprocess()
+            print(street_network.export())
         except:
             log.debug("Error preprocessing this street network. Skipping.")
             continue
@@ -408,7 +411,7 @@ if __name__ == "__main__":
         try:
             sidewalk_networks.append(main(street_network))
         except:
-            log.debug("Uh oh, creating this sidewalk network failed. Skipping...")
+            log.exception("Uh oh, creating this sidewalk network failed. Skipping...")
             continue
     sidewalk_network_main = sidewalk_networks[0]
     print("2")
