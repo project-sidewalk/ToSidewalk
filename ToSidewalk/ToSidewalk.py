@@ -344,18 +344,13 @@ def main(street_network):
 
 if __name__ == "__main__":
     # filename = "../resources/SmallMap_03.osm"
-    filename = "../resources/SmallMap_04.osm"
+    #filename = "../resources/SmallMap_04.osm"
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/tests/out2340_3134.pbfr"
-    '''
-	street_network = parse(filename)
-    # street_network.parse_intersections()
-    street_network.preprocess()
 
-    # street_network.merge_parallel_street_segments2()
-    print street_network.export()
-    '''
     
+    
+
     # filename = "../resources/SimpleWay_01.osm"
     # filename = "../resources/Simple4WayIntersection_01.osm"
     # filename = "../resources/SmallMap_01.osm"
@@ -367,7 +362,8 @@ if __name__ == "__main__":
     #filename = "../resources/MapPair_B_01.osm"
     # filename = "../resources/SegmentedStreet_01.osm"
     #filename = "../resources/ParallelLanes_03.osm"
-    filename = "../resources/SmallMap_04.osm"
+
+    #filename = "../resources/SmallMap_04.osm"
 
     # Clear the data directory before beginning
     shutil.rmtree('data/')
@@ -386,6 +382,7 @@ if __name__ == "__main__":
         outfile.write(file_content)
         outfile.close()
     files = glob.glob("data/*.osm")
+
     street_networks = []
     for filename in files:
         log.debug("Parsing " + filename)
@@ -394,16 +391,17 @@ if __name__ == "__main__":
         except:
             log.debug("Failed, skipping")
             continue
+    print("Preprocessing street networks...")
     for street_network in street_networks:
         try:
             street_network.preprocess()
         except:
             log.debug("Error preprocessing this street network. Skipping.")
             continue
-        print("Beginning to parse intersections")
+        
         street_network.parse_intersections()
-        print("Finished parsing intersections")
-    print("Beginning to merge sidewalk networks")
+        
+    print("Merging sidewalk networks...")
     sidewalk_networks = []
     print("1")
     for street_network in street_networks:
@@ -421,4 +419,4 @@ if __name__ == "__main__":
 
     f = open('output.txt','w')
     print >>f, geojson
-    """
+    
