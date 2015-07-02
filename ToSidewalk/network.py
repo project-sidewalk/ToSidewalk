@@ -1108,6 +1108,7 @@ class OSM(Network):
         :param threshold:
         :return:
         """
+        log.debug("Start merging the streets.")
         streets = self.get_ways()
         while True:
             streets = sorted(streets, key=lambda x: self.get_node(x.nids[0]).lat)
@@ -1115,7 +1116,7 @@ class OSM(Network):
             for street1 in streets:
                 overlap_list = []  # store tuples of (index, area_overlap pair)
                 for street2 in streets:
-                    if street1 == street2:
+                    if street1 == street2 or set(street1.nids) == set(street2.nids):
                         continue
 
                     # If street1 and street2 overlaps, calculate the overlap value (divided by poly area)
@@ -1146,7 +1147,6 @@ class OSM(Network):
 
                     new_streets = []
                     for nodes in merged_nodes_list:
-                        print [node.id for node in nodes]
                         new_node_ids = [node.id for node in nodes]
                         new_street = self.create_street(None, new_node_ids)
                         new_streets.append(new_street)
@@ -1165,7 +1165,7 @@ class OSM(Network):
 
     def merge_streets(self, street1, street2):
         """
-        Merge two streets. You should pass two parallel segments
+        Merge two streets. You should pass two parallel segments.
         :param street1:
         :param street2:
         :return: A new street
@@ -1181,7 +1181,8 @@ class OSM(Network):
         base_vector = v1 + v2
         base_vector /= np.linalg.norm(base_vector)
 
-        # Create a node that serves as an origin by taking the average (lat, lng) of all the nodes.
+        # Create a node that serves as an origin. First take an average coordinate of nodes in each ways.
+        # Then take average of the two average coordinates that I've just calculated.
         lat_origin1, lng_origin1, lat_origin2, lng_origin2 = 0, 0, 0, 0
         for node in nodes1:
             lat_origin1 += node.lat
@@ -1194,14 +1195,13 @@ class OSM(Network):
         lat_origin2 /= len(nodes2)
         lng_origin2 /= len(nodes2)
 
-        lat_origin = (lat_origin1 + lat_origin2) / 2
-        lng_origin = (lng_origin1 + lng_origin2) / 2
-
+        lat_origin, lng_origin = (lat_origin1 + lat_origin2) / 2, (lng_origin1 + lng_origin2) / 2
         origin = Node(None, lat_origin, lng_origin)
 
-        # Create a set of new nodes
+        # Merge two ways. It will find a segment between the two segments that are passed to this method.
+        # Segment the merged nodes into couple of lists of nodes.
         new_nodes = []
-        for node in nodes1 + nodes2:
+        for node in set(nodes1 + nodes2):
             vec = origin.vector_to(node)
             d = np.dot(base_vector, vec)
             lat_new, lng_new = origin.vector() + d * base_vector
@@ -1224,14 +1224,19 @@ class OSM(Network):
         indices = [new_nids.index(nid) for nid in [street1.nids[0], street1.nids[-1], street2.nids[0], street2.nids[-1]]]
         indices = sorted(list(set(indices)))
 
+
+        # Segmenting nodes into couple of sets
         ret = []
         if len(indices) == 4:
             ret.append(new_nodes[:indices[1] + 1])
             ret.append(new_nodes[indices[1]:indices[2] + 1])
             ret.append(new_nodes[indices[2]:])
-        else:
+        elif len(indices) == 3:
             ret.append(new_nodes[:indices[1] + 1])
             ret.append(new_nodes[indices[1]:])
+        else:
+            assert len(indices) == 2
+            ret.append(new_nodes)
 
         return ret
 
