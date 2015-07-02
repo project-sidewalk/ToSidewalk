@@ -330,9 +330,10 @@ if __name__ == "__main__":
     street_network = parse(filename)
     # street_network.parse_intersections()
     street_network.preprocess()
+    sidewalk_network = main(street_network)
 
     # street_network.merge_parallel_street_segments2()
-    print street_network.export()
+    print sidewalk_network.export()
 
     """
     # filename = "../resources/SimpleWay_01.osm"
