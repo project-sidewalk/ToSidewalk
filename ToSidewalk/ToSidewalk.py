@@ -215,7 +215,7 @@ def make_crosswalks(street_network, sidewalk_network):
     :param street_network: Street network object
     :param sidewalk_network: Sidewalk network object
     """
-    
+
     intersection_nodes = street_network.nodes.get_intersection_nodes()
     # intersection_nodes = [street_network.nodes.get(nid) for nid in intersection_node_ids]
 
@@ -337,7 +337,9 @@ if __name__ == "__main__":
     """
     # filename = "../resources/SimpleWay_01.osm"
     # filename = "../resources/Simple4WayIntersection_01.osm"
-    # filename = "../resources/SmallMap_01.osm"
+    filename = "../resources/SmallMap_01.osm"
+    filename = "../resources/SmallMap_02.osm"
+
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/MapPair_B_01.osm"
     # filename = "../resources/SegmentedStreet_01.osm"
