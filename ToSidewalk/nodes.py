@@ -111,7 +111,10 @@ class Node(LatLng):
         :param wid: A way id
         :return: A list of node objects
         """
-        return self.sidewalk_nodes[wid]
+        if wid in self.sidewalk_nodes:
+            return self.sidewalk_nodes[wid]
+        else:
+            return None
 
     def has_sidewalk_nodes(self):
         """ Check if this node has sidewalk nodes
