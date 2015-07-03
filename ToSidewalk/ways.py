@@ -2,6 +2,8 @@ import json
 import math
 import numpy as np
 import itertools
+import logging as log
+
 from shapely.geometry import Polygon, LineString, Point
 from utilities import latlng_offset_size, window
 from types import *
@@ -120,15 +122,37 @@ class Way(object):
         """
         self.nids = [nid for nid in self.nids if nid != nid_to_remove]
 
-    def swap_nodes(self, nid_from, nid_to):
-        """
-        Swap a node that forms the way with another node
+        temp_ways = self.belongs_to()
+        if temp_ways and len(self.nids) < 2:
+            temp_network = temp_ways.belongs_to()
+            if temp_network:
+                temp_network.remove_way(self)
 
-        :param nid_from: A node id
-        :param nid_to: A node id
+    def swap_nodes(self, node_from, node_to):
         """
-        index_from = self.nids.index(nid_from)
-        self.nids[index_from] = nid_to
+        Swap a node that forms the way with another node. The new node inherits previous node's way_ids
+
+        :param nid_from: A node id or a Node object
+        :param nid_to: A node id or a Node object
+        """
+        network = self.belongs_to().belongs_to()
+        if type(node_from) == StringType:
+            node_from = network.get_node(node_from)
+        if type(node_to) == StringType:
+            node_to = network.get_node(node_to)
+
+        try:
+            index_from = self.nids.index(node_from.id)
+            if node_to.id in self.nids:
+                self.remove_node(node_from.id)  # remove node id if node_to.id already exists
+            else:
+                self.nids[index_from] = node_to.id
+        except AttributeError:
+            print node_from, node_to
+            log.debug("Way.swap_nodes(): Debug")
+
+        for way_id in node_from.way_ids:
+            node_to.append_way(way_id)
 
     def angle(self):
         """
@@ -356,6 +380,15 @@ class Ways(object):
         :return: A list of Way objects
         """
         return self.ways.values()
+
+    def has(self, wid):
+        """
+        Checks if the way id exists
+
+        :param wid: A way id
+        :return: Boolean
+        """
+        return wid in self.ways
 
     def remove(self, wid):
         """
