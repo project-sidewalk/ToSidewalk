@@ -80,7 +80,8 @@ class Way(object):
             'user': self.user,
             "stroke-width": 2,
             "stroke-opacity": 1,
-            'stroke': '#e93f3f'
+            'stroke': '#555555', # '#e93f3f',
+            "osm_ways": self._original_ways
         }
         feature['type'] = 'Feature'
         feature['id'] = 'way/%s' % (self.id)

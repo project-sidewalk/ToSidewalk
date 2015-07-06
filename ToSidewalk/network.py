@@ -387,29 +387,7 @@ class OSM(Network):
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
             for way in self.ways.get_list():
-                feature = {}
-                feature['properties'] = {
-                    'type': way.type,
-                    'id': way.id,
-                    'user': way.user,
-                    'stroke': '#555555'
-                }
-                feature['type'] = 'Feature'
-                feature['id'] = 'way/%s' % way.id
-
-                coordinates = []
-                for nid in way.nids:
-                    try:
-                        node = self.nodes.get(nid)
-                        coordinates.append([node.lng, node.lat])
-                    except AttributeError:
-                        assert node is None
-                        log.exception("Node does not exist, nid=%s" % nid)
-
-                feature['geometry'] = {
-                    'type': 'LineString',
-                    'coordinates': coordinates
-                }
+                feature = way.get_geojson_features()
                 geojson['features'].append(feature)
 
             return json.dumps(geojson)
