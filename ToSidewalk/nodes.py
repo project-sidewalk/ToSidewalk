@@ -33,41 +33,26 @@ class Node(LatLng):
         return "Node object, id: " + str(self.id) + ", latlng: " + str(self.location())
 
     def angle_to(self, node):
-        """TBD
-
-        :param node: A node object
-        """
         y_node, x_node = node.location()
         y_self, x_self = self.location()
         return math.atan2(y_node - y_self, x_node - x_self)
 
     def append_sidewalk_node(self, way_id, node):
-        """TBD
-
-        :param way_id: TBD
-        :param ndoe: TBD
-        """
         self.sidewalk_nodes.setdefault(way_id, []).append(node)
 
     def append_way(self, wid):
         """
-        Add a way id to the list that keeps track of
-        which ways are connected to the node
-
-        :param wid: Way id
+        Add a way id to the list that keeps track of which ways are connected to the node
+        :param wid:
         :return:
         """
         if wid not in self.way_ids:
             self.way_ids.append(wid)
 
     def belongs_to(self):
-        """TBD"""
         return self._parent_nodes
 
     def export(self):
-        """
-        Export this node's information in Geojson format.
-        """
         if self._parent_nodes and self._parent_nodes.parent_network:
             geojson = {}
             geojson['type'] = "FeatureCollection"
@@ -79,26 +64,18 @@ class Node(LatLng):
 
     def get_adjacent_nodes(self):
         """
-        Return a list of Node objects that are adjacent to this Node object (self)
-
+        A list of Node objects that are adjacent to this Node object (self)
         :return: A list of nodes
         """
         network = _parent_nodes.belongs_to()
         return network.get_adjacent_nodes(self)
 
     def get_way_ids(self):
-        """ Return a list of way_ids that are connected to this node.
-
-        :return: A list of way ids
-        """
         return self.way_ids
 
     def get_shared_way_ids(self, other):
         """
-        Other could be a Node object or a list of way ids
-
-        :param other: A Node object or a list of way ids
-        :return: A list of way ids that are shared between this node and other
+        Other could be either a list of way ids, or a Node object
         """
         if type(other) == list:
             return list(set(self.way_ids) & set(other))
@@ -106,27 +83,14 @@ class Node(LatLng):
             return list(set(self.way_ids) & set(other.get_way_ids()))
 
     def get_sidewalk_nodes(self, wid):
-        """ Return sidewalk nodes
-
-        :param wid: A way id
-        :return: A list of node objects
-        """
-        if wid in self.sidewalk_nodes:
-            return self.sidewalk_nodes[wid]
-        else:
-            return None
+        return self.sidewalk_nodes[wid]
 
     def has_sidewalk_nodes(self):
-        """ Check if this node has sidewalk nodes
-
-        :return: Boolean
-        """
         return len(self.sidewalk_nodes) > 0
 
     def is_intersection(self):
         """
         Check if this node is an intersection or not
-
         :return: Boolean
         """
         # adj_nodes = self.get_adjacent_nodes()
@@ -136,11 +100,9 @@ class Node(LatLng):
 
     def remove_way_id(self, wid):
         """
-        Remove a way id from the list that keeps track of what ways
-        are connected to this node
-
-        :param wid: A way id
-        :return: return the way id of the deleted Way object
+        Remove a way id from the list that keeps track of what ways are connected to this node
+        :param wid:
+        :return:
         """
         if wid in self.way_ids:
             self.way_ids.remove(wid)
@@ -148,20 +110,9 @@ class Node(LatLng):
         return None
 
     def vector(self):
-        """ Get a Numpy array representation of a latlng coordinate
-
-        :return: A latlng coordinate in a 2-d Numpy array
-        """
         return np.array(self.location())
 
     def vector_to(self, node, normalize=False):
-        """ Get a vector from the latlng coordinate of this node to
-        another node.
-
-        :param node: The target Node object.
-        :param normalize: Boolean.
-        :return: A vector in a 2-d Numpy array
-        """
         vec = np.array(node.location()) - np.array(self.location())
         if normalize and np.linalg.norm(vec) != 0:
             vec /= np.linalg.norm(vec)
@@ -178,7 +129,6 @@ class Nodes(object):
     def add(self, node):
         """
         Add a Node object to self
-
         :param node: A Node object
         """
         node._parent_nodes = self
@@ -187,7 +137,6 @@ class Nodes(object):
     def belongs_to(self):
         """
         Returns a parent network
-
         :return: A parent Network object
         """
         return self._parent_network
@@ -195,6 +144,7 @@ class Nodes(object):
     def clean(self):
         """
         Remove all the nodes from the data structure if they are not connected to any ways
+        :return:
         """
         nodes = self.get_list()
         for node in nodes:
@@ -204,10 +154,9 @@ class Nodes(object):
     def create_polygon(self, node1, node2, r=15.):
         """
         Create a rectangular polygon from two nodes passed
-
-        :param nid1: A node id
-        :param nid2: Another node id
-        :return: A Shapely polygon (rectangle)
+        :param nid1:
+        :param nid2:
+        :return:
         """
         if type(node1) == StringType:
             node1 = self.get(node1)
@@ -229,7 +178,6 @@ class Nodes(object):
     def get(self, nid):
         """
         Get a Node object
-
         :param nid: A node id
         :return: A Node object
         """
@@ -241,7 +189,6 @@ class Nodes(object):
     def get_intersection_nodes(self):
         """
         Get a list of Node objects, in which each node is an intersection node.
-
         :return: A list of Node objects
         """
         return [self.nodes[nid] for nid in self.nodes if self.nodes[nid].is_intersection()]
@@ -249,7 +196,6 @@ class Nodes(object):
     def get_list(self):
         """
         Get a list of node objects
-
         :return: A list of Node objects
         """
         return self.nodes.values()
@@ -258,17 +204,12 @@ class Nodes(object):
         """
         Remove a node from the data structure
         http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
-
-        :param nid: A node id
+        :param nid:
+        :return:
         """
         del self.nodes[nid]
 
     def update(self, nid, new_node):
-        """TBD
-
-        :param nid:
-        :param new_node:
-        """
         self.nodes[nid] = new_node
         return
 

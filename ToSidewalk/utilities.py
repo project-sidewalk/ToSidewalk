@@ -7,7 +7,6 @@ from types import *
 def area(p1, p2, p3):
     """
     Given three points (x1, y1), (x2, y2), (x3, y3), return the area of the triangle that is formed by the three points.
-
     :param p1: Point 1 (e.g., [x1, y1])
     :param p2: Point 2 (e.g., [x2, y2])
     :param p3: Point 3 (e.g., [x3, y3])
@@ -22,7 +21,6 @@ def foot(x1, y1, a, b, c):
     """
     Get a foot M(x2, y2) drawn from a point (x1, y1) to the line ax + by + c = 0
     http://math.stackexchange.com/questions/33868/foot-of-perpendicular-to-line
-
     :param x: x coordinate
     :param y: y coordinate
     :param a:
@@ -38,7 +36,6 @@ def points_to_line(p1, p2):
     """
     Given two points p1 and p2, return a line a*x + b*x + c = 0
     Google "point-line duality"
-
     :param p1: A point (x1, y1)
     :param p2: A point (x2, y2)
     :return: A line a, b, c
@@ -53,7 +50,6 @@ def latlng_offset(lat_origin, lng_origin, **kwargs):
     Given an original coordinate (lat, lng) and displacement (dx, dy) in meters,
     return a new latlng coordinate.
     http://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
-
     :param lat_origin: Original latitude
     :param lng_origin: Original longitude
     :param kwargs: Can take:
@@ -81,7 +77,6 @@ def latlng_offset(lat_origin, lng_origin, **kwargs):
 def latlng_offset_size(lat_origin, **kwargs):
     """
     Given an coordinate (lat, lng) and displacement (dx, dy) in meters, return the size of offset in latlng
-    
     :param lat_origin:
     :param lng_origin:
     :param kwargs:

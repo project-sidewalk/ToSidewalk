@@ -14,10 +14,9 @@ Base = declarative_base()
 class DB(object):
 
     def __init__(self):
-        """Interacting with PostGIS using Python
-        http://gis.stackexchange.com/questions/147240/how-to-efficiently-use-a-postgres-db-with-python
-        http://geoalchemy-2.readthedocs.org/en/latest/orm_tutorial.html
-        """
+        # Interacting with PostGIS using Python
+        # http://gis.stackexchange.com/questions/147240/how-to-efficiently-use-a-postgres-db-with-python
+        # http://geoalchemy-2.readthedocs.org/en/latest/orm_tutorial.html
         with file("../.settings") as f:
             j = json.loads(f.read())
 
@@ -41,8 +40,6 @@ class DB(object):
         self.session = Session()
 
     def example(self):
-        """Example
-        """
         query = self.session.query(WaysTable)
         feature_collection = {
             "type": "FeatureCollection",

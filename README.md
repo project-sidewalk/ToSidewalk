@@ -31,5 +31,4 @@ Example:
 
 ## Contributors
 * Zachary Lawrence (https://github.com/zacharylawrence)
-* Anthony Li (https://github.com/tongning)
 * Kotaro Hara

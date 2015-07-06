@@ -44,7 +44,6 @@ class Network(object):
     def add_node(self, node):
         """
         Add a node to this network
-
         :param node: A Node object to add
         :return:
         """
@@ -53,17 +52,17 @@ class Network(object):
     def add_nodes(self, nodes):
         """
         Add a list of nodes to this network
-
-        :param nodes: A list of Node objects
+        :param nodes:
+        :return:
         """
         for node in nodes:
             self.add_node(node)
 
     def add_way(self, way):
         """
-        Add a Way object into this network
-
+        Add a way to this network
         :param way: A Way object to add
+        :return:
         """
         self.ways.add(way)
         for nid in way.nids:
@@ -73,9 +72,9 @@ class Network(object):
 
     def add_ways(self, ways):
         """
-        Add a list of Way objects to this network
-
-        :param ways: A list of way objects
+        Add a list of ways to this network
+        :param ways:
+        :return:
         """
         for way in ways:
             self.add_way(way)
@@ -83,7 +82,6 @@ class Network(object):
     def create_node(self, node_id, lat, lng):
         """
         Create a new node and add it to the network
-
         :param node_id: A node id
         :param lat: Latitude
         :param lng: Longitude
@@ -96,7 +94,6 @@ class Network(object):
     def create_street(self, street_id, nids, type=None):
         """
         Create a new street and add it to the network
-
         :param street_id: A street id
         :param nids: A list of node ids
         :param type: A street type
@@ -109,7 +106,6 @@ class Network(object):
     def get_adjacent_nodes(self, node):
         """
         Get adjacent nodes for the passed node
-
         :param node: A node object
         :return: A list of Node objects that are adjacent to the passed Node object
         """
@@ -128,30 +124,22 @@ class Network(object):
                     adj_nodes.append(self.nodes.get(way.nids[-2]))
             except AttributeError:
                 log.exception("Way does not exist. way_id=%s" % way_id)
-                continue
+                # continue
+                raise
 
         return list(set(adj_nodes))
 
     def get_node(self, node_id):
         """
         Get a Node object
-
         :param node_id: A node id
         :return: A Node object
         """
         return self.nodes.get(node_id)
 
-    def get_nodes(self):
-        """ Get all the Node objects
-
-        :return: A list of Node objects
-        """
-        return self.nodes.get_list()
-
     def get_way(self, way_id):
         """
         Get a Way object
-
         :param way_id: A way id
         :return: A Way object
         """
@@ -160,8 +148,7 @@ class Network(object):
     def get_ways(self):
         """
         Get all the way objects
-
-        :return: A list of all the ways in the network
+        :return:
         """
         return self.ways.get_list()
 
@@ -176,22 +163,17 @@ class Network(object):
     def remove_node(self, nid):
         """
         Remove a node from the network.
-
         :param nid: A node id
         """
         node = self.nodes.get(nid)
         for way_id in node.get_way_ids():
             way = self.ways.get(way_id)
             way.remove_node(nid)
-
-            assert way.nids >= 2
-
         self.nodes.remove(nid)
 
     def remove_way(self, way_id):
         """
         Remove a way object from this network
-
         :param way_id: A way id
         :return:
         """
@@ -207,16 +189,12 @@ class Network(object):
                     if len(way_ids) == 0:
                         self.remove_node(nid)
 
-                        assert nid not in self.nodes.nodes.keys()
-
             self.ways.remove(way_id)
-            assert way_id not in self.ways.ways.keys()
 
     def join_ways(self, way_id_1, way_id_2):
         """
         Join two ways together to form a single way. Intended for use when a single long street is divided
         into multiple ways, which can cause issues with merging.
-
         :param way_id_1: ID of first way to merge. Must be passed as a string.
         :param way_id_2: ID of second way to merge. Must be passed as a string.
         :return:
@@ -239,32 +217,27 @@ class Network(object):
             log.exception("Join failed, skipping...")
             raise
 
-    def swap_nodes(self, node_from, node_to):
+    def swap_nodes(self, nid_from, nid_to):
         """
         Swap the node in all the ways
-
         :param nid_from:
         :param nid_to:
         :return:
         """
         # node = self.nodes.get(nid_from)
-        if type(node_from) == StringType and type(node_to) == StringType:
-            node_from = self.get_node(node_from)
-            node_to = self.get_node(node_to)
-
-        if node_from and node_from.way_ids:
-            for way_id in node_from.way_ids:
+        node = self.get_node(nid_from)
+        if node and node.way_ids:
+            for way_id in node.way_ids:
                 way = self.get_way(way_id)
-                way.swap_nodes(node_from, node_to)
+                way.swap_nodes(nid_from, nid_to)
                 # self.ways.get(way_id).swap_nodes(nid_from, nid_to)
             # self.nodes.remove(nid_from)
-            self.remove_node(node_from.id)
+            self.remove_node(nid_from)
         return
 
     def vector(self, nid_from, nid_to, normalize=False):
         """
         Get a vector from one node to another
-
         :param nid_from: A source node id
         :param nid_to: A target node id
         :return: A vector (2D np.array)
@@ -279,7 +252,6 @@ class OSM(Network):
     def create_network(type="street-network", bounding_box=None):
         """
         Create a network
-
         :param type: Network type
         :param bounding_box: A bounding box
         :return: A Network object
@@ -300,12 +272,131 @@ class OSM(Network):
         if bounds:
             self.bounds = bounds
 
+    def join_connected_ways(self, segments_to_merge):
+        """
+        This methods searches through the pairs of way ids that need to be merged, and checks to see if there
+        are any ways that appear in multiple pairs. A way that appears in multiple pairs is likely a long
+        way that needs to be merged with several short ways that run alongside it. The merge method will fail
+        in this case, so as a workaround this method will join the short ways together into a single way to
+        allow the merge method to work properly.
+
+        :param segments_to_merge: List of pairs of ways that need to be merged. This likely comes from
+        find_parallel_pairs().
+        :return: A new list of pairs of ways to merge. Note: A new list is necessary because once ways are joined,
+        some of the way IDs in the original list will no longer be valid.
+        """
+
+        # This list will contain the first way in each pair
+        ways_to_merge_1 = []
+        # This list will contain the second way in each pair
+        ways_to_merge_2 = []
+        # Add the ways IDs to the above lists
+        for pair in segments_to_merge:
+            ways_to_merge_1.append(int(pair[0]))  # KH: Way id?
+            ways_to_merge_2.append(int(pair[1]))
+            # See if ways share a node
+        # Combine the two above lists
+        all_ways_to_merge = ways_to_merge_1 + ways_to_merge_2
+        # Using the combined list, create a set of ways that appear multiple times. These are the
+        # long ways for which multiple short ways need to be merged into.
+        ways_appearing_multiple_times = set([x for x in all_ways_to_merge if all_ways_to_merge.count(x) > 1])
+        # Once ways are joined, some way IDs will no longer exist. We need to keep track of which way IDs have
+        # been removed.
+        removed_ways = []
+
+        # For each long way, get the IDs of all the short ways that need to be merged with the long way
+        for way in ways_appearing_multiple_times:
+            # Store the IDs of the short ways in a list
+            short_ways_to_join = []
+            # Search for the ID of the long way in the two list 1, and store the associated short way (from list 2)
+            # in short_ways_to_join
+            for i, j in enumerate(ways_to_merge_1):
+                if j == way:
+                    short_ways_to_join.append(ways_to_merge_2[i])
+            # Repeat the other way around, for cases where the ID of the long way is in list 2 and the ID of the
+            # short way is in list 1.
+            for i, j in enumerate(ways_to_merge_2):
+                if j == way:
+                    short_ways_to_join.append(ways_to_merge_1[i])
+            # Go through the list of short ways that need to be joined and join them in pairs.
+            for short_way in short_ways_to_join:
+                # Don't join the first way with the first way
+                if short_way != short_ways_to_join[0]:
+                    # Make sure we only join ways that are going in the same direction
+                    try:
+                        way1 = self.ways.get(str(short_ways_to_join[0]))
+                        way2 = self.ways.get(str(short_way))
+
+                        if way1 is None or way2 is None:
+                            continue
+
+                        if way1.getdirection() == way2.getdirection():
+                            self.join_ways(str(short_ways_to_join[0]), str(short_way))
+                            # Keep track of way IDs that are no longer valid
+                            removed_ways.append(short_way)
+                    except KeyError:
+                        log.exception("This should no longer happen")
+                        raise
+                    except AttributeError:
+                        log.exception("way 1 or way 2 is None")
+                        assert way1 is None or way2 is None  # Due to prior deletion
+                        raise
+        # Build new list of pairs to merge, excluding pairs with IDs that are no longer valid
+
+        new_segments_to_merge = []
+        for pair in segments_to_merge:
+            # If the pair contains an ID that is no longer valid, don't add it to the new list of pairs.
+            if int(pair[0]) in removed_ways or int(pair[1]) in removed_ways:
+                pass
+            else:
+                new_segments_to_merge.append(pair)
+        return new_segments_to_merge
+
     def clean_nodes(self):
         """
         Clean up dangling nodes that are not connected to any ways
         :return:
         """
         self.nodes.clean()
+
+    def preprocess(self):
+        """
+        Preprocess and clean up the data
+        :return:
+        """
+        print("Finding parallel street segments" + str(datetime.now()))
+        # parallel_segments = self.find_parallel_street_segments()
+        print("Finished finding parallel street segments" + str(datetime.now()))
+        # parallel_segments_filtered = self.join_connected_ways(parallel_segments)
+        print("Begin merging parallel street segments" + str(datetime.now()))
+        # self.merge_parallel_street_segments(parallel_segments_filtered)
+
+        self.split_streets()
+        self.update_ways()
+        self.merge_nodes()
+        self.clean_street_segmentation()
+
+        self.merge_parallel_street_segments3()
+        self.clean_nodes()
+
+        print("Finished merging parallel street segments, beginning split streets" + str(datetime.now()))
+        self.split_streets()
+        print("Finished split streets, beginning update_ways" + str(datetime.now()))
+        self.update_ways()
+        print("Finished update_ways, beginning merge_nodes" + str(datetime.now()))
+        try:
+            self.merge_nodes()
+        except AttributeError:
+            pass
+        print("Finished merge_nodes, beginning clean_street_segmentation" + str(datetime.now()))
+        # Clean up and so I can make a sidewalk network
+        self.clean_street_segmentation()
+        print("Finished clean_street_segmentation" + str(datetime.now()))
+        # Remove ways that have only a single node.
+        for way in self.ways.get_list():
+            if len(way.nids) < 2:
+                self.remove_way(way.id)
+        return
 
     def clean_street_segmentation(self):
         """
@@ -340,7 +431,6 @@ class OSM(Network):
                 log.exception("Something went wrong while cleaning street segmentation, so skipping...")
                 continue
         return
-
 
     def export(self, format="geojson"):
         """
@@ -415,6 +505,43 @@ class OSM(Network):
                 geojson['features'].append(feature)
 
             return json.dumps(geojson)
+
+    def merge_nodes(self, distance_threshold=0.015):
+        """
+        Merge nodes that are close to intersection nodes. Then merge nodes that are
+        close to each other.
+        """
+        for street in self.ways.get_list():
+            # if len(street.nids) < 2:
+            if len(street.nids) <= 2:
+                # Skip. You should not merge two intersection nodes
+                continue
+
+            start = self.nodes.get(street.nids[0])
+            end = self.nodes.get(street.nids[-1])
+
+            # Merge the nodes around the beginning of the street
+            for nid in street.nids[1:-1]:
+                target = self.nodes.get(nid)
+                distance = start.distance_to(target)
+                if distance < distance_threshold:
+                    self.remove_node(nid)
+                else:
+                    break
+
+            if len(street.nids) <= 2:
+                # Done, if you merged everything other than intersection nodes
+                continue
+
+            for nid in street.nids[-2:0:-1]:
+                target = self.nodes.get(nid)
+                distance = end.distance_to(target)
+                if distance < distance_threshold:
+                    self.remove_node(nid)
+                else:
+                    break
+
+        return
 
     def find_parallel_street_segments(self):
         """
@@ -501,138 +628,281 @@ class OSM(Network):
             filtered_parallel_pairs.append(pair)
         return [(streets[pair[0]].id, streets[pair[1]].id) for pair in filtered_parallel_pairs]
 
-    def get_distance(self, way):
-        """ Get a distance of the passed way
-
-        :param way: A way object
-        :return: A distance in meters
+    def segment_parallel_streets(self, street_pair):
         """
-        node1 = self.get_node(way.nids[0])
-        node2 = self.get_node(way.nids[-1])
-        try:
-            assert node1 is not None
-            assert node2 is not None
-            distance = node1.distance_to(node2)
-        except AssertionError:
-            log.debug("Debug")
-        return distance
-
-    def join_connected_ways(self, segments_to_merge):
-        """
-        This methods searches through the pairs of way ids that need to be merged, and checks to see if there
-        are any ways that appear in multiple pairs. A way that appears in multiple pairs is likely a long
-        way that needs to be merged with several short ways that run alongside it. The merge method will fail
-        in this case, so as a workaround this method will join the short ways together into a single way to
-        allow the merge method to work properly.
-
-        :param segments_to_merge: List of pairs of ways that need to be merged. This likely comes from
-        find_parallel_pairs().
-        :return: A new list of pairs of ways to merge. Note: A new list is necessary because once ways are joined,
-        some of the way IDs in the original list will no longer be valid.
+        First find parts of the street pairs that you want to merge (you don't want to merge entire streets
+        because, for example, one could be much longer than the other and it doesn't make sense to merge
+        :param street_pair: A pair of street ids or street objects
+        :return: A set of three lists; overlapping_segment, street1_segmentation, street2_segmentation
         """
 
-        # This list will contain the first way in each pair
-        ways_to_merge_1 = []
-        # This list will contain the second way in each pair
-        ways_to_merge_2 = []
-        # Add the ways IDs to the above lists
-        for pair in segments_to_merge:
-            ways_to_merge_1.append(int(pair[0]))  # KH: Way id?
-            ways_to_merge_2.append(int(pair[1]))
-            # See if ways share a node
-        # Combine the two above lists
-        all_ways_to_merge = ways_to_merge_1 + ways_to_merge_2
-        # Using the combined list, create a set of ways that appear multiple times. These are the
-        # long ways for which multiple short ways need to be merged into.
-        ways_appearing_multiple_times = set([x for x in all_ways_to_merge if all_ways_to_merge.count(x) > 1])
-        # Once ways are joined, some way IDs will no longer exist. We need to keep track of which way IDs have
-        # been removed.
-        removed_ways = []
+        if type(street_pair[0]) == StringType:
+            street_pair = [self.get_way(street_pair[0]), self.get_way(street_pair[1])]
 
-        # For each long way, get the IDs of all the short ways that need to be merged with the long way
-        for way in ways_appearing_multiple_times:
-            # Store the IDs of the short ways in a list
-            short_ways_to_join = []
-            # Search for the ID of the long way in the two list 1, and store the associated short way (from list 2)
-            # in short_ways_to_join
-            for i, j in enumerate(ways_to_merge_1):
-                if j == way:
-                    short_ways_to_join.append(ways_to_merge_2[i])
-            # Repeat the other way around, for cases where the ID of the long way is in list 2 and the ID of the
-            # short way is in list 1.
-            for i, j in enumerate(ways_to_merge_2):
-                if j == way:
-                    short_ways_to_join.append(ways_to_merge_1[i])
-            # Go through the list of short ways that need to be joined and join them in pairs.
-            for short_way in short_ways_to_join:
-                # Don't join the first way with the first way
-                if short_way != short_ways_to_join[0]:
-                    # Make sure we only join ways that are going in the same direction
-                    try:
-                        way1 = self.ways.get(str(short_ways_to_join[0]))
-                        way2 = self.ways.get(str(short_way))
+        # Take the two points from street_pair[0], and use it as a base vector.
+        # Project all the points along the base vector and sort them.
+        base_node0 = self.nodes.get(street_pair[0].nids[0])
+        base_node1 = self.nodes.get(street_pair[0].nids[-1])
+        base_vector = base_node0.vector_to(base_node1, normalize=True)
 
-                        if way1 is None or way2 is None:
-                            continue
-
-                        if way1.getdirection() == way2.getdirection():
-                            self.join_ways(str(short_ways_to_join[0]), str(short_way))
-                            # Keep track of way IDs that are no longer valid
-                            removed_ways.append(short_way)
-                    except KeyError:
-                        log.exception("This should no longer happen")
-                        raise
-                    except AttributeError:
-                        log.exception("way 1 or way 2 is None")
-                        assert way1 is None or way2 is None  # Due to prior deletion
-                        raise
-        # Build new list of pairs to merge, excluding pairs with IDs that are no longer valid
-
-        new_segments_to_merge = []
-        for pair in segments_to_merge:
-            # If the pair contains an ID that is no longer valid, don't add it to the new list of pairs.
-            if int(pair[0]) in removed_ways or int(pair[1]) in removed_ways:
-                pass
+        def cmp_with_projection(n1, n2):
+            dot_product1 = np.dot(n1.vector(), base_vector)
+            dot_product2 = np.dot(n2.vector(), base_vector)
+            if dot_product1 < dot_product2:
+                return -1
+            elif dot_product2 < dot_product1:
+                return 1
             else:
-                new_segments_to_merge.append(pair)
-        return new_segments_to_merge
+                return 0
 
-    def merge_nodes(self, distance_threshold=15):
-        """
-        Merge nodes that are close to intersection nodes. Then merge nodes that are
-        close to each other.
-        """
-        for street in self.ways.get_list():
-            # if len(street.nids) < 2:
-            if len(street.nids) <= 2:
-                # Skip. You should not merge two intersection nodes
-                continue
+        # check if the nodes in the second street is in the right order
+        street_2_nodes = [self.nodes.get(nid) for nid in street_pair[1].nids]
+        sorted_street2_nodes = sorted(street_2_nodes, cmp=cmp_with_projection)
+        if street_2_nodes[0].id != sorted_street2_nodes[0].id:
+            street_pair[1].nids = list(reversed(street_pair[1].nids))
 
-            start = self.nodes.get(street.nids[0])
-            end = self.nodes.get(street.nids[-1])
+        # Get all the nodes in both streets and store them in a list
+        all_nodes = [self.nodes.get(nid) for nid in street_pair[0].nids] + [self.nodes.get(nid) for nid in street_pair[1].nids]
+        # Sort the nodes in the list by longitude
+        all_nodes = sorted(all_nodes, cmp=cmp_with_projection)
+        # Store the node IDs in another list
+        all_nids = [node.id for node in all_nodes]
 
-            # Merge the nodes around the beginning of the street
-            for nid in street.nids[1:-1]:
-                target = self.nodes.get(nid)
-                distance = start.distance_to(target)
-                if distance < distance_threshold:
-                    self.remove_node(nid)
-                else:
-                    break
+        # Condition in list comprehension
+        # http://stackoverflow.com/questions/4260280/python-if-else-in-list-comprehension
+        all_nids_street_indices = [0 if nid in street_pair[0].nids else 1 for nid in all_nids]
 
-            if len(street.nids) <= 2:
-                # Done, if you merged everything other than intersection nodes
-                continue
+        # Return if they are not actually parallel
 
-            for nid in street.nids[-2:0:-1]:
-                target = self.nodes.get(nid)
-                distance = end.distance_to(target)
-                if distance < distance_threshold:
-                    self.remove_node(nid)
-                else:
-                    break
 
-        return
+        all_nids_street_switch = [idx_pair[0] != idx_pair[1] for idx_pair in window(all_nids_street_indices, 2)]
+
+        if all_nids[0] == all_nids[1]:
+            # The case where the first node of each segments are same
+
+            # Find the first occurrence of True in the list
+            end_idx = len(all_nids_street_switch) - 1 - all_nids_street_switch[::-1].index(True)
+            # end_idx = all_nids_street_switch.index(True)
+            overlapping_segment = all_nids[1:end_idx + 1]
+
+            street1_nid = all_nids[end_idx]
+            if street1_nid in street_pair[0].nids:
+                # A node from street1 comes first
+
+                street2_nid = all_nids[end_idx + 1]
+                street1_nid_idx = street_pair[0].nids.index(street1_nid)
+                street2_nid_idx = street_pair[1].nids.index(street2_nid)
+
+                street2_node2_nid = street_pair[1].nids[street2_nid_idx - 1]
+                street2_node2 = self.get_node(street2_node2_nid)
+                street2_node1 = self.get_node(street2_nid)
+                street1_node = self.get_node(street1_nid)
+                line = points_to_line((street2_node1.lng, street2_node1.lat), (street2_node2.lng, street2_node2.lat))
+                foot_lng, foot_lat = foot(street1_node.lng, street1_node.lat, line[0], line[1], line[2])
+                foot_node = self.create_node(None, foot_lat, foot_lng)
+                street_pair[1].insert_node(street2_nid_idx, foot_node.id)
+            else:
+                # A node from street2 comes first
+                street1_nid = all_nids[end_idx + 1]
+                street2_nid = all_nids[end_idx]
+                street1_nid_idx = street_pair[0].nids.index(street1_nid)
+                street2_nid_idx = street_pair[1].nids.index(street2_nid)
+
+                street1_node2_nid = street_pair[0].nids[street1_nid_idx - 1]
+                street1_node2 = self.get_node(street1_node2_nid)
+                street1_node1 = self.get_node(street1_nid)
+                street2_node = self.get_node(street2_nid)
+                line = points_to_line((street1_node1.lng, street1_node1.lat), (street1_node2.lng, street1_node2.lat))
+                foot_lng, foot_lat = foot(street2_node.lng, street2_node.lat, line[0], line[1], line[2])
+                foot_node = self.create_node(None, foot_lat, foot_lng)
+                street_pair[0].insert_node(street1_nid_idx, foot_node.id)
+
+            overlapping_segment.append(foot_node.id)
+            street1_segmentation = [[],
+                                    street_pair[0].nids[:street1_nid_idx + 1],
+                                    street_pair[0].nids[street1_nid_idx + 1:]]
+            # Street 2 is also divided into three segments - beginning segment, overlapping segment, and end segment
+            street2_segmentation = [[],
+                                    street_pair[1].nids[:street2_nid_idx + 1],
+                                    street_pair[1].nids[street2_nid_idx + 1:]]
+
+            if len(street1_segmentation[2]) > 0:
+                street1_segmentation[2].insert(0, street1_segmentation[1][-1])
+            if len(street2_segmentation[2]) > 0:
+                street2_segmentation[2].insert(0, street2_segmentation[1][-1])
+            return overlapping_segment, street1_segmentation, street2_segmentation
+        elif all_nids[-1] == all_nids[-2]:
+            # The case where the last node of each segments are same
+            # Find the first occurrence of True in the list
+            begin_idx = all_nids_street_switch.index(True)
+
+            # end_idx = all_nids_street_switch.index(True)
+            overlapping_segment = all_nids[begin_idx + 1:-1]
+
+            street1_nid = all_nids[begin_idx]
+            if street1_nid in street_pair[0].nids:
+                # A node from street1 comes first
+
+                street2_nid = all_nids[begin_idx + 1]
+                street1_nid_idx = street_pair[0].nids.index(street1_nid)
+                street2_nid_idx = street_pair[1].nids.index(street2_nid)
+
+                street1_node2_nid = street_pair[0].nids[street1_nid_idx - 1]
+                street1_node2 = self.get_node(street1_node2_nid)
+                street1_node1 = self.get_node(street1_nid)
+                street2_node = self.get_node(street2_nid)
+                line = points_to_line((street1_node1.lng, street1_node1.lat), (street1_node2.lng, street1_node2.lat))
+                foot_lng, foot_lat = foot(street2_node.lng, street2_node.lat, line[0], line[1], line[2])
+                foot_node = self.create_node(None, foot_lat, foot_lng)
+                street_pair[0].insert_node(street1_nid_idx + 1, foot_node.id)
+
+                street1_nid_idx += 1
+            else:
+                # A node from street2 comes first
+                street1_nid = all_nids[begin_idx + 1]
+                street2_nid = all_nids[begin_idx]
+                street1_nid_idx = street_pair[0].nids.index(street1_nid)
+                street2_nid_idx = street_pair[1].nids.index(street2_nid)
+
+                street2_node2_nid = street_pair[1].nids[street2_nid_idx - 1]
+                street2_node2 = self.get_node(street2_node2_nid)
+                street2_node1 = self.get_node(street2_nid)
+                street1_node = self.get_node(street1_nid)
+                line = points_to_line((street2_node1.lng, street2_node1.lat), (street2_node2.lng, street2_node2.lat))
+                foot_lng, foot_lat = foot(street1_node.lng, street1_node.lat, line[0], line[1], line[2])
+                foot_node = self.create_node(None, foot_lat, foot_lng)
+                street_pair[1].insert_node(street2_nid_idx + 1, foot_node.id)
+                street2_nid_idx += 1
+
+            overlapping_segment.insert(0, foot_node.id)
+
+            street1_segmentation = [street_pair[0].nids[:street1_nid_idx],
+                                    street_pair[0].nids[street1_nid_idx:],
+                                    []]
+            # Street 2 is also divided into three segments - beginning segment, overlapping segment, and end segment
+            street2_segmentation = [street_pair[1].nids[:street2_nid_idx],
+                                    street_pair[1].nids[street2_nid_idx:],
+                                    []]
+
+            if len(street1_segmentation[0]) > 0:
+                street1_segmentation[0].append(street1_segmentation[1][0])
+            if len(street2_segmentation[0]) > 0:
+                street2_segmentation[0].append(street2_segmentation[1][0])
+            return overlapping_segment, street1_segmentation, street2_segmentation
+        else:
+            # Other cases (i.e., segments do not intersect)
+
+            # Find the first occurrence of True in the list
+            begin_idx = all_nids_street_switch.index(True)
+
+            # Find the last occurrence of True in the list
+            end_idx = len(all_nids_street_switch) - 1 - all_nids_street_switch[::-1].index(True)
+
+            overlapping_segment = all_nids[begin_idx + 1:end_idx + 1]
+
+            begin_nid = all_nids[begin_idx]
+            if begin_nid in street_pair[0].nids:
+                street1_begin_nid = begin_nid
+                street2_begin_nid = all_nids[begin_idx + 1]
+            else:
+                street1_begin_nid = all_nids[begin_idx + 1]
+                street2_begin_nid = begin_nid
+            street1_begin_idx = street_pair[0].nids.index(street1_begin_nid)
+            street2_begin_idx = street_pair[1].nids.index(street2_begin_nid)
+
+            # Create a foot from a first node to the segment on the other side
+            if begin_nid in street_pair[1].nids:
+                begin_node = self.get_node(begin_nid)
+                street2_node_2 = self.get_node(street2_begin_nid)
+                street2_node_1_nid = street_pair[1].nids[street2_begin_idx - 1]
+                street2_node_1 = self.get_node(street2_node_1_nid)
+                line = points_to_line((street2_node_1.lng, street2_node_1.lat), (street2_node_2.lng, street2_node_2.lat))
+                foot_lng, foot_lat = foot(begin_node.lng, begin_node.lat, line[0], line[1], line[2])
+                foot_node = self.create_node(None, foot_lat, foot_lng)
+                street_pair[1].insert_node(street2_begin_idx + 1, foot_node.id)
+                street2_begin_idx += 1
+            else:
+                begin_node = self.get_node(begin_nid)
+                street1_node_2 = self.get_node(street2_begin_nid)
+                street1_node_1_nid = street_pair[0].nids[street1_begin_idx - 1]
+                street1_node_1 = self.get_node(street1_node_1_nid)
+                line = points_to_line((street1_node_1.lng, street1_node_1.lat), (street1_node_2.lng, street1_node_2.lat))
+                foot_lng, foot_lat = foot(begin_node.lng, begin_node.lat, line[0], line[1], line[2])
+                foot_node = self.create_node(None, foot_lat, foot_lng)
+                street_pair[0].insert_node(street1_begin_idx, foot_node.id)
+                street1_begin_idx += 1
+            overlapping_segment.insert(0, foot_node.id)
+
+            end_nid = all_nids[end_idx]
+            if end_nid in street_pair[0].nids:
+                street1_end_nid = end_nid
+                street2_end_nid = all_nids[end_idx + 1]
+            else:
+                street1_end_nid = all_nids[end_idx + 1]
+                street2_end_nid = end_nid
+            street1_end_idx = street_pair[0].nids.index(street1_end_nid)
+            street2_end_idx = street_pair[1].nids.index(street2_end_nid)
+
+            # Create a foot from the last node to the segment on the other side
+            if end_nid in street_pair[0].nids:
+                end_node = self.get_node(end_nid)
+                street2_node_2 = self.get_node(street2_end_nid)
+                street2_node_1_nid = street_pair[1].nids[street2_end_idx - 1]
+                street2_node_1 = self.get_node(street2_node_1_nid)
+                line = points_to_line((street2_node_1.lng, street2_node_1.lat), (street2_node_2.lng, street2_node_2.lat))
+                foot_lng, foot_lat = foot(end_node.lng, end_node.lat, line[0], line[1], line[2])
+                foot_node = self.create_node(None, foot_lat, foot_lng)
+                street_pair[1].insert_node(street2_end_idx, foot_node.id)
+                # street2_end_idx -= 2
+            else:
+                end_node = self.get_node(end_nid)
+                street1_node_2 = self.get_node(street2_end_nid)
+                street1_node_1_nid = street_pair[0].nids[street1_end_idx - 1]
+                street1_node_1 = self.get_node(street1_node_1_nid)
+                line = points_to_line((street1_node_1.lng, street1_node_1.lat), (street1_node_2.lng, street1_node_2.lat))
+                foot_lng, foot_lat = foot(end_node.lng, end_node.lat, line[0], line[1], line[2])
+                foot_node = self.create_node(None, foot_lat, foot_lng)
+                street_pair[0].insert_node(street1_end_idx, foot_node.id)
+                # street1_end_idx -= 2
+            overlapping_segment.append(foot_node.id)
+
+            # Street 1 is divided into three segments - beginning segment, overlapping segment, and end segment
+            street1_segmentation = [street_pair[0].nids[:street1_begin_idx],
+                                    street_pair[0].nids[street1_begin_idx:street1_end_idx + 1],
+                                    street_pair[0].nids[street1_end_idx + 1:]]
+            # Street 2 is also divided into three segments - beginning segment, overlapping segment, and end segment
+            street2_segmentation = [street_pair[1].nids[:street2_begin_idx],
+                                    street_pair[1].nids[street2_begin_idx:street2_end_idx + 1],
+                                    street_pair[1].nids[street2_end_idx + 1:]]
+
+            # If street 1 has a beginning segment...
+            if street1_segmentation[0]:
+                street1_segmentation[0].append(street1_segmentation[1][0])
+            # If street 1 has an ending segment...
+            if street1_segmentation[2]:
+                street1_segmentation[2].insert(0, street1_segmentation[1][-1])
+            # If street 2 has a beginning segment...
+            if street2_segmentation[0]:
+                try:
+                    street2_segmentation[0].append(street2_segmentation[1][0])
+                except IndexError:
+                    log.debug("Debug")
+                # if street2_segmentation[1]:
+                #     street2_segmentation[0].append(street2_segmentation[1][0])
+                # elif street2_segmentation[2]:
+                #     street2_segmentation[0].append(street2_segmentation[2][0])
+            # If street 2 has an ending segment...
+            if street2_segmentation[2]:
+                try:
+                    street2_segmentation[2].insert(0, street2_segmentation[1][-1])
+                except IndexError:
+                    log.debug("Debug")
+                # if street2_segmentation[1]:
+                #     street2_segmentation[2].insert(0, street2_segmentation[1][-1])
+                # elif street2_segmentation[0]:
+                #     street2_segmentation[2].insert(0, street2_segmentation[0][-1])
+
+            return overlapping_segment, street1_segmentation, street2_segmentation
 
     def merge_parallel_street_segments(self, parallel_pairs):
         """
@@ -1017,374 +1287,6 @@ class OSM(Network):
             raise
         return is_parallel and does_intersect
 
-    def preprocess(self):
-        """
-        Preprocess and clean up the data
-        :return:
-        """
-        print("Finding parallel street segments" + str(datetime.now()))
-        # parallel_segments = self.find_parallel_street_segments()
-        print("Finished finding parallel street segments" + str(datetime.now()))
-        # parallel_segments_filtered = self.join_connected_ways(parallel_segments)
-        print("Begin merging parallel street segments" + str(datetime.now()))
-        # self.merge_parallel_street_segments(parallel_segments_filtered)
-
-        self.split_streets()
-        self.update_ways()
-        self.merge_nodes()
-        self.clean_street_segmentation()
-
-        self.merge_parallel_street_segments3()
-        self.clean_nodes()
-
-        print("Finished merging parallel street segments, beginning split streets" + str(datetime.now()))
-        self.split_streets()
-        print("Finished split streets, beginning update_ways" + str(datetime.now()))
-        self.update_ways()
-        print("Finished update_ways, beginning merge_nodes" + str(datetime.now()))
-        try:
-            self.merge_nodes()
-        except AttributeError:
-            raise
-        print("Finished merge_nodes, beginning clean_street_segmentation" + str(datetime.now()))
-        # Clean up and so I can make a sidewalk network
-        self.clean_street_segmentation()
-        print("Finished clean_street_segmentation" + str(datetime.now()))
-
-        self.remove_short_segments()  # remove short segments
-
-
-        # Remove ways that have only a single node.
-        for way in self.ways.get_list():
-            if len(way.nids) < 2:
-                self.remove_way(way.id)
-
-        for node in self.get_nodes():
-            for way_id in node.get_way_ids():
-                if not self.ways.has(way_id):
-                    node.remove_way_id(way_id)
-
-        return
-
-    def remove_short_segments(self, distance_threshold=15):
-        """
-        Remove very short segments that have length below the passed threshold. This method assumes that there are no
-        intersection nodes except for the two nodes at the both ends.
-
-        :param distance_threshold: A ditance threshold in meters.
-        """
-        for way in self.get_ways():
-            d = self.get_distance(way)
-
-            new_node_ids = [] # debug
-
-            if d < distance_threshold:
-                node1 = self.get_node(way.nids[0])
-                node2 = self.get_node(way.nids[-1])
-                new_node = self.create_node(None, (node1.lat + node2.lat) / 2, (node1.lng + node2.lng) / 2)
-                assert new_node.id in self.nodes.nodes
-                new_node_ids.append(new_node.id)
-
-                # Go through all the ways that are connected to node1 (and node 2), then switch node1's nid with
-                # the new node's nid.
-                way_ids = set(node1.get_way_ids() + node2.get_way_ids())
-                for way_id in way_ids:
-                    if way_id != way.id:
-                        temp_way = self.get_way(way_id)
-                        if not temp_way:
-                            continue
-
-                        try:
-                            # two nodes that I'm deleting are in this way as well. Not sure why this happens
-                            assert (node1.id in temp_way.nids) != (node2.id in temp_way.nids)
-                        except AssertionError:
-                            # log.debug("Debug")
-                            pass
-
-                        if node1.id in temp_way.nids:
-                            temp_way.swap_nodes(node1.id, new_node.id)
-                        if node2.id in temp_way.nids:
-                            temp_way.swap_nodes(node2.id, new_node.id)
-                        new_node.append_way(way_id)
-
-                self.remove_way(way.id)
-
-    def segment_parallel_streets(self, street_pair):
-        """
-        First find parts of the street pairs that you want to merge (you don't want to merge entire streets
-        because, for example, one could be much longer than the other and it doesn't make sense to merge
-        :param street_pair: A pair of street ids or street objects
-        :return: A set of three lists; overlapping_segment, street1_segmentation, street2_segmentation
-        """
-
-        if type(street_pair[0]) == StringType:
-            street_pair = [self.get_way(street_pair[0]), self.get_way(street_pair[1])]
-
-        # Take the two points from street_pair[0], and use it as a base vector.
-        # Project all the points along the base vector and sort them.
-        base_node0 = self.nodes.get(street_pair[0].nids[0])
-        base_node1 = self.nodes.get(street_pair[0].nids[-1])
-        base_vector = base_node0.vector_to(base_node1, normalize=True)
-
-        def cmp_with_projection(n1, n2):
-            dot_product1 = np.dot(n1.vector(), base_vector)
-            dot_product2 = np.dot(n2.vector(), base_vector)
-            if dot_product1 < dot_product2:
-                return -1
-            elif dot_product2 < dot_product1:
-                return 1
-            else:
-                return 0
-
-        # check if the nodes in the second street is in the right order
-        street_2_nodes = [self.nodes.get(nid) for nid in street_pair[1].nids]
-        sorted_street2_nodes = sorted(street_2_nodes, cmp=cmp_with_projection)
-        if street_2_nodes[0].id != sorted_street2_nodes[0].id:
-            street_pair[1].nids = list(reversed(street_pair[1].nids))
-
-        # Get all the nodes in both streets and store them in a list
-        all_nodes = [self.nodes.get(nid) for nid in street_pair[0].nids] + [self.nodes.get(nid) for nid in street_pair[1].nids]
-        # Sort the nodes in the list by longitude
-        all_nodes = sorted(all_nodes, cmp=cmp_with_projection)
-        # Store the node IDs in another list
-        all_nids = [node.id for node in all_nodes]
-
-        # Condition in list comprehension
-        # http://stackoverflow.com/questions/4260280/python-if-else-in-list-comprehension
-        all_nids_street_indices = [0 if nid in street_pair[0].nids else 1 for nid in all_nids]
-
-        # Return if they are not actually parallel
-
-
-        all_nids_street_switch = [idx_pair[0] != idx_pair[1] for idx_pair in window(all_nids_street_indices, 2)]
-
-        if all_nids[0] == all_nids[1]:
-            # The case where the first node of each segments are same
-
-            # Find the first occurrence of True in the list
-            end_idx = len(all_nids_street_switch) - 1 - all_nids_street_switch[::-1].index(True)
-            # end_idx = all_nids_street_switch.index(True)
-            overlapping_segment = all_nids[1:end_idx + 1]
-
-            street1_nid = all_nids[end_idx]
-            if street1_nid in street_pair[0].nids:
-                # A node from street1 comes first
-
-                street2_nid = all_nids[end_idx + 1]
-                street1_nid_idx = street_pair[0].nids.index(street1_nid)
-                street2_nid_idx = street_pair[1].nids.index(street2_nid)
-
-                street2_node2_nid = street_pair[1].nids[street2_nid_idx - 1]
-                street2_node2 = self.get_node(street2_node2_nid)
-                street2_node1 = self.get_node(street2_nid)
-                street1_node = self.get_node(street1_nid)
-                line = points_to_line((street2_node1.lng, street2_node1.lat), (street2_node2.lng, street2_node2.lat))
-                foot_lng, foot_lat = foot(street1_node.lng, street1_node.lat, line[0], line[1], line[2])
-                foot_node = self.create_node(None, foot_lat, foot_lng)
-                street_pair[1].insert_node(street2_nid_idx, foot_node.id)
-            else:
-                # A node from street2 comes first
-                street1_nid = all_nids[end_idx + 1]
-                street2_nid = all_nids[end_idx]
-                street1_nid_idx = street_pair[0].nids.index(street1_nid)
-                street2_nid_idx = street_pair[1].nids.index(street2_nid)
-
-                street1_node2_nid = street_pair[0].nids[street1_nid_idx - 1]
-                street1_node2 = self.get_node(street1_node2_nid)
-                street1_node1 = self.get_node(street1_nid)
-                street2_node = self.get_node(street2_nid)
-                line = points_to_line((street1_node1.lng, street1_node1.lat), (street1_node2.lng, street1_node2.lat))
-                foot_lng, foot_lat = foot(street2_node.lng, street2_node.lat, line[0], line[1], line[2])
-                foot_node = self.create_node(None, foot_lat, foot_lng)
-                street_pair[0].insert_node(street1_nid_idx, foot_node.id)
-
-            overlapping_segment.append(foot_node.id)
-            street1_segmentation = [[],
-                                    street_pair[0].nids[:street1_nid_idx + 1],
-                                    street_pair[0].nids[street1_nid_idx + 1:]]
-            # Street 2 is also divided into three segments - beginning segment, overlapping segment, and end segment
-            street2_segmentation = [[],
-                                    street_pair[1].nids[:street2_nid_idx + 1],
-                                    street_pair[1].nids[street2_nid_idx + 1:]]
-
-            if len(street1_segmentation[2]) > 0:
-                street1_segmentation[2].insert(0, street1_segmentation[1][-1])
-            if len(street2_segmentation[2]) > 0:
-                street2_segmentation[2].insert(0, street2_segmentation[1][-1])
-            return overlapping_segment, street1_segmentation, street2_segmentation
-        elif all_nids[-1] == all_nids[-2]:
-            # The case where the last node of each segments are same
-            # Find the first occurrence of True in the list
-            begin_idx = all_nids_street_switch.index(True)
-
-            # end_idx = all_nids_street_switch.index(True)
-            overlapping_segment = all_nids[begin_idx + 1:-1]
-
-            street1_nid = all_nids[begin_idx]
-            if street1_nid in street_pair[0].nids:
-                # A node from street1 comes first
-
-                street2_nid = all_nids[begin_idx + 1]
-                street1_nid_idx = street_pair[0].nids.index(street1_nid)
-                street2_nid_idx = street_pair[1].nids.index(street2_nid)
-
-                street1_node2_nid = street_pair[0].nids[street1_nid_idx - 1]
-                street1_node2 = self.get_node(street1_node2_nid)
-                street1_node1 = self.get_node(street1_nid)
-                street2_node = self.get_node(street2_nid)
-                line = points_to_line((street1_node1.lng, street1_node1.lat), (street1_node2.lng, street1_node2.lat))
-                foot_lng, foot_lat = foot(street2_node.lng, street2_node.lat, line[0], line[1], line[2])
-                foot_node = self.create_node(None, foot_lat, foot_lng)
-                street_pair[0].insert_node(street1_nid_idx + 1, foot_node.id)
-
-                street1_nid_idx += 1
-            else:
-                # A node from street2 comes first
-                street1_nid = all_nids[begin_idx + 1]
-                street2_nid = all_nids[begin_idx]
-                street1_nid_idx = street_pair[0].nids.index(street1_nid)
-                street2_nid_idx = street_pair[1].nids.index(street2_nid)
-
-                street2_node2_nid = street_pair[1].nids[street2_nid_idx - 1]
-                street2_node2 = self.get_node(street2_node2_nid)
-                street2_node1 = self.get_node(street2_nid)
-                street1_node = self.get_node(street1_nid)
-                line = points_to_line((street2_node1.lng, street2_node1.lat), (street2_node2.lng, street2_node2.lat))
-                foot_lng, foot_lat = foot(street1_node.lng, street1_node.lat, line[0], line[1], line[2])
-                foot_node = self.create_node(None, foot_lat, foot_lng)
-                street_pair[1].insert_node(street2_nid_idx + 1, foot_node.id)
-                street2_nid_idx += 1
-
-            overlapping_segment.insert(0, foot_node.id)
-
-            street1_segmentation = [street_pair[0].nids[:street1_nid_idx],
-                                    street_pair[0].nids[street1_nid_idx:],
-                                    []]
-            # Street 2 is also divided into three segments - beginning segment, overlapping segment, and end segment
-            street2_segmentation = [street_pair[1].nids[:street2_nid_idx],
-                                    street_pair[1].nids[street2_nid_idx:],
-                                    []]
-
-            if len(street1_segmentation[0]) > 0:
-                street1_segmentation[0].append(street1_segmentation[1][0])
-            if len(street2_segmentation[0]) > 0:
-                street2_segmentation[0].append(street2_segmentation[1][0])
-            return overlapping_segment, street1_segmentation, street2_segmentation
-        else:
-            # Other cases (i.e., segments do not intersect)
-
-            # Find the first occurrence of True in the list
-            begin_idx = all_nids_street_switch.index(True)
-
-            # Find the last occurrence of True in the list
-            end_idx = len(all_nids_street_switch) - 1 - all_nids_street_switch[::-1].index(True)
-
-            overlapping_segment = all_nids[begin_idx + 1:end_idx + 1]
-
-            begin_nid = all_nids[begin_idx]
-            if begin_nid in street_pair[0].nids:
-                street1_begin_nid = begin_nid
-                street2_begin_nid = all_nids[begin_idx + 1]
-            else:
-                street1_begin_nid = all_nids[begin_idx + 1]
-                street2_begin_nid = begin_nid
-            street1_begin_idx = street_pair[0].nids.index(street1_begin_nid)
-            street2_begin_idx = street_pair[1].nids.index(street2_begin_nid)
-
-            # Create a foot from a first node to the segment on the other side
-            if begin_nid in street_pair[1].nids:
-                begin_node = self.get_node(begin_nid)
-                street2_node_2 = self.get_node(street2_begin_nid)
-                street2_node_1_nid = street_pair[1].nids[street2_begin_idx - 1]
-                street2_node_1 = self.get_node(street2_node_1_nid)
-                line = points_to_line((street2_node_1.lng, street2_node_1.lat), (street2_node_2.lng, street2_node_2.lat))
-                foot_lng, foot_lat = foot(begin_node.lng, begin_node.lat, line[0], line[1], line[2])
-                foot_node = self.create_node(None, foot_lat, foot_lng)
-                street_pair[1].insert_node(street2_begin_idx + 1, foot_node.id)
-                street2_begin_idx += 1
-            else:
-                begin_node = self.get_node(begin_nid)
-                street1_node_2 = self.get_node(street2_begin_nid)
-                street1_node_1_nid = street_pair[0].nids[street1_begin_idx - 1]
-                street1_node_1 = self.get_node(street1_node_1_nid)
-                line = points_to_line((street1_node_1.lng, street1_node_1.lat), (street1_node_2.lng, street1_node_2.lat))
-                foot_lng, foot_lat = foot(begin_node.lng, begin_node.lat, line[0], line[1], line[2])
-                foot_node = self.create_node(None, foot_lat, foot_lng)
-                street_pair[0].insert_node(street1_begin_idx, foot_node.id)
-                street1_begin_idx += 1
-            overlapping_segment.insert(0, foot_node.id)
-
-            end_nid = all_nids[end_idx]
-            if end_nid in street_pair[0].nids:
-                street1_end_nid = end_nid
-                street2_end_nid = all_nids[end_idx + 1]
-            else:
-                street1_end_nid = all_nids[end_idx + 1]
-                street2_end_nid = end_nid
-            street1_end_idx = street_pair[0].nids.index(street1_end_nid)
-            street2_end_idx = street_pair[1].nids.index(street2_end_nid)
-
-            # Create a foot from the last node to the segment on the other side
-            if end_nid in street_pair[0].nids:
-                end_node = self.get_node(end_nid)
-                street2_node_2 = self.get_node(street2_end_nid)
-                street2_node_1_nid = street_pair[1].nids[street2_end_idx - 1]
-                street2_node_1 = self.get_node(street2_node_1_nid)
-                line = points_to_line((street2_node_1.lng, street2_node_1.lat), (street2_node_2.lng, street2_node_2.lat))
-                foot_lng, foot_lat = foot(end_node.lng, end_node.lat, line[0], line[1], line[2])
-                foot_node = self.create_node(None, foot_lat, foot_lng)
-                street_pair[1].insert_node(street2_end_idx, foot_node.id)
-                # street2_end_idx -= 2
-            else:
-                end_node = self.get_node(end_nid)
-                street1_node_2 = self.get_node(street2_end_nid)
-                street1_node_1_nid = street_pair[0].nids[street1_end_idx - 1]
-                street1_node_1 = self.get_node(street1_node_1_nid)
-                line = points_to_line((street1_node_1.lng, street1_node_1.lat), (street1_node_2.lng, street1_node_2.lat))
-                foot_lng, foot_lat = foot(end_node.lng, end_node.lat, line[0], line[1], line[2])
-                foot_node = self.create_node(None, foot_lat, foot_lng)
-                street_pair[0].insert_node(street1_end_idx, foot_node.id)
-                # street1_end_idx -= 2
-            overlapping_segment.append(foot_node.id)
-
-            # Street 1 is divided into three segments - beginning segment, overlapping segment, and end segment
-            street1_segmentation = [street_pair[0].nids[:street1_begin_idx],
-                                    street_pair[0].nids[street1_begin_idx:street1_end_idx + 1],
-                                    street_pair[0].nids[street1_end_idx + 1:]]
-            # Street 2 is also divided into three segments - beginning segment, overlapping segment, and end segment
-            street2_segmentation = [street_pair[1].nids[:street2_begin_idx],
-                                    street_pair[1].nids[street2_begin_idx:street2_end_idx + 1],
-                                    street_pair[1].nids[street2_end_idx + 1:]]
-
-            # If street 1 has a beginning segment...
-            if street1_segmentation[0]:
-                street1_segmentation[0].append(street1_segmentation[1][0])
-            # If street 1 has an ending segment...
-            if street1_segmentation[2]:
-                street1_segmentation[2].insert(0, street1_segmentation[1][-1])
-            # If street 2 has a beginning segment...
-            if street2_segmentation[0]:
-                try:
-                    street2_segmentation[0].append(street2_segmentation[1][0])
-                except IndexError:
-                    log.debug("Debug")
-                # if street2_segmentation[1]:
-                #     street2_segmentation[0].append(street2_segmentation[1][0])
-                # elif street2_segmentation[2]:
-                #     street2_segmentation[0].append(street2_segmentation[2][0])
-            # If street 2 has an ending segment...
-            if street2_segmentation[2]:
-                try:
-                    street2_segmentation[2].insert(0, street2_segmentation[1][-1])
-                except IndexError:
-                    log.debug("Debug")
-                # if street2_segmentation[1]:
-                #     street2_segmentation[2].insert(0, street2_segmentation[1][-1])
-                # elif street2_segmentation[0]:
-                #     street2_segmentation[2].insert(0, street2_segmentation[0][-1])
-
-            return overlapping_segment, street1_segmentation, street2_segmentation
-
     def simplify(self, way_id, threshold=0.5):
         """
         Need a line simplification. Visvalingam?
@@ -1562,7 +1464,7 @@ if __name__ == "__main__":
     # filename = "../resources/SegmentedStreet_01.osm"
     filename = "../resources/ParallelLanes_01.osm"
     print("Beginning parse..." + str(datetime.now()))
-
+    
     street_network = parse(filename)
     print("Parse finished, beginning preprocess..." + str(datetime.now()))
     street_network.preprocess()
@@ -1573,3 +1475,4 @@ if __name__ == "__main__":
     geojson = street_network.export(format='geojson')
     print("Export finished" + str(datetime.now()))
     #print geojson
+
