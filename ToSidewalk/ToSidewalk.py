@@ -10,7 +10,7 @@ from nodes import Node, Nodes
 from ways import Sidewalk, Sidewalks, Street
 from utilities import window, latlng_offset_size
 from network import OSM, parse
-from datetime import datetime
+
 log.basicConfig(format="", level=log.DEBUG)
 
 # dummy_street = Street()
@@ -190,8 +190,12 @@ def connect_crosswalk_nodes(sidewalk_network, crosswalk_node_ids):
                 # Then also create a vector from the intersection node to the sidewalk node
                 v_adjacent_street_node = intersection_node.vector_to(adjacent_street_node, normalize=True)
                 shared_street_id = intersection_node.get_shared_way_ids(adjacent_street_node)[0]
-                # TODO: Bug: sometimes both sidewalk nodes are empty causing error.
-                sidewalk_node_1_from_intersection, sidewalk_node_2_from_intersection = intersection_node.get_sidewalk_nodes(shared_street_id)
+                try:
+                    sidewalk_node_1_from_intersection, sidewalk_node_2_from_intersection = intersection_node.get_sidewalk_nodes(shared_street_id)
+                except TypeError:
+                    # Todo: Issue #29. Sometimes shared_street_id does not exist in the intersection_node.
+                    log.exception("connect_crosswalk_nodes(): shared_street_id %s does not exist." % shared_street_id)
+                    continue
                 v_sidewalk_node_1_from_intersection = intersection_node.vector_to(sidewalk_node_1_from_intersection, normalize=True)
 
                 # Check which one of sidewalk_node_1_from_intersection and sidewalk_node_2_from_intersection are
@@ -206,7 +210,7 @@ def connect_crosswalk_nodes(sidewalk_network, crosswalk_node_ids):
                 else:
                     node_to_swap = sidewalk_node_2_from_intersection
 
-                sidewalk_network.swap_nodes(node_to_swap.id, crosswalk_node.id)
+                sidewalk_network.swap_nodes(node_to_swap, crosswalk_node)
         except ValueError:
             log.exception("Error while connecting crosswalk nodes, so skipping...")
             continue
@@ -235,10 +239,7 @@ def make_crosswalks(street_network, sidewalk_network):
                 # Make a dummy node between two vectors that form the largest angle
                 # Using the four nodes (3 original nodes and a dummy node), create crosswalk nodes
                 vectors = [intersection_node.vector_to(adj_street_node, normalize=True) for adj_street_node in adj_street_nodes]
-                try:
-                    angles = [math.acos(np.dot(vectors[i - 1], vectors[i])) for i in range(3)]  # Todo. Math domain errors #9
-                except ValueError:
-                    print "Debug"
+                angles = [math.acos(np.dot(vectors[i - 1], vectors[i])) for i in range(3)]
 
                 idx = np.argmax(angles)
                 vec_idx = (idx + 1) % 3
@@ -252,10 +253,7 @@ def make_crosswalks(street_network, sidewalk_network):
                 adj_street_nodes.insert(idx, dummy_node)
 
             # Create crosswalk nodes and add a cross walk to the data structure
-            try:
-                crosswalk_nodes = make_crosswalk_nodes(intersection_node, adj_street_nodes)
-            except ValueError:
-                print "Debug"
+            crosswalk_nodes = make_crosswalk_nodes(intersection_node, adj_street_nodes)
             crosswalk_node_ids = [node.id for node in crosswalk_nodes]
             crosswalk_node_ids.append(crosswalk_node_ids[0])
             # crosswalk = Sidewalk(None, crosswalk_node_ids, "crosswalk")
@@ -286,6 +284,7 @@ def make_crosswalks(street_network, sidewalk_network):
 def split_large_osm_file(filename):
     command = "java -Xmx4000M -jar splitter.jar --output=xml --output-dir=data --max-nodes=15000 " + filename + " > splitter.log"
     os.system(command)
+
 def merge_sidewalks(sidewalk_network1, sidewalk_network2):
     """Returns a merged sidewalk network
 
@@ -344,22 +343,10 @@ def main(street_network):
 
 if __name__ == "__main__":
     # filename = "../resources/SmallMap_03.osm"
-    #filename = "../resources/SmallMap_04.osm"
-    # filename = "../resources/ParallelLanes_03.osm"
-    # filename = "../resources/tests/out2340_3134.pbfr"
-    #street_network = parse(filename)
-    # street_network.parse_intersections()
-    #street_network.preprocess()
-    #sidewalk_network = main(street_network)
-
-    # street_network.merge_parallel_street_segments2()
-    #print sidewalk_network.export()
-
 
     #filename = "../resources/SmallMap_04.osm"
-    # filename = "../resources/ParallelLanes_03.osm"
-    # filename = "../resources/tests/out2340_3134.pbfr"
 
+    
 
 
 
@@ -438,3 +425,4 @@ if __name__ == "__main__":
 
     f = open('output.txt','w')
     print >>f, geojson
+    
