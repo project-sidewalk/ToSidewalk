@@ -1084,7 +1084,7 @@ class OSM(Network):
                     node = self.get_node(nid)
                     node.append_way(way.id)
         self.nodes.clean()  # Remove nodes that are not connected to anything.
-
+        self.clean_street_segmentation()
 
     def remove_short_segments(self, distance_threshold=15):
         """
