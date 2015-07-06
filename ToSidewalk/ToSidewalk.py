@@ -415,7 +415,7 @@ if __name__ == "__main__":
             street_network.preprocess()
             print(street_network.export())
         except:
-            log.debug("Error preprocessing this street network. Skipping.")
+            log.exception("Error preprocessing this street network. Skipping.")
             continue
 
         street_network.parse_intersections()

@@ -2,6 +2,7 @@ import json
 import math
 import numpy as np
 import itertools
+import logging as log
 from shapely.geometry import Polygon, LineString, Point
 from utilities import latlng_offset_size, window
 from types import *
@@ -360,6 +361,44 @@ class Street(Way):
         self.distance_to_sidewalk = 0.00008
         self.oneway = 'undefined'
         self.ref = 'undefined'
+        self.hough = []
+    def get_start_latitude(self):
+        start_node = self.get_nodes()[0]
+        return start_node.lat
+    def get_start_longitude(self):
+        start_node = self.get_nodes()[0]
+        return start_node.lng
+    def get_end_latitude(self):
+        end_node = self.get_nodes()[-1]
+        return end_node.lat
+    def get_end_longitude(self):
+        end_node = self.get_nodes()[-1]
+        return end_node.lng
+    def get_hough_point(self):
+
+        start_lat = self.get_start_latitude()
+        start_long = self.get_start_longitude()
+        end_lat = self.get_end_latitude()
+        end_long = self.get_end_longitude()
+        # Calculate what m and b are in slope-intercept form
+        x1 = start_lat
+        y1 = start_long
+        x2 = end_lat
+        y2 = end_long
+        x0 = 0
+        y0 = 0
+        r = abs((y2 - y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1)/math.sqrt((y2-y1)**2 + (x2 - x1)**2)
+        dx = x2 - x1
+        dy = y2 - y1
+        rads = math.atan2(-dy,dx)
+        rads %= 2 * math.pi
+        degs = math.radians((math.degrees(rads) + 90) % 360)
+
+
+        hough = [r, degs]
+        self.hough = hough
+
+        return hough
 
     def getdirection(self):
         """

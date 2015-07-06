@@ -4,12 +4,13 @@ from datetime import datetime
 from types import StringType
 from itertools import combinations
 from heapq import heappush, heappop, heapify
-
+from scipy import spatial
+from operator import itemgetter
 import json
 import logging as log
 import math
 import numpy as np
-
+import kdtree
 
 from nodes import Node, Nodes
 from ways import Street, Streets, Ways
@@ -152,6 +153,55 @@ class Network(object):
         """
         return self.ways.get_list()
 
+    def get_nearest_neighbor_pairs(self):
+        streets = self.get_ways()
+        # Dictionary will allow retrieval of original street using hough point as key
+        hough_point_street_dict = {}
+        allpoints = []
+        for street in streets:
+            houghpoint = street.get_hough_point()
+            hough_point_street_dict[houghpoint[0]] = street
+            allpoints.append(houghpoint)
+        tree = spatial.KDTree(allpoints)
+        treedata = tree.data.tolist()
+        treedata_unsorted = tree.data.tolist()
+        print(hough_point_street_dict)
+        for index,pair in enumerate(treedata):
+
+            neighbors = tree.query(pair,k=2)
+
+            if(neighbors[0][0] != 0):
+                distance_and_index = [neighbors[0][0],neighbors[1][0]]
+
+            else:
+                distance_and_index = [neighbors[0][1], neighbors[1][1]]
+
+            treedata[index].append(distance_and_index[0])
+            treedata[index].append(distance_and_index[1])
+
+        # Sort these pairs by distance
+        treedata = sorted(treedata,key=itemgetter(2))
+        parallel_pairs = []
+        for entry in treedata:
+            if 0.0 < entry[2] < 10:
+                new_pair = []
+                new_pair.append(entry[0])
+                new_pair.append(entry[1])
+                new_pair.append(treedata_unsorted[entry[3]][0])
+                new_pair.append(treedata_unsorted[entry[3]][1])
+                parallel_pairs.append(new_pair)
+        for pair in parallel_pairs:
+            street1 = hough_point_street_dict[pair[0]]
+            street2 = hough_point_street_dict[pair[2]]
+            street_pair = [street1, street2]
+            print("Streets " + str(street_pair[0].id) + " and " + str(street_pair[1].id))
+            print(street1.get_node_ids()[0])
+            print(street1.get_node_ids()[-1])
+            print(street2.get_node_ids()[0])
+            print(street2.get_node_ids()[-1])
+        #print("Parallel pairs" + str(parallel_pairs))
+        #print("Tree data "+ str(treedata))
+        #print "\n".join(str(x) for x in treedata)
     def parse_intersections(self):
         """
         TBD
@@ -1101,6 +1151,9 @@ class OSM(Network):
         for way_id in set(ways_to_remove):
             self.remove_way(way_id)
             self.join_connected_ways(segments_to_merge)
+    def find_streets_to_merge(self):
+        log.debug("Finding streets to merge, using kdtree")
+        streets = self.get_ways()
 
     def merge_parallel_street_segments3(self, threshold=0.5):
         """
@@ -1110,10 +1163,12 @@ class OSM(Network):
         """
         log.debug("Start merging the streets.")
         streets = self.get_ways()
+        self.get_nearest_neighbor_pairs()
         while True:
             streets = sorted(streets, key=lambda x: self.get_node(x.nids[0]).lat)
             do_break = True
             for street1 in streets:
+
                 overlap_list = []  # store tuples of (index, area_overlap pair)
                 for street2 in streets:
                     if street1 == street2 or set(street1.nids) == set(street2.nids):
