@@ -395,7 +395,7 @@ class Street(Way):
         degs = math.radians((math.degrees(rads) + 90) % 360)
 
 
-        hough = [r, degs]
+        hough = [r, degs*20]
         self.hough = hough
 
         return hough
