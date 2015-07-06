@@ -60,6 +60,15 @@ class Node(LatLng):
         if wid not in self.way_ids:
             self.way_ids.append(wid)
 
+    def append_ways(self, way_ids):
+        """
+
+        :param way_ids:
+        :return:
+        """
+        for wid in way_ids:
+            self.append_way(wid)
+
     def belongs_to(self):
         """TBD"""
         return self._parent_nodes
