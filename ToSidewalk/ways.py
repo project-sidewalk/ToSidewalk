@@ -26,12 +26,24 @@ class Way(object):
     def add_original_way(self, way):
         """
         This method adds a way id to _original_ways to keep track of from which
-        ways this way is created.
+        ways from OSM this way was created.
 
-        :param way: A Way object
+        :param way: A way id or a Way object
         """
-        if way.id not in self._original_ways:
-            self._original_ways.append(way.id)
+        if isinstance(way, Way):
+            way = way.id
+
+        if way not in self._original_ways:
+            self._original_ways.append(way)
+
+    def add_original_ways(self, ways):
+        """
+
+        :param ways:
+        :return:
+        """
+        for way in ways:
+            self.add_original_way(way)
 
     def belongs_to(self):
         """
@@ -103,6 +115,14 @@ class Way(object):
         network = ways.belongs_to()
         node_ids = self.get_node_ids()
         return [network.get_node(nid) for nid in node_ids]
+
+    def get_original_ways(self):
+        """
+        Returns original_ways
+
+        :return: A list of way ids
+        """
+        return self._original_ways
 
     def get_shared_node_ids(self, other):
         """

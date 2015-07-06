@@ -879,8 +879,8 @@ class OSM(Network):
                     for nodes in merged_nodes_list:
                         new_node_ids = [node.id for node in nodes]
                         new_street = self.create_street(None, new_node_ids)
-                        new_street.add_original_way(street1)
-                        new_street.add_original_way(street2)
+                        new_street.add_original_ways(street1.get_original_ways())
+                        new_street.add_original_ways(street2.get_original_ways())
                         new_streets.append(new_street)
 
                     streets.remove(street1)
@@ -1043,7 +1043,8 @@ class OSM(Network):
         print("Finished merging parallel street segments, beginning split streets" + str(datetime.now()))
         self.split_streets()
         print("Finished split streets, beginning update_ways" + str(datetime.now()))
-        self.update_ways()
+        self.update_node_cardinality()
+        self.update_node_way_connection()
         print("Finished update_ways, beginning merge_nodes" + str(datetime.now()))
         try:
             self.merge_nodes()
@@ -1076,7 +1077,7 @@ class OSM(Network):
         for way in self.get_ways():
             d = self.get_distance(way)
 
-            new_node_ids = [] # debug
+            new_node_ids = []  # debug
 
             if d < distance_threshold:
                 node1 = self.get_node(way.nids[0])
