@@ -82,14 +82,14 @@ class Way(object):
 
         feature = dict()
         feature['properties'] = {
-            'type': self.type,
-            'id': self.id,
+            'way_type': self.type,
+            'way_id': self.id,
             'user': self.user,
-            "osm_ways": self._original_ways,
+            'osm_ways': self._original_ways,
             'source': start.id,
             'target': end.id,
-            'cost': 1,
-            'reverse_cost': 1,
+            'cost': 1.0,
+            'reverse_cost': 1.0,
             'x1': start.lng,
             'y1': start.lat,
             'x2': end.lng,
@@ -97,7 +97,6 @@ class Way(object):
         }
         feature['type'] = 'Feature'
         feature['id'] = '%s' % (self.id)
-
 
         for nid in self.nids:
             node = network.get_node(nid)
