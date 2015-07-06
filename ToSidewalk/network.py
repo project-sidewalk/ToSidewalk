@@ -1524,8 +1524,9 @@ def parse(filename):
     street_nodes = Nodes()
     street_network = OSM(street_nodes, streets, bounds)
     for node in nodes_tree:
-        mynode = Node(node.get("id"), node.get("lat"), node.get("lon"))
-        street_network.add_node(mynode)
+        # mynode = Node(node.get("id"), node.get("lat"), node.get("lon"))
+        # street_network.add_node(mynode)
+        street_network.create_node(node.get("id"), node.get("lat"), node.get("lon"))
 
     valid_highways = {'primary', 'secondary', 'tertiary', 'residential'}
     for way in ways_tree:
@@ -1540,13 +1541,12 @@ def parse(filename):
             if street_nodes.get(nids[0]).lng > street_nodes.get(nids[-1]).lng:
                 nids = nids[::-1]
 
-            street = Street(way.get("id"), nids)
+            street = street_network.create_street(way.get("id"), nids)
             if oneway_tag is not None:
                 street.set_oneway_tag('yes')
             else:
                 street.set_oneway_tag('no')
             street.set_ref_tag(ref_tag)
-            street_network.add_way(street)
 
     return street_network
 

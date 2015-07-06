@@ -429,15 +429,27 @@ class Street(Way):
             return -1
 
     def set_oneway_tag(self, oneway_tag):
-        """TBD"""
+        """
+        This method sets the oneway property of the Way object to "yes" or "no".
+
+        :param str oneway_tag: One-way tag. Either "yes" or "no"
+        """
         self.oneway = oneway_tag
 
     def set_ref_tag(self, ref_tag):
-        """TBD"""
+        """
+        This method sets the reference property of the Way object.
+
+        :param str ref_tag: Reference tag. A string refering to a reference way/node/relation.
+        """
         self.ref = ref_tag
 
     def get_oneway_tag(self):
-        """TBD"""
+        """
+        This method returns the oneway property
+
+        :return: 
+        """
         return self.oneway
 
     def get_ref_tag(self):
