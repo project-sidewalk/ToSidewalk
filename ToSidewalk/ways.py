@@ -43,7 +43,7 @@ class Way(object):
 
         :return: A geojson data in a string format.
         """
-        if self._parent_ways and self._parent_ways.parent_network:
+        if self._parent_ways and self._parent_ways._parent_network:
             geojson = dict()
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
@@ -348,7 +348,7 @@ class Ways(object):
     def __init__(self):
         self.ways = {}
         self.intersection_node_ids = []
-        self.parent_network = None
+        self._parent_network = None
 
     def __eq__(self, other):
         return id(self) == id(other)
@@ -368,7 +368,7 @@ class Ways(object):
 
         :return: A Network object
         """
-        return self.parent_network
+        return self._parent_network
 
     def get(self, wid):
         """

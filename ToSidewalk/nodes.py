@@ -68,12 +68,12 @@ class Node(LatLng):
         """
         Export this node's information in Geojson format.
         """
-        if self._parent_nodes and self._parent_nodes.parent_network:
+        if self._parent_nodes and self._parent_nodes._parent_network:
             geojson = {}
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
             for way_id in self.way_ids:
-                way = self._parent_nodes.parent_network.ways.get(way_id)
+                way = self._parent_nodes._parent_network.ways.get(way_id)
                 geojson['features'].append(way.get_geojson_features())
             return json.dumps(geojson)
 

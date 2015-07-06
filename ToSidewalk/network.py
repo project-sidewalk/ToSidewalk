@@ -28,8 +28,8 @@ class Network(object):
         else:
             self.ways = ways
 
-        self.ways.parent_network = self
-        self.nodes.parent_network = self
+        self.ways._parent_network = self
+        self.nodes._parent_network = self
 
         self.bounds = [100000.0, 100000.0, -100000.0, -100000.0]  # min lat, min lng, max lat, and max lng
 
