@@ -20,7 +20,7 @@ class Node(LatLng):
         self.way_ids = []
         self.sidewalk_nodes = {}
         self.min_intersection_cardinality = 2
-        self.crosswalk_distance = 0.00010
+        self.crosswalk_distance = 0.00011
         self.confirmed = False
         self.made_from = []  # A list of nodes that this node is made from
 

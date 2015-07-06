@@ -48,7 +48,7 @@ def points_to_line(p1, p2):
     line = np.cross(p1_star, p2_star)
     return line[0], line[1], line[2]
 
-def latlng_offset(lat_origin, lng_origin, **kwargs):
+def latlng_offset(lat_origin, **kwargs):
     """
     Given an original coordinate (lat, lng) and displacement (dx, dy) in meters,
     return a new latlng coordinate.
@@ -68,7 +68,6 @@ def latlng_offset(lat_origin, lng_origin, **kwargs):
         dx = kwargs['dx']
         dy = kwargs['dy']
     elif 'vector' in kwargs and 'distance' in kwargs:
-        assert kwargs['vector'] is ListType
         v = np.array(kwargs['vector'])
         v /= np.linalg.norm(v)
         angle = math.atan2(v[1], v[0])

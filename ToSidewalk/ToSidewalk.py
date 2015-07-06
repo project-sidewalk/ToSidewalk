@@ -8,7 +8,7 @@ import shutil
 from latlng import LatLng
 from nodes import Node, Nodes
 from ways import Sidewalk, Sidewalks, Street
-from utilities import window, latlng_offset_size
+from utilities import window, latlng_offset_size, latlng_offset
 from network import OSM, parse
 
 log.basicConfig(format="", level=log.DEBUG)
@@ -128,7 +128,8 @@ def make_crosswalk_node(node, n1, n2):
     v2 = node.vector_to(n2, normalize=True)
     v = v1 + v2
     v /= np.linalg.norm(v)  # Normalize the vector
-    v_new = v_curr + v * node.crosswalk_distance
+    v_new = v_curr + v * 0.00011
+    # v_new = v_curr + np.array(latlng_offset(v_curr[0], vector=v, distance=7))
     return Node(None, v_new[0], v_new[1])
 
 
@@ -253,7 +254,10 @@ def make_crosswalks(street_network, sidewalk_network):
                 adj_street_nodes.insert(idx, dummy_node)
 
             # Create crosswalk nodes and add a cross walk to the data structure
-            crosswalk_nodes = make_crosswalk_nodes(intersection_node, adj_street_nodes)
+            try:
+                crosswalk_nodes = make_crosswalk_nodes(intersection_node, adj_street_nodes)
+            except ValueError:
+                raise
             crosswalk_node_ids = [node.id for node in crosswalk_nodes]
             crosswalk_node_ids.append(crosswalk_node_ids[0])
             # crosswalk = Sidewalk(None, crosswalk_node_ids, "crosswalk")
@@ -349,13 +353,13 @@ if __name__ == "__main__":
     street_network = parse(filename)
     # street_network.parse_intersections()
     street_network.preprocess()
-    # sidewalk_network = main(street_network)
+    sidewalk_network = main(street_network)
 
     # street_network.merge_parallel_street_segments2()
-    geojson = street_network.export()
+    geojson = sidewalk_network.export()
     print geojson
-    f = open('output.geojson', 'w')
-    print >>f, geojson
+    # f = open('output.geojson', 'w')
+    # print >>f, geojson
     # print sidewalk_network.export()
 
     #filename = "../resources/SmallMap_04.osm"
