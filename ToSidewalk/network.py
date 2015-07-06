@@ -179,6 +179,9 @@ class Network(object):
 
         :param nid: A node id
         """
+        if isinstance(nid, Node):
+            nid = nid.id
+
         node = self.nodes.get(nid)
         for way_id in node.get_way_ids():
             way = self.ways.get(way_id)
@@ -496,7 +499,7 @@ class OSM(Network):
             assert node2 is not None
             distance = node1.distance_to(node2)
         except AssertionError:
-            log.debug("Debug")
+            log.debug("Network.get_distance(): Debug")
         return distance
 
     def join_connected_ways(self, segments_to_merge):
@@ -606,6 +609,7 @@ class OSM(Network):
                 # Continue if you merged everything other than intersection nodes
                 continue
 
+            # merge the nodes that are around the end of the street
             for nid in street.get_node_ids()[-2:0:-1]:
                 target = self.get_node(nid)
                 distance = end.distance_to(target)
@@ -615,6 +619,30 @@ class OSM(Network):
                     break
 
             # Merge nodes in between if necessary...
+            while True:
+                nids = street.get_node_ids()[1:-1]
+                do_break = True
+                for nid1, nid2 in window(nids, 2):
+                    node1 = self.get_node(nid1)
+                    node2 = self.get_node(nid2)
+                    if node1.distance_to(node2) < distance_threshold:
+                        new_node = self.create_node(None, (node1.lat + node2.lat) / 2, (node1.lng + node2.lng) / 2)
+
+                        way_ids = node1.get_way_ids() + node2.get_way_ids()
+                        new_node.append_ways(way_ids)
+
+                        idx = street.nids.index(node1.id)
+                        street.insert_node(idx, new_node.id)
+                        try:
+                            street.remove_node(node1)
+                            street.remove_node(node2)
+                        except AttributeError:
+                            print street
+                            raise
+                        do_break = False
+                        break
+                if do_break:
+                    break
 
     def merge_parallel_street_segments(self, parallel_pairs):
         """
@@ -1008,11 +1036,11 @@ class OSM(Network):
         Preprocess and clean up the data
 
         """
-        print("Finding parallel street segments" + str(datetime.now()))
-        # parallel_segments = self.find_parallel_street_segments()
-        print("Finished finding parallel street segments" + str(datetime.now()))
-        # parallel_segments_filtered = self.join_connected_ways(parallel_segments)
-        print("Begin merging parallel street segments" + str(datetime.now()))
+        # print("Finding parallel street segments" + str(datetime.now()))
+        # # parallel_segments = self.find_parallel_street_segments()
+        # print("Finished finding parallel street segments" + str(datetime.now()))
+        # # parallel_segments_filtered = self.join_connected_ways(parallel_segments)
+        # print("Begin merging parallel street segments" + str(datetime.now()))
         # self.merge_parallel_street_segments(parallel_segments_filtered)
 
         self.split_streets()
@@ -1352,7 +1380,7 @@ class OSM(Network):
                 try:
                     street2_segmentation[0].append(street2_segmentation[1][0])
                 except IndexError:
-                    log.debug("Debug")
+                    log.debug("Network.segment_parallel_streets: Debug")
                 # if street2_segmentation[1]:
                 #     street2_segmentation[0].append(street2_segmentation[1][0])
                 # elif street2_segmentation[2]:
@@ -1362,7 +1390,7 @@ class OSM(Network):
                 try:
                     street2_segmentation[2].insert(0, street2_segmentation[1][-1])
                 except IndexError:
-                    log.debug("Debug")
+                    log.debug("Network.segment_parallel_streets: Debug")
                 # if street2_segmentation[1]:
                 #     street2_segmentation[2].insert(0, street2_segmentation[1][-1])
                 # elif street2_segmentation[0]:
@@ -1446,8 +1474,8 @@ class OSM(Network):
                 try:
                     if node.is_intersection():
                         intersection_nids.append(node.id)
-                except:
-                    log.debug("Debug")
+                except AttributeError:
+                    log.debug("Network.split_streets(): Debug")
             # intersection_nids = [nid for nid in way.nids if self.get_node(nid).is_intersection()]
             intersection_indices = [way.nids.index(nid) for nid in intersection_nids]
             if len(intersection_indices) > 0:

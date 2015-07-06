@@ -159,18 +159,30 @@ class Way(object):
 
     def remove_node(self, nid_to_remove):
         """
-        Remove a node from the data structure
+        Use Network.remove_node!
+
+        Remove a node from nid (a list of node ids)
         http://stackoverflow.com/questions/2793324/is-there-a-simple-way-to-delete-a-list-element-by-value-in-python
 
         :param nid_to_remove: A node id
         """
-        self.nids = [nid for nid in self.nids if nid != nid_to_remove]
+        if isinstance(nid_to_remove, Node):
+            nid_to_remove = nid_to_remove.id
 
-        temp_ways = self.belongs_to()
-        if temp_ways and len(self.nids) < 2:
-            temp_network = temp_ways.belongs_to()
-            if temp_network:
-                temp_network.remove_way(self)
+        self.nids = [nid for nid in self.nids if nid != nid_to_remove]
+        #
+        # temp_ways = self.belongs_to()
+        # if temp_ways:
+        #     temp_network = temp_ways.belongs_to()
+        #     if temp_network:
+        #         node = temp_network.get_node(nid_to_remove)
+        #         node.remove_way_id(self.id)
+        #
+        #         # if len(node.get_way_ids()) < 1:
+        #         #     temp_network.remove_node(node)
+        #
+        #         if len(self.nids) < 2:
+        #             temp_network.remove_way(self)
 
     def swap_nodes(self, node_from, node_to):
         """

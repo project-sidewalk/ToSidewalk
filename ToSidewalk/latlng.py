@@ -19,7 +19,10 @@ class LatLng(object):
         :param latlng: A LatLng object
         :return: Distance in meters
         """
-        return haversine(radians(self.lng), radians(self.lat), radians(latlng.lng), radians(latlng.lat))
+        try:
+            return haversine(radians(self.lng), radians(self.lat), radians(latlng.lng), radians(latlng.lat))
+        except AttributeError:
+            raise
 
     def location(self):
         """Returns a tuple of latlng
