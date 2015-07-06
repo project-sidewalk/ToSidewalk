@@ -194,11 +194,11 @@ class Network(object):
             len_before = len(way.nids)
             way.remove_node(nid)
             len_after = len(way.nids)
-            try:
-                assert len_after == len_before - 1
-                assert len_after >= 2
-            except AssertionError:
-                raise
+            # try:
+            #     assert len_after == len_before - 1
+            #     assert len_after >= 2
+            # except AssertionError:
+            #     raise
 
         self.nodes.remove(nid)
 
