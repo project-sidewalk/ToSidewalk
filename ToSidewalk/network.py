@@ -1020,7 +1020,7 @@ class OSM(Network):
     def preprocess(self):
         """
         Preprocess and clean up the data
-        :return:
+
         """
         print("Finding parallel street segments" + str(datetime.now()))
         # parallel_segments = self.find_parallel_street_segments()
@@ -1053,7 +1053,6 @@ class OSM(Network):
 
         self.remove_short_segments()  # remove short segments
 
-
         # Remove ways that have only a single node.
         for way in self.ways.get_list():
             if len(way.nids) < 2:
@@ -1063,8 +1062,6 @@ class OSM(Network):
             for way_id in node.get_way_ids():
                 if not self.ways.has(way_id):
                     node.remove_way_id(way_id)
-
-        return
 
     def remove_short_segments(self, distance_threshold=15):
         """
@@ -1454,8 +1451,7 @@ class OSM(Network):
         """
         Split ways into segments at intersections
         """
-        # new_streets = Streets()
-        # for way in self.ways.get_list():
+
         for way in self.get_ways():
             intersection_nids = []
             for node in way.get_nodes():
@@ -1481,14 +1477,12 @@ class OSM(Network):
                     for idx in intersection_indices:
                         if idx != 0 and idx != len(way.nids) - 1:
                             new_nids = way.nids[prev_idx:idx + 1]
-                            new_way = self.create_street(None, new_nids)
+                            street = self.create_street(None, new_nids)
+                            street.add_parent_way(way.id)
                             prev_idx = idx
                     new_nids = way.nids[prev_idx:]
                     self.create_street(None, new_nids)
                     self.remove_way(way.id)
-        # self.ways = new_streets
-
-        return
 
     def update_ways(self):
         # Update the way_ids

@@ -18,9 +18,16 @@ class Way(object):
         self.nids = list(nids)
         self.type = type
         self.user = 'test'
-        self.parent_ways = None
+        self._parent_ways = None
 
         assert len(self.nids) > 1
+
+    def add_parent_way(self, way_id):
+        """
+        This method adds par
+        :param way_id:
+        :return:
+        """
 
     def belongs_to(self):
         """
@@ -28,7 +35,7 @@ class Way(object):
 
         :return: A Ways object
         """
-        return self.parent_ways
+        return self._parent_ways
 
     def export(self):
         """
@@ -36,7 +43,7 @@ class Way(object):
 
         :return: A geojson data in a string format.
         """
-        if self.parent_ways and self.parent_ways.parent_network:
+        if self._parent_ways and self._parent_ways.parent_network:
             geojson = dict()
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
@@ -63,8 +70,10 @@ class Way(object):
         feature['id'] = 'way/%s' % (self.id)
 
         coordinates = []
+        ways = self.belongs_to()
+        network = ways.belongs_to()
         for nid in self.nids:
-            node = self.parent_ways.parent_network.nodes.get(nid)
+            node = network.get_node(nid)
             coordinates.append([node.lng, node.lat])
         feature['geometry'] = {
             'type': 'LineString',
@@ -350,7 +359,7 @@ class Ways(object):
 
         :param way: A Way object
         """
-        way.parent_ways = self
+        way._parent_ways = self
         self.ways[way.id] = way
 
     def belongs_to(self):
@@ -418,8 +427,10 @@ class Street(Way):
 
         :return:
         """
-        startnode = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[0])
-        endnode = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[-1])
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+        startnode = network.get_node(self.get_node_ids()[0])
+        endnode = network.get_node(self.get_node_ids()[-1])
         startlat = startnode.lat
         endlat = endnode.lat
 
@@ -467,8 +478,10 @@ class Street(Way):
 
     def get_length(self):
         """TBD"""
-        start_node = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[0])
-        end_node = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[-1])
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+        start_node = network.get_node(self.get_node_ids()[0])
+        end_node = network.get_node(self.get_node_ids()[-1])
         vec = np.array(start_node.location()) - np.array(end_node.location())
         length = abs(vec[0] - vec[-1])
         return length
