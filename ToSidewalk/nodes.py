@@ -106,13 +106,13 @@ class Node(LatLng):
         """
         feature = dict()
         feature['properties'] = {
-            'id': self.id,
+            'node_id': self.id,
             'lat': self.lat,
             'lng': self.lng,
             'way_ids': str(self.way_ids)
         }
         feature['type'] = 'Feature'
-        feature['id'] = '%s' % (self.id)
+        feature['node_id'] = '%s' % (self.id)
 
         feature['geometry'] = {
             'type': 'Point',
