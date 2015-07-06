@@ -386,10 +386,16 @@ class OSM(Network):
             geojson = {}
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
-            for way in self.ways.get_list():
+
+            # Add ways
+            for way in self.get_ways():
                 feature = way.get_geojson_features()
                 geojson['features'].append(feature)
 
+            # Add nodes
+            for node in self.get_nodes():
+                feature = node.get_geojson_features()
+                geojson['features'].append(feature)
             return json.dumps(geojson)
 
     def find_parallel_street_segments(self):

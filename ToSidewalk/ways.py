@@ -73,22 +73,32 @@ class Way(object):
 
         :return: A dictionary of geojson features
         """
+        coordinates = []
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+
+        start = network.get_node(self.nids[0])
+        end = network.get_node(self.nids[-1])
+
         feature = dict()
         feature['properties'] = {
             'type': self.type,
             'id': self.id,
             'user': self.user,
-            "stroke-width": 2,
-            "stroke-opacity": 1,
-            'stroke': '#555555', # '#e93f3f',
-            "osm_ways": self._original_ways
+            "osm_ways": self._original_ways,
+            'source': start.id,
+            'target': end.id,
+            'cost': 1,
+            'reverse_cost': 1,
+            'x1': start.lng,
+            'y1': start.lat,
+            'x2': end.lng,
+            'y2': end.lat
         }
         feature['type'] = 'Feature'
-        feature['id'] = 'way/%s' % (self.id)
+        feature['id'] = '%s' % (self.id)
 
-        coordinates = []
-        ways = self.belongs_to()
-        network = ways.belongs_to()
+
         for nid in self.nids:
             node = network.get_node(nid)
             coordinates.append([node.lng, node.lat])

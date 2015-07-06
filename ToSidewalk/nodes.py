@@ -83,8 +83,29 @@ class Node(LatLng):
 
         :return: A list of nodes
         """
-        network = _parent_nodes.belongs_to()
+        network = self._parent_nodes.belongs_to()
         return network.get_adjacent_nodes(self)
+
+    def get_geojson_features(self):
+        """
+        A utilitie method to export the data as a geojson dump
+
+        :return: A dictionary of geojson features
+        """
+        feature = dict()
+        feature['properties'] = {
+            'id': self.id,
+            'lat': self.lat,
+            'lng': self.lng
+        }
+        feature['type'] = 'Feature'
+        feature['id'] = '%s' % (self.id)
+
+        feature['geometry'] = {
+            'type': 'Point',
+            'coordinates': [self.lng, self.lat]
+        }
+        return feature
 
     def get_way_ids(self):
         """ Return a list of way_ids that are connected to this node.
