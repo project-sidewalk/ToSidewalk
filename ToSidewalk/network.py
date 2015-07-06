@@ -309,14 +309,15 @@ class OSM(Network):
 
     def clean_street_segmentation(self):
         """
-        Go through nodes and find ones that have two connected ways (nodes should have either one or more than two ways)
+        Go through nodes and find ones that have two connected ways
+        (nodes should have either one or more than two ways)
         """
         for node in self.nodes.get_list():
             try:
                 if len(node.get_way_ids()) == 2:
                     way_id_1, way_id_2 = node.get_way_ids()
-                    way_1 = self.ways.get(way_id_1)
-                    way_2 = self.ways.get(way_id_2)
+                    way_1 = self.get_way(way_id_1)
+                    way_2 = self.get_way(way_id_2)
 
                     # Given that the streets are split, node's index in each way's nids (a list of node ids) should
                     # either be 0 or else.
@@ -330,17 +331,14 @@ class OSM(Network):
                         combined_nids = way_1.nids + way_2.nids[1::-1]
 
                     # Create a new way from way_1 and way_2. Then remove the two ways from self.way
-                    new_street = Street(None, combined_nids, "footway")
-                    self.add_way(new_street)
+                    new_street = self.create_street(None, combined_nids)
+                    new_street.add_original_way(way_1)
+                    new_street.add_original_way(way_2)
                     self.remove_way(way_id_1)
-                    # ToDO: Sometimes way_id_1 is the same as way_id_2, causing KeyError when removing way 2
-                    #if(way_id_1 != way_id_2):
                     self.remove_way(way_id_2)
             except Exception as e:
                 log.exception("Something went wrong while cleaning street segmentation, so skipping...")
                 continue
-        return
-
 
     def export(self, format="geojson"):
         """
@@ -599,40 +597,40 @@ class OSM(Network):
 
     def merge_nodes(self, distance_threshold=15):
         """
-        Merge nodes that are close to intersection nodes. Then merge nodes that are
+        Remove nodes that are close to intersection nodes. Then merge nodes that are
         close to each other.
         """
-        for street in self.ways.get_list():
+        for street in self.get_ways():
             # if len(street.nids) < 2:
-            if len(street.nids) <= 2:
+            if len(street.get_node_ids()) <= 2:
                 # Skip. You should not merge two intersection nodes
                 continue
 
-            start = self.nodes.get(street.nids[0])
-            end = self.nodes.get(street.nids[-1])
+            start = self.get_node(street.nids[0])
+            end = self.get_node(street.nids[-1])
 
             # Merge the nodes around the beginning of the street
-            for nid in street.nids[1:-1]:
-                target = self.nodes.get(nid)
+            for nid in street.get_node_ids()[1:-1]:
+                target = self.get_node(nid)
                 distance = start.distance_to(target)
                 if distance < distance_threshold:
                     self.remove_node(nid)
                 else:
                     break
 
-            if len(street.nids) <= 2:
-                # Done, if you merged everything other than intersection nodes
+            if len(street.get_node_ids()) <= 2:
+                # Continue if you merged everything other than intersection nodes
                 continue
 
-            for nid in street.nids[-2:0:-1]:
-                target = self.nodes.get(nid)
+            for nid in street.get_node_ids()[-2:0:-1]:
+                target = self.get_node(nid)
                 distance = end.distance_to(target)
                 if distance < distance_threshold:
                     self.remove_node(nid)
                 else:
                     break
 
-        return
+            # Merge nodes in between if necessary...
 
     def merge_parallel_street_segments(self, parallel_pairs):
         """
@@ -869,16 +867,20 @@ class OSM(Network):
                     street2 = overlap_list[0][1]
                     merged_nodes_list = self.merge_streets(street1, street2)
 
+                    # Add the new nodes into this network
                     flattened = []
                     for nodes in merged_nodes_list:
                         flattened += nodes
                     flattened = list(set(flattened))
                     self.add_nodes(flattened)
 
+                    # Create streets from the new nodes
                     new_streets = []
                     for nodes in merged_nodes_list:
                         new_node_ids = [node.id for node in nodes]
                         new_street = self.create_street(None, new_node_ids)
+                        new_street.add_original_way(street1)
+                        new_street.add_original_way(street2)
                         new_streets.append(new_street)
 
                     streets.remove(street1)
@@ -896,9 +898,10 @@ class OSM(Network):
     def merge_streets(self, street1, street2):
         """
         Merge two streets. You should pass two parallel segments.
-        :param street1:
-        :param street2:
-        :return: A new street
+
+        :param street1: A Street object
+        :param street2: Anotehr Street object
+        :return: A list of lists of nodes
         """
         # Create a base vector that defines the direction of a parallel line
         nodes1 = [self.get_node(nid) for nid in street1.get_node_ids()]
@@ -953,7 +956,6 @@ class OSM(Network):
         new_nids = [node.id for node in new_nodes]
         indices = [new_nids.index(nid) for nid in [street1.nids[0], street1.nids[-1], street2.nids[0], street2.nids[-1]]]
         indices = sorted(list(set(indices)))
-
 
         # Segmenting nodes into couple of sets
         ret = []
@@ -1030,7 +1032,8 @@ class OSM(Network):
         # self.merge_parallel_street_segments(parallel_segments_filtered)
 
         self.split_streets()
-        self.update_ways()
+        self.update_node_cardinality()
+        self.update_node_way_connection()
         self.merge_nodes()
         self.clean_street_segmentation()
 
@@ -1478,22 +1481,29 @@ class OSM(Network):
                         if idx != 0 and idx != len(way.nids) - 1:
                             new_nids = way.nids[prev_idx:idx + 1]
                             street = self.create_street(None, new_nids)
-                            street.add_parent_way(way.id)
+                            street.add_original_way(way)
                             prev_idx = idx
                     new_nids = way.nids[prev_idx:]
-                    self.create_street(None, new_nids)
+                    street = self.create_street(None, new_nids)
+                    street.add_original_way(way)
                     self.remove_way(way.id)
 
-    def update_ways(self):
-        # Update the way_ids
+    def update_node_cardinality(self):
+        """
+        Update the nodes' minimum intersection cardinality.
+        """
         for node in self.nodes.get_list():
             # Now the minimum number of ways connected has to be 3 for the node to be an intersection
             node.way_ids = []
             node.min_intersection_cardinality = 3
-        for street in self.ways.get_list():
-            for nid in street.nids:
-                node = self.nodes.get(nid)
 
+    def update_node_way_connection(self):
+        """
+        Go through each way and update which nodes belongs to this way
+        """
+        for street in self.get_ways():
+            for nid in street.get_node_ids():
+                node = self.get_node(nid)
                 if node:
                     node.append_way(street.id)
 

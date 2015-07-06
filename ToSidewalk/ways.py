@@ -19,15 +19,19 @@ class Way(object):
         self.type = type
         self.user = 'test'
         self._parent_ways = None
+        self._original_ways = []
 
         assert len(self.nids) > 1
 
-    def add_parent_way(self, way_id):
+    def add_original_way(self, way):
         """
-        This method adds par
-        :param way_id:
-        :return:
+        This method adds a way id to _original_ways to keep track of from which
+        ways this way is created.
+
+        :param way: A Way object
         """
+        if way.id not in self._original_ways:
+            self._original_ways.append(way.id)
 
     def belongs_to(self):
         """
