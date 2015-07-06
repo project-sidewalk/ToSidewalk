@@ -352,7 +352,10 @@ if __name__ == "__main__":
     # sidewalk_network = main(street_network)
 
     # street_network.merge_parallel_street_segments2()
-    print street_network.export()
+    geojson = street_network.export()
+    print geojson
+    f = open('output.geojson', 'w')
+    print >>f, geojson
     # print sidewalk_network.export()
 
     #filename = "../resources/SmallMap_04.osm"
@@ -435,6 +438,6 @@ if __name__ == "__main__":
     print("3")
     geojson = sidewalk_network_main.export(format="geojson")
 
-    f = open('output.txt','w')
+    f = open('output.geojson','w')
     print >>f, geojson
     """

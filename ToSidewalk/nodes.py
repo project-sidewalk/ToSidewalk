@@ -58,7 +58,10 @@ class Node(LatLng):
         :return:
         """
         if wid not in self.way_ids:
+            len_before = len(self.way_ids)
             self.way_ids.append(wid)
+            len_after = len(self.way_ids)
+            assert len_before + 1 == len_after
 
     def append_ways(self, way_ids):
         """
@@ -105,7 +108,8 @@ class Node(LatLng):
         feature['properties'] = {
             'id': self.id,
             'lat': self.lat,
-            'lng': self.lng
+            'lng': self.lng,
+            'way_ids': str(self.way_ids)
         }
         feature['type'] = 'Feature'
         feature['id'] = '%s' % (self.id)

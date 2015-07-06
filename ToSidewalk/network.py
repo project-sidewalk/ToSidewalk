@@ -68,7 +68,7 @@ class Network(object):
         self.ways.add(way)
         for nid in way.nids:
             # self.nodes.get(nid).way_ids.append(way.id)
-            node = self.nodes.get(nid)
+            node = self.get_node(nid)
             node.append_way(way.id)
 
     def add_ways(self, ways):
@@ -103,6 +103,10 @@ class Network(object):
         :return: A new Street object
         """
         street = Street(street_id, nids, type)
+        for nid in nids:
+            node = self.get_node(nid)
+            node.append_way(street.id)
+
         self.add_way(street)
         return street
 
@@ -142,7 +146,8 @@ class Network(object):
         return self.nodes.get(node_id)
 
     def get_nodes(self):
-        """ Get all the Node objects
+        """
+        Get all the Node objects
 
         :return: A list of Node objects
         """
@@ -185,9 +190,15 @@ class Network(object):
         node = self.nodes.get(nid)
         for way_id in node.get_way_ids():
             way = self.ways.get(way_id)
-            way.remove_node(nid)
 
-            assert way.nids >= 2
+            len_before = len(way.nids)
+            way.remove_node(nid)
+            len_after = len(way.nids)
+            try:
+                assert len_after == len_before - 1
+                assert len_after >= 2
+            except AssertionError:
+                raise
 
         self.nodes.remove(nid)
 
@@ -204,7 +215,15 @@ class Network(object):
 
                 node = self.get_node(nid)
                 if node:
+                    len_way_ids_before = len(node.get_way_ids())
                     node.remove_way_id(way_id)
+                    len_way_ids_after = len(node.get_way_ids())
+                    # try:
+                    #     assert len_way_ids_before - 1 == len_way_ids_after
+                    # except AssertionError:
+                    #     print len_way_ids_before, len_way_ids_after
+                    #     raise
+
                     way_ids = node.get_way_ids()
                     # Delete the node if it is no longer associated with any ways
                     if len(way_ids) == 0:
@@ -303,7 +322,7 @@ class OSM(Network):
         if bounds:
             self.bounds = bounds
 
-    def clean_nodes(self):
+    def clean(self):
         """
         Clean up dangling nodes that are not connected to any ways
         :return:
@@ -341,7 +360,7 @@ class OSM(Network):
                     self.remove_way(way_id_2)
             except Exception as e:
                 log.exception("Something went wrong while cleaning street segmentation, so skipping...")
-                continue
+                raise
 
     def export(self, format="geojson"):
         """
@@ -950,8 +969,10 @@ class OSM(Network):
             vec = origin.vector_to(node)
             d = np.dot(base_vector, vec)
             lat_new, lng_new = origin.vector() + d * base_vector
-            node_new = Node(node.id, lat_new, lng_new)
+            node_new = self.create_node(node.id, lat_new, lng_new)
+            # node_new = Node(node.id, lat_new, lng_new)
             node_new.made_from.append(node)
+            node_new.append_ways(node.get_way_ids())
             new_nodes.append(node_new)
 
         def cmp_with_projection(n1, n2):
@@ -1045,39 +1066,25 @@ class OSM(Network):
 
         self.split_streets()
         self.update_node_cardinality()
-        self.update_node_way_connection()
         self.merge_nodes()
         self.clean_street_segmentation()
-
         self.merge_parallel_street_segments3()
-        self.clean_nodes()
 
-        print("Finished merging parallel street segments, beginning split streets" + str(datetime.now()))
-        self.split_streets()
-        print("Finished split streets, beginning update_ways" + str(datetime.now()))
-        self.update_node_cardinality()
-        self.update_node_way_connection()
-        print("Finished update_ways, beginning merge_nodes" + str(datetime.now()))
-        try:
-            self.merge_nodes()
-        except AttributeError:
-            raise
-        print("Finished merge_nodes, beginning clean_street_segmentation" + str(datetime.now()))
-        # Clean up and so I can make a sidewalk network
-        self.clean_street_segmentation()
-        print("Finished clean_street_segmentation" + str(datetime.now()))
-
+        # Clean up
         self.remove_short_segments()  # remove short segments
+        self.merge_nodes()
 
-        # Remove ways that have only a single node.
+        for node in self.get_nodes():
+            node.way_ids = []
         for way in self.ways.get_list():
             if len(way.nids) < 2:
                 self.remove_way(way.id)
+            else:
+                for nid in way.get_node_ids():
+                    node = self.get_node(nid)
+                    node.append_way(way.id)
+        self.nodes.clean()  # Remove nodes that are not connected to anything.
 
-        for node in self.get_nodes():
-            for way_id in node.get_way_ids():
-                if not self.ways.has(way_id):
-                    node.remove_way_id(way_id)
 
     def remove_short_segments(self, distance_threshold=15):
         """
@@ -1089,14 +1096,11 @@ class OSM(Network):
         for way in self.get_ways():
             d = self.get_distance(way)
 
-            new_node_ids = []  # debug
-
             if d < distance_threshold:
                 node1 = self.get_node(way.nids[0])
                 node2 = self.get_node(way.nids[-1])
                 new_node = self.create_node(None, (node1.lat + node2.lat) / 2, (node1.lng + node2.lng) / 2)
                 assert new_node.id in self.nodes.nodes
-                new_node_ids.append(new_node.id)
 
                 # Go through all the ways that are connected to node1 (and node 2), then switch node1's nid with
                 # the new node's nid.
@@ -1120,6 +1124,8 @@ class OSM(Network):
                             temp_way.swap_nodes(node2.id, new_node.id)
                         new_node.append_way(way_id)
 
+                node1.remove_way_id(way.id)
+                node2.remove_way_id(way.id)
                 self.remove_way(way.id)
 
     def segment_parallel_streets(self, street_pair):
@@ -1475,8 +1481,7 @@ class OSM(Network):
                     if node.is_intersection():
                         intersection_nids.append(node.id)
                 except AttributeError:
-                    log.debug("Network.split_streets(): Debug")
-            # intersection_nids = [nid for nid in way.nids if self.get_node(nid).is_intersection()]
+                    raise
             intersection_indices = [way.nids.index(nid) for nid in intersection_nids]
             if len(intersection_indices) > 0:
                 # Do not split streets if (i) there is only one intersection node and it is the on the either end of the
@@ -1507,7 +1512,6 @@ class OSM(Network):
         """
         for node in self.nodes.get_list():
             # Now the minimum number of ways connected has to be 3 for the node to be an intersection
-            node.way_ids = []
             node.min_intersection_cardinality = 3
 
     def update_node_way_connection(self):
@@ -1564,6 +1568,8 @@ def parse(filename):
             else:
                 street.set_oneway_tag('no')
             street.set_ref_tag(ref_tag)
+
+
 
     return street_network
 
