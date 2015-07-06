@@ -362,7 +362,7 @@ class OSM(Network):
                 log.exception("Something went wrong while cleaning street segmentation, so skipping...")
                 raise
 
-    def export(self, format="geojson"):
+    def export(self, format="geojson", data_type="ways"):
         """
         Export the node and way data.
         Todo: Implement geojson format for export.
@@ -409,15 +409,16 @@ class OSM(Network):
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
 
-            # Add ways
-            for way in self.get_ways():
-                feature = way.get_geojson_features()
-                geojson['features'].append(feature)
-
-            # Add nodes
-            for node in self.get_nodes():
-                feature = node.get_geojson_features()
-                geojson['features'].append(feature)
+            if data_type == "ways":
+                # Add ways
+                for way in self.get_ways():
+                    feature = way.get_geojson_features()
+                    geojson['features'].append(feature)
+            elif data_type == "nodes":
+                # Add nodes
+                for node in self.get_nodes():
+                    feature = node.get_geojson_features()
+                    geojson['features'].append(feature)
             return json.dumps(geojson)
 
     def find_parallel_street_segments(self):
