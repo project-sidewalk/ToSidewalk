@@ -345,12 +345,10 @@ def main(street_network):
     return sidewalk_network
 
 if __name__ == "__main__":
-    # filename = "../resources/SmallMap_03.osm"
+    filename = "../resources/SmallMap_04.osm"
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/tests/out2340_3134.pbfr"
-    #street_network = parse(filename)
-    # street_network.parse_intersections()
-
+    street_network = parse(filename)
     street_network.preprocess()
     sidewalk_network = main(street_network)
 
@@ -401,6 +399,7 @@ if __name__ == "__main__":
 
     #filename = "../resources/SmallMap_04.osm"
 
+    """
 
     # Clear the data directory before beginning
     shutil.rmtree('data/')
@@ -460,3 +459,5 @@ if __name__ == "__main__":
 
     f = open('output.geojson','w')
     print >>f, geojson
+
+    """

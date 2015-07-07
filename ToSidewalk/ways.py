@@ -182,8 +182,8 @@ class Way(object):
         :param nid_from: A node id
         :param nid_to: A node id
         """
-        index_from = self.nids.index(nid_from)
-        self.nids[index_from] = nid_to
+        index_from = self.nids.index(node_from)
+        self.nids[index_from] = node_to
 
     def angle(self):
         """
