@@ -1630,7 +1630,7 @@ def parse_intersections(nodes, ways):
     ways.set_intersection_node_ids(intersection_node_ids)
     return
 
-
+"""
 if __name__ == "__main__":
     # filename = "../resources/SegmentedStreet_01.osm"
     filename = "../resources/ParallelLanes_01.osm"
@@ -1646,3 +1646,4 @@ if __name__ == "__main__":
     geojson = street_network.export(format='geojson')
     print("Export finished" + str(datetime.now()))
     #print geojson
+"""
