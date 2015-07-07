@@ -8,7 +8,7 @@ import shutil
 from latlng import LatLng
 from nodes import Node, Nodes
 from ways import Sidewalk, Sidewalks, Street
-from utilities import window, latlng_offset_size
+from utilities import window, latlng_offset_size, latlng_offset
 from network import OSM, parse
 from datetime import datetime
 log.basicConfig(format="", level=log.DEBUG)
@@ -128,7 +128,8 @@ def make_crosswalk_node(node, n1, n2):
     v2 = node.vector_to(n2, normalize=True)
     v = v1 + v2
     v /= np.linalg.norm(v)  # Normalize the vector
-    v_new = v_curr + v * node.crosswalk_distance
+    v_new = v_curr + v * 0.00011
+    # v_new = v_curr + np.array(latlng_offset(v_curr[0], vector=v, distance=7))
     return Node(None, v_new[0], v_new[1])
 
 
@@ -255,7 +256,8 @@ def make_crosswalks(street_network, sidewalk_network):
             try:
                 crosswalk_nodes = make_crosswalk_nodes(intersection_node, adj_street_nodes)
             except ValueError:
-                print "Debug"
+                raise
+
             crosswalk_node_ids = [node.id for node in crosswalk_nodes]
             crosswalk_node_ids.append(crosswalk_node_ids[0])
             # crosswalk = Sidewalk(None, crosswalk_node_ids, "crosswalk")
@@ -344,16 +346,35 @@ def main(street_network):
 
 if __name__ == "__main__":
     # filename = "../resources/SmallMap_03.osm"
-    #filename = "../resources/SmallMap_04.osm"
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/tests/out2340_3134.pbfr"
     #street_network = parse(filename)
     # street_network.parse_intersections()
-    #street_network.preprocess()
-    #sidewalk_network = main(street_network)
+
+    street_network.preprocess()
+    sidewalk_network = main(street_network)
 
     # street_network.merge_parallel_street_segments2()
-    #print sidewalk_network.export()
+    with open("../resources/SmallMap_04_Sidewalks.geojson", "wb") as f:
+        geojson = sidewalk_network.export(data_type="ways")
+        print >>f, geojson
+
+    with open("../resources/SmallMap_04_SidewalkNodes.geojson", "wb") as f:
+        geojson = sidewalk_network.export(data_type="nodes")
+        print >>f, geojson
+
+    with open("../resources/SmallMap_04_Streets.geojson", "wb") as f:
+        geojson = street_network.export(data_type="ways")
+        print >>f, geojson
+
+    with open("../resources/SmallMap_04_StreetNodes.geojson", "wb") as f:
+        geojson = street_network.export(data_type="nodes")
+        print >>f, geojson
+
+    print geojson
+    # f = open('output.geojson', 'w')
+    # print >>f, geojson
+    # print sidewalk_network.export()
 
 
     #filename = "../resources/SmallMap_04.osm"
@@ -437,5 +458,5 @@ if __name__ == "__main__":
     print("3")
     geojson = sidewalk_network_main.export(format="geojson")
 
-    f = open('output.txt','w')
+    f = open('output.geojson','w')
     print >>f, geojson

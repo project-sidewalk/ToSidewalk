@@ -13,18 +13,18 @@ class TestLatLngMethods(unittest.TestCase):
         latlng1 = [math.radians(x) for x in latlng1]
         latlng2 = [math.radians(x) for x in latlng2]
 
-        distance = 0.549
+        distance = 549
         error = abs(distance - haversine(latlng1[1], latlng1[0], latlng2[1], latlng2[0]))
-        self.assertTrue(error < 0.001)
+        self.assertTrue(error < 1)  # Error should be below 1m
 
         latlng1 = [38.900665, -76.983008]
         latlng2 = [38.9007234, -76.98197]
         latlng1 = [math.radians(x) for x in latlng1]
         latlng2 = [math.radians(x) for x in latlng2]
-        distance = 0.09
+        distance = 90
 
         error = abs(distance - haversine(latlng1[1], latlng1[0], latlng2[1], latlng2[0]))
-        self.assertTrue(error < 0.001)
+        self.assertTrue(error < 1)  # Error should be below 1m
 
     def test_equal(self):
         latlng1 = [38.898556, -77.037852]
