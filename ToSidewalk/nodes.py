@@ -20,7 +20,7 @@ class Node(LatLng):
         self.way_ids = []
         self.sidewalk_nodes = {}
         self.min_intersection_cardinality = 2
-        self.crosswalk_distance = 0.00010
+        self.crosswalk_distance = 0.00011
         self.confirmed = False
         self.made_from = []  # A list of nodes that this node is made from
 
@@ -47,18 +47,35 @@ class Node(LatLng):
         :return:
         """
         if wid not in self.way_ids:
+            len_before = len(self.way_ids)
             self.way_ids.append(wid)
+            len_after = len(self.way_ids)
+            assert len_before + 1 == len_after
+
+    def append_ways(self, way_ids):
+        """
+
+        :param way_ids:
+        :return:
+        """
+        for wid in way_ids:
+            self.append_way(wid)
 
     def belongs_to(self):
         return self._parent_nodes
 
     def export(self):
-        if self._parent_nodes and self._parent_nodes.parent_network:
+
+        """
+        Export this node's information in Geojson format.
+        """
+        if self._parent_nodes and self._parent_nodes._parent_network:
+
             geojson = {}
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
             for way_id in self.way_ids:
-                way = self._parent_nodes.parent_network.ways.get(way_id)
+                way = self._parent_nodes._parent_network.ways.get(way_id)
                 geojson['features'].append(way.get_geojson_features())
             return json.dumps(geojson)
 
@@ -67,8 +84,30 @@ class Node(LatLng):
         A list of Node objects that are adjacent to this Node object (self)
         :return: A list of nodes
         """
-        network = _parent_nodes.belongs_to()
+        network = self._parent_nodes.belongs_to()
         return network.get_adjacent_nodes(self)
+
+    def get_geojson_features(self):
+        """
+        A utilitie method to export the data as a geojson dump
+
+        :return: A dictionary of geojson features
+        """
+        feature = dict()
+        feature['properties'] = {
+            'node_id': self.id,
+            'lat': self.lat,
+            'lng': self.lng,
+            'way_ids': str(self.way_ids)
+        }
+        feature['type'] = 'Feature'
+        feature['node_id'] = '%s' % (self.id)
+
+        feature['geometry'] = {
+            'type': 'Point',
+            'coordinates': [self.lng, self.lat]
+        }
+        return feature
 
     def get_way_ids(self):
         return self.way_ids
