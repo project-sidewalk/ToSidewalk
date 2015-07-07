@@ -9,6 +9,7 @@ from operator import itemgetter
 import json
 import logging as log
 import math
+import sys
 import numpy as np
 
 
@@ -170,6 +171,37 @@ class Network(object):
         :return: A list of all the ways in the network
         """
         return self.ways.get_list()
+    def get_nearby_ways(self, base_street):
+        # Calculate hough points for all ways and build the tree
+        streets = self.get_ways()
+        # Dictionary will allow retrieval of original street using hough point as key
+        hough_point_street_dict = {}
+        allpoints = []
+        for street in streets:
+            houghpoint = street.get_hough_point()
+            hough_point_street_dict[houghpoint[0]] = street
+            allpoints.append(houghpoint)
+        # Build the tree
+        tree = spatial.KDTree(allpoints)
+        # Convert to regular list
+        treedata = tree.data.tolist()
+        #print("Treedata")
+        #print(treedata)
+
+        base_hough_point = base_street.get_hough_point()
+
+        # Find 20 points closest to base
+        neighbors = tree.query(base_hough_point, k=10)
+        #print("Neighbors")
+        #print(neighbors)
+        # Go through each index and retrieve the street. Store streets in array.
+        nearby_streets = []
+        for index in neighbors[1]:
+            found_street = hough_point_street_dict[treedata[index][0]]
+            nearby_streets.append(found_street)
+         #   print(found_street)
+        return nearby_streets
+
     def get_nearest_neighbor_pairs(self):
         streets = self.get_ways()
         # Dictionary will allow retrieval of original street using hough point as key
@@ -409,7 +441,7 @@ class OSM(Network):
                     self.remove_way(way_id_2)
             except Exception as e:
                 log.exception("Something went wrong while cleaning street segmentation, so skipping...")
-                raise
+                #raise
 
     def export(self, format="geojson", data_type="ways"):
         """
@@ -920,11 +952,13 @@ class OSM(Network):
         log.debug("Start merging the streets.")
         streets = self.get_ways()
         while True:
+
             streets = sorted(streets, key=lambda x: self.get_node(x.nids[0]).lat)
             do_break = True
             for street1 in streets:
+                nearby_streets = self.get_nearby_ways(street1)
                 overlap_list = []  # store tuples of (index, area_overlap pair)
-                for street2 in streets:
+                for street2 in nearby_streets:
                     if street1 == street2 or set(street1.nids) == set(street2.nids):
                         continue
 
