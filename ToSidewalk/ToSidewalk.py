@@ -345,7 +345,7 @@ def main(street_network):
     return sidewalk_network
 
 if __name__ == "__main__":
-    filename = "../resources/SmallMap_04.osm"
+    filename = "../resources/dc-quarter.osm"
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/tests/out2340_3134.pbfr"
     street_network = parse(filename)
@@ -355,6 +355,7 @@ if __name__ == "__main__":
     # street_network.merge_parallel_street_segments2()
     with open("../resources/SmallMap_04_Sidewalks.geojson", "wb") as f:
         geojson = sidewalk_network.export(data_type="ways")
+        print geojson
         print >>f, geojson
 
     with open("../resources/SmallMap_04_SidewalkNodes.geojson", "wb") as f:

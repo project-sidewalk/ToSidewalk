@@ -474,7 +474,10 @@ class Street(Way):
         y2 = end_long
         x0 = 0
         y0 = 0
-        r = abs((y2 - y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1)/math.sqrt((y2-y1)**2 + (x2 - x1)**2)
+        try:
+            r = abs((y2 - y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1)/math.sqrt((y2-y1)**2 + (x2 - x1)**2)
+        except ZeroDivisionError:
+            r=100000
         dx = x2 - x1
         dy = y2 - y1
         rads = math.atan2(-dy,dx)
