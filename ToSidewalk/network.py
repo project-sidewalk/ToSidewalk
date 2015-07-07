@@ -164,17 +164,24 @@ class Network(object):
             allpoints.append(houghpoint)
         tree = spatial.KDTree(allpoints)
         treedata = tree.data.tolist()
+        log.debug(tree.data)
         treedata_unsorted = tree.data.tolist()
         print(hough_point_street_dict)
         for index,pair in enumerate(treedata):
 
-            neighbors = tree.query(pair,k=2)
+            neighbors = tree.query(pair,k=5)
 
-            if(neighbors[0][0] != 0):
+            if(neighbors[0][0] > 0.00001):
                 distance_and_index = [neighbors[0][0],neighbors[1][0]]
 
-            else:
+            elif(neighbors[0][1] > 0.00001):
                 distance_and_index = [neighbors[0][1], neighbors[1][1]]
+            elif(neighbors[0][1] > 0.00001):
+                distance_and_index = [neighbors[0][2], neighbors[1][2]]
+            elif(neighbors[0][1] > 0.00001):
+                distance_and_index = [neighbors[0][3], neighbors[1][3]]
+            else:
+                distance_and_index = [neighbors[0][4], neighbors[1][4]]
 
             treedata[index].append(distance_and_index[0])
             treedata[index].append(distance_and_index[1])
@@ -183,13 +190,16 @@ class Network(object):
         treedata = sorted(treedata,key=itemgetter(2))
         parallel_pairs = []
         for entry in treedata:
-            if 0.0 < entry[2] < 10:
+            #if .000327342026301 < entry[2] < 0.0012:
+            if 0 < entry[2] < 10:
                 new_pair = []
                 new_pair.append(entry[0])
                 new_pair.append(entry[1])
                 new_pair.append(treedata_unsorted[entry[3]][0])
                 new_pair.append(treedata_unsorted[entry[3]][1])
+                new_pair.append(entry[2])
                 parallel_pairs.append(new_pair)
+                log.debug(new_pair)
         for pair in parallel_pairs:
             street1 = hough_point_street_dict[pair[0]]
             street2 = hough_point_street_dict[pair[2]]
@@ -199,6 +209,7 @@ class Network(object):
             print(street1.get_node_ids()[-1])
             print(street2.get_node_ids()[0])
             print(street2.get_node_ids()[-1])
+            print(pair[4])
         #print("Parallel pairs" + str(parallel_pairs))
         #print("Tree data "+ str(treedata))
         #print "\n".join(str(x) for x in treedata)
@@ -414,6 +425,7 @@ class OSM(Network):
         Preprocess and clean up the data
         :return:
         """
+        self.get_nearest_neighbor_pairs()
         print("Finding parallel street segments" + str(datetime.now()))
         # parallel_segments = self.find_parallel_street_segments()
         print("Finished finding parallel street segments" + str(datetime.now()))
@@ -1163,7 +1175,7 @@ class OSM(Network):
         """
         log.debug("Start merging the streets.")
         streets = self.get_ways()
-        self.get_nearest_neighbor_pairs()
+
         while True:
             streets = sorted(streets, key=lambda x: self.get_node(x.nids[0]).lat)
             do_break = True

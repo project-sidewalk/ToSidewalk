@@ -380,6 +380,13 @@ class Street(Way):
         start_long = self.get_start_longitude()
         end_lat = self.get_end_latitude()
         end_long = self.get_end_longitude()
+
+
+        # Recenter the origin
+        start_lat -= 38.9
+        start_long += 76.988
+        end_lat -= 38.9
+        end_long += 76.988
         # Calculate what m and b are in slope-intercept form
         x1 = start_lat
         y1 = start_long
@@ -395,7 +402,7 @@ class Street(Way):
         degs = math.radians((math.degrees(rads) + 90) % 360)
 
 
-        hough = [r, degs*20]
+        hough = [r, degs]
         self.hough = hough
 
         return hough

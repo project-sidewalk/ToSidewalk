@@ -383,7 +383,7 @@ if __name__ == "__main__":
 
     # Clear the data directory before beginning
     shutil.rmtree('data/')
-    filename = "../resources/smallmapv2.osm"
+    filename = "../resources/benningv2.osm"
 
     split_large_osm_file(filename)
 
@@ -412,6 +412,7 @@ if __name__ == "__main__":
     print("Preprocessing street networks...")
     for street_network in street_networks:
         try:
+
             street_network.preprocess()
             print(street_network.export())
         except:
