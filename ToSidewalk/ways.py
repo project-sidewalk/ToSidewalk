@@ -17,23 +17,46 @@ class Way(object):
         self.nids = list(nids)
         self.type = type
         self.user = 'test'
-        self.parent_ways = None
+        self._parent_ways = None
+        self._original_ways = []
 
         assert len(self.nids) > 1
+
+    def add_original_way(self, way):
+        """
+        This method adds a way id to _original_ways to keep track of from which
+        ways from OSM this way was created.
+
+        :param way: A way id or a Way object
+        """
+        if isinstance(way, Way):
+            way = way.id
+
+        if way not in self._original_ways:
+            self._original_ways.append(way)
+
+    def add_original_ways(self, ways):
+        """
+
+        :param ways:
+        :return:
+        """
+        for way in ways:
+            self.add_original_way(way)
 
     def belongs_to(self):
         """
         Returns a parent Ways object
         :return:
         """
-        return self.parent_ways
+        return self._parent_ways
 
     def export(self):
         """
         A utility method to export the data as a geojson dump
         :return: A geojson data in a string format.
         """
-        if self.parent_ways and self.parent_ways.parent_network:
+        if self._parent_ways and self._parent_ways._parent_network:
             geojson = dict()
             geojson['type'] = "FeatureCollection"
             geojson['features'] = []
@@ -46,21 +69,33 @@ class Way(object):
         A utilitie method to export the data as a geojson dump
         :return: A dictionary of geojson features
         """
+        coordinates = []
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+
+        start = network.get_node(self.nids[0])
+        end = network.get_node(self.nids[-1])
+
         feature = dict()
         feature['properties'] = {
-            'type': self.type,
-            'id': self.id,
+            'way_type': self.type,
+            'way_id': self.id,
             'user': self.user,
-            "stroke-width": 2,
-            "stroke-opacity": 1,
-            'stroke': '#e93f3f'
+            'osm_ways': self._original_ways,
+            'source': start.id,
+            'target': end.id,
+            'cost': 1.0,
+            'reverse_cost': 1.0,
+            'x1': start.lng,
+            'y1': start.lat,
+            'x2': end.lng,
+            'y2': end.lat
         }
         feature['type'] = 'Feature'
-        feature['id'] = 'way/%s' % (self.id)
+        feature['id'] = '%s' % (self.id)
 
-        coordinates = []
         for nid in self.nids:
-            node = self.parent_ways.parent_network.nodes.get(nid)
+            node = network.get_node(nid)
             coordinates.append([node.lng, node.lat])
         feature['geometry'] = {
             'type': 'LineString',
@@ -85,6 +120,14 @@ class Way(object):
         node_ids = self.get_node_ids()
         return [network.get_node(nid) for nid in node_ids]
 
+    def get_original_ways(self):
+        """
+        Returns original_ways
+
+        :return: A list of way ids
+        """
+        return self._original_ways
+
     def get_shared_node_ids(self, other):
         """
         Get node ids that are shared between two Way objects. other could be either
@@ -107,13 +150,33 @@ class Way(object):
 
     def remove_node(self, nid_to_remove):
         """
-        Remove a node from the data structure
+        Use Network.remove_node!
+
+        Remove a node from nid (a list of node ids)
         http://stackoverflow.com/questions/2793324/is-there-a-simple-way-to-delete-a-list-element-by-value-in-python
         :param nid_to_remove: A node id
         """
-        self.nids = [nid for nid in self.nids if nid != nid_to_remove]
+        if isinstance(nid_to_remove, Node):
+            nid_to_remove = nid_to_remove.id
 
-    def swap_nodes(self, nid_from, nid_to):
+
+        self.nids = [nid for nid in self.nids if nid != nid_to_remove]
+        #
+        # temp_ways = self.belongs_to()
+        # if temp_ways:
+        #     temp_network = temp_ways.belongs_to()
+        #     if temp_network:
+        #         node = temp_network.get_node(nid_to_remove)
+        #         node.remove_way_id(self.id)
+        #
+        #         # if len(node.get_way_ids()) < 1:
+        #         #     temp_network.remove_node(node)
+        #
+        #         if len(self.nids) < 2:
+        #             temp_network.remove_way(self)
+
+    def swap_nodes(self, node_from, node_to):
+
         """
         Swap a node that forms the way with another node
         :param nid_from: A node id
@@ -303,7 +366,7 @@ class Ways(object):
     def __init__(self):
         self.ways = {}
         self.intersection_node_ids = []
-        self.parent_network = None
+        self._parent_network = None
 
     def __eq__(self, other):
         return id(self) == id(other)
@@ -313,7 +376,7 @@ class Ways(object):
         Add a Way object
         :param way: A Way object
         """
-        way.parent_ways = self
+        way._parent_ways = self
         self.ways[way.id] = way
 
     def belongs_to(self):
@@ -321,7 +384,7 @@ class Ways(object):
         Return a parent network
         :return: A Network object
         """
-        return self.parent_network
+        return self._parent_network
 
     def get(self, wid):
         """
@@ -412,8 +475,10 @@ class Street(Way):
         Get a direction of the street
         :return:
         """
-        startnode = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[0])
-        endnode = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[-1])
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+        startnode = network.get_node(self.get_node_ids()[0])
+        endnode = network.get_node(self.get_node_ids()[-1])
         startlat = startnode.lat
         endlat = endnode.lat
 
@@ -423,12 +488,29 @@ class Street(Way):
             return -1
 
     def set_oneway_tag(self, oneway_tag):
+
+        """
+        This method sets the oneway property of the Way object to "yes" or "no".
+
+        :param str oneway_tag: One-way tag. Either "yes" or "no"
+        """
         self.oneway = oneway_tag
 
     def set_ref_tag(self, ref_tag):
+        """
+        This method sets the reference property of the Way object.
+
+        :param str ref_tag: Reference tag. A string refering to a reference way/node/relation.
+        """
         self.ref = ref_tag
 
     def get_oneway_tag(self):
+        """
+        This method returns the oneway property
+
+        :return: 
+        """
+
         return self.oneway
 
     def get_ref_tag(self):
@@ -442,8 +524,13 @@ class Street(Way):
         return self.sidewalk_ids
 
     def get_length(self):
-        start_node = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[0])
-        end_node = self.parent_ways.parent_network.nodes.get(self.get_node_ids()[-1])
+
+        """TBD"""
+        ways = self.belongs_to()
+        network = ways.belongs_to()
+        start_node = network.get_node(self.get_node_ids()[0])
+        end_node = network.get_node(self.get_node_ids()[-1])
+
         vec = np.array(start_node.location()) - np.array(end_node.location())
         length = abs(vec[0] - vec[-1])
         return length
