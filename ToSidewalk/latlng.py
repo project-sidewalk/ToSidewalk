@@ -13,7 +13,18 @@ class LatLng(object):
         return str(self.lat) + "," + str(self.lng)
 
     def distance_to(self, latlng):
-        return haversine(radians(self.lng), radians(self.lat), radians(latlng.lng), radians(latlng.lat))
+
+        """Get a distance from this object's coordinate to
+        another latlng coordinate in meters
+
+        :param latlng: A LatLng object
+        :return: Distance in meters
+        """
+        try:
+            return haversine(radians(self.lng), radians(self.lat), radians(latlng.lng), radians(latlng.lat))
+        except AttributeError:
+            raise
+
 
     def location(self):
         return self.lat, self.lng
