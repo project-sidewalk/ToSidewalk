@@ -178,12 +178,29 @@ class Way(object):
     def swap_nodes(self, node_from, node_to):
 
         """
-        Swap a node that forms the way with another node
-        :param nid_from: A node id
-        :param nid_to: A node id
-        """
-        index_from = self.nids.index(node_from)
-        self.nids[index_from] = node_to
+        Swap a node that forms the way with another node. The new node inherits previous node's way_ids
+
+        :param nid_from: A node id or a Node object
+        :param nid_to: A node id or a Node object
+         """
+        network = self.belongs_to().belongs_to()
+        if type(node_from) == StringType:
+            node_from = network.get_node(node_from)
+        if type(node_to) == StringType:
+            node_to = network.get_node(node_to)
+
+        try:
+            index_from = self.nids.index(node_from.id)
+            if node_to.id in self.nids:
+                self.remove_node(node_from.id)  # remove node id if node_to.id already exists
+            else:
+                self.nids[index_from] = node_to.id
+        except AttributeError:
+            print node_from, node_to
+            log.debug("Way.swap_nodes(): Debug")
+
+        for way_id in node_from.way_ids:
+            node_to.append_way(way_id)
 
     def angle(self):
         """
