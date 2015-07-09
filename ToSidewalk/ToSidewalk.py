@@ -346,10 +346,10 @@ def main(street_network):
     return sidewalk_network
 
 if __name__ == "__main__":
-    filename = "../resources/dc-quarter.osm"
+    filename = "../resources/dc6.osm"
     # singlefile for small files and debugging
     # batch for large osm file
-    runmode = "batch"
+    runmode = "singlefile"
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/tests/out2340_3134.pbfr"
     if runmode == "singlefile":
@@ -360,26 +360,27 @@ if __name__ == "__main__":
         sidewalk_network = main(street_network)
 
         # street_network.merge_parallel_street_segments2()
-        with open("../resources/SmallMap_04_Sidewalks.geojson", "wb") as f:
-            geojson = sidewalk_network.export(data_type="ways")
+        with open("../resources/Sidewalk_Output.geojson", "wb") as f:
+            sidewalk_geojson = sidewalk_network.export(data_type="ways")
             #print geojson
-            print >>f, geojson
+            print >>f, sidewalk_geojson
 
-        with open("../resources/SmallMap_04_SidewalkNodes.geojson", "wb") as f:
-            geojson = sidewalk_network.export(data_type="nodes")
-            print >>f, geojson
+        with open("../resources/Sidewalk_Nodes_Output.geojson", "wb") as f:
+            sidewalk_nodes_geojson = sidewalk_network.export(data_type="nodes")
+            print >>f, sidewalk_nodes_geojson
 
-        with open("../resources/SmallMap_04_Streets.geojson", "wb") as f:
-            geojson = street_network.export(data_type="ways")
-            print >>f, geojson
+        with open("../resources/Streets_Output.geojson", "wb") as f:
+            streets_geojson = street_network.export(data_type="ways")
+            print >>f, streets_geojson
 
-        with open("../resources/SmallMap_04_StreetNodes.geojson", "wb") as f:
-            geojson = street_network.export(data_type="nodes")
-            print >>f, geojson
+        with open("../resources/Street_Nodes_Output.geojson", "wb") as f:
+            street_nodes_geojson = street_network.export(data_type="nodes")
+            print >>f, street_nodes_geojson
 
             # print geojson
-        # f = open('output.geojson', 'w')
-        # print >>f, geojson
+        f = open('output.geojson', 'w')
+
+        print >>f, sidewalk_geojson
         # print sidewalk_network.export()
 
 
