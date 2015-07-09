@@ -982,7 +982,7 @@ class OSM(Network):
         idx = index.Index()  # r-tree index
         # Insert the linestrings into the rtree
         for i, linestring in enumerate(linestrings):
-            idx.insert(i, linestring.bounds, linestring)
+            idx.insert(i, linestring.bounds + np.array([-0.0010, -0.00010, 0.00010, 0.00010]), linestring)
         self.rtree = idx
     def get_rtree_nearby_ways(self, base_street):
         """
@@ -1001,7 +1001,7 @@ class OSM(Network):
         input_street_linestring = LineString(input_street_coords)
         # Create a bounding box by expanding the input street's bounding box
         # Then count the number of objects that are in that bounding box and store them in a list.
-        bbox = np.array(input_street_linestring.bounds) + np.array([-0.0050, -0.00050, 0.00050, 0.00050])  # Expand the bounding box a bit
+        bbox = np.array(input_street_linestring.bounds) + np.array([-0.0010, -0.00010, 0.00010, 0.00010])  # Expand the bounding box a bit
         num = self.rtree.count(bbox)  # Count the number of items that are in this bounding box
         # print ("There are " + str(num) + " items in this bounding box.")
         # Get the raw objects (linestrings) in the bounding box
@@ -1020,12 +1020,13 @@ class OSM(Network):
         # Return the list of street objects; these are the streets near the input street
         # print("\n")
         return street_objects
-    def merge_parallel_street_segments3(self, threshold=0.5):
+    def merge_parallel_street_segments3(self, threshold=0.3):
         """
         My freaking third attempt to merge parallel segemnts.
         :param threshold:
         :return:
         """
+        use_rtree = True
         log.debug("Start merging the streets.")
         streets = self.get_ways()
         iteration = 0
@@ -1042,11 +1043,15 @@ class OSM(Network):
                 overlap_list = []  # store tuples of (index, area_overlap pair)
 
                 # Compare this street only with nearby streets, found using rtree
-                nearby_streets = self.get_rtree_nearby_ways(street1)
+                if use_rtree:
+                    nearby_streets = self.get_rtree_nearby_ways(street1)
+                else:
+                    nearby_streets = streets
+                """
                 # Add the detected nearby streets to street1's list of neighbors
                 for neighbor in nearby_streets:
                     street1.add_neighbor(neighbor)
-                """
+
                 nearby_streets_filtered = []
                 # Go through each of the nearby streets
                 # If a nearby street has street1 in its list of neighbors, this pair has already been compared,
@@ -1105,8 +1110,9 @@ class OSM(Network):
 
                     for new_street in new_streets:
                         streets.append(new_street)
-                    # Create new rtree
-                    self.create_rtree()
+                    if use_rtree:
+                        # Create new rtree
+                        self.create_rtree()
                     do_break = False
             print("Iteration took %s seconds ---" % (time.time() - start))
             if do_break:
