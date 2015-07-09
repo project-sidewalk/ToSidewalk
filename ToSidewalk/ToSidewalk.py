@@ -345,7 +345,7 @@ def main(street_network):
     return sidewalk_network
 
 if __name__ == "__main__":
-    filename = "../resources/dc-quarter.osm"
+    filename = "../resources/SmallMap_04.osm"
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/tests/out2340_3134.pbfr"
     street_network = parse(filename)

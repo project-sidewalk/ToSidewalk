@@ -1,11 +1,11 @@
 from xml.etree import cElementTree as ET
 from shapely.geometry import Polygon, Point, LineString
-from datetime import datetime
 from types import StringType
 from itertools import combinations
 from heapq import heappush, heappop, heapify
 from scipy import spatial
 from operator import itemgetter
+from rtree import index
 import json
 import logging as log
 import math
@@ -943,6 +943,68 @@ class OSM(Network):
             self.remove_way(way_id)
             self.join_connected_ways(segments_to_merge)
 
+    def get_rtree_nearby_ways(self, base_street):
+        streets = self.get_ways()
+        """
+        # Make a list of start and end coordinates for each street
+
+        List structure:
+        [
+        [[x1, y1], [x2, y2]],
+        [[x3, y3], [x4, y4]],
+        ...
+        ]
+        """
+        coords_list = []
+        linestrings = []
+        linestring_street_dict = {}
+        for street in streets:
+            start_lat = street.get_start_latitude()
+            start_long = street.get_start_longitude()
+            end_lat = street.get_end_latitude()
+            end_long = street.get_end_longitude()
+            coords_list.append([[start_lat, start_long], [end_lat, end_long]])
+            # Create a linestring from the coordinates we just added and put it into the linestrings list
+            linestrings.append(LineString(coords_list[-1]))
+            # Add the linestring we just added to the dictionary.
+            # Key is the x coordinate of the linestring's start point
+            # Value is the street object
+            # Dictionary allows later retrieval of street object from linestring.
+            linestring_street_dict[linestrings[-1].coords[0][0]] = street
+
+        idx = index.Index()  # r-tree index
+        # Insert the linestrings into the rtree
+        for i, linestring in enumerate(linestrings):
+            idx.insert(i, linestring.bounds, linestring)
+
+        # Create a linestring for the input street
+        base_start_lat = base_street.get_start_latitude()
+        base_start_long = base_street.get_start_longitude()
+        base_end_lat = base_street.get_end_latitude()
+        base_end_long = base_street.get_end_longitude()
+        input_street_coords = [[base_start_lat,base_start_long],[base_end_lat,base_end_long]]
+        input_street_linestring = LineString(input_street_coords)
+        # Create a bounding box by expanding the input street's bounding box
+        # Then count the number of objects that are in that bounding box and store them in a list.
+        bbox = np.array(input_street_linestring.bounds) + np.array([-0.001, -0.001, 0.001, 0.001])  # Expand the bounding box a bit
+        num = idx.count(bbox)  # Count the number of items that are in this bounding box
+        print ("There are " + str(num) + " items in this bounding box.")
+        # Get the raw objects (linestrings) in the bounding box
+        linestring_objects = idx.nearest(input_street_linestring.bounds, num, objects='raw')
+        # Convert the linestring objects back into street objects and store them in list
+        street_objects = []
+        for linestring in linestring_objects:
+            street_objects.append(linestring_street_dict[linestring.coords[0][0]])
+        # Debugging -------
+        # Print the base street start and end node ids followed by start and end node ids of found nearby streets
+        print "Input street starts at node " + str(base_street.get_node_ids()[0]) + " and ends at " + str(base_street.get_node_ids()[-1])
+        print "Here are the nearby streets:"
+        for street in street_objects:
+            print str(street.get_node_ids()[0]) + "\t" + str(street.get_node_ids()[-1])
+        # -----------------
+        # Return the list of street objects; these are the streets near the input street
+        print("\n")
+        return street_objects
     def merge_parallel_street_segments3(self, threshold=0.5):
         """
         My freaking third attempt to merge parallel segemnts.
@@ -956,9 +1018,10 @@ class OSM(Network):
             streets = sorted(streets, key=lambda x: self.get_node(x.nids[0]).lat)
             do_break = True
             for street1 in streets:
-                nearby_streets = self.get_nearby_ways(street1)
+                self.get_rtree_nearby_ways(street1)
+                # nearby_streets = self.get_nearby_ways(street1)
                 overlap_list = []  # store tuples of (index, area_overlap pair)
-                for street2 in nearby_streets:
+                for street2 in streets:
                     if street1 == street2 or set(street1.nids) == set(street2.nids):
                         continue
 
