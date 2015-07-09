@@ -34,7 +34,8 @@ class Network(object):
         self.nodes._parent_network = self
 
         self.bounds = [100000.0, 100000.0, -100000.0, -100000.0]  # min lat, min lng, max lat, and max lng
-
+        self.rtree = None
+        self.linestring_street_dict = {}
         # Initialize the bounding box
         for node in self.nodes.get_list():
             # lat, lng = node.latlng.location(radian=False)
@@ -943,7 +944,8 @@ class OSM(Network):
             self.remove_way(way_id)
             self.join_connected_ways(segments_to_merge)
 
-    def get_rtree_nearby_ways(self, base_street):
+    def create_rtree(self):
+        #print("Creating rtree")
         streets = self.get_ways()
         """
         # Make a list of start and end coordinates for each street
@@ -957,7 +959,7 @@ class OSM(Network):
         """
         coords_list = []
         linestrings = []
-        linestring_street_dict = {}
+
         for street in streets:
             start_lat = street.get_start_latitude()
             start_long = street.get_start_longitude()
@@ -970,13 +972,16 @@ class OSM(Network):
             # Key is the x coordinate of the linestring's start point
             # Value is the street object
             # Dictionary allows later retrieval of street object from linestring.
-            linestring_street_dict[linestrings[-1].coords[0][0]] = street
+            self.linestring_street_dict[linestrings[-1].coords[0][0]] = street
 
         idx = index.Index()  # r-tree index
         # Insert the linestrings into the rtree
         for i, linestring in enumerate(linestrings):
             idx.insert(i, linestring.bounds, linestring)
-
+        self.rtree = idx
+    def get_rtree_nearby_ways(self, base_street):
+        if self.rtree is None:
+            self.create_rtree()
         # Create a linestring for the input street
         base_start_lat = base_street.get_start_latitude()
         base_start_long = base_street.get_start_longitude()
@@ -987,23 +992,23 @@ class OSM(Network):
         # Create a bounding box by expanding the input street's bounding box
         # Then count the number of objects that are in that bounding box and store them in a list.
         bbox = np.array(input_street_linestring.bounds) + np.array([-0.001, -0.001, 0.001, 0.001])  # Expand the bounding box a bit
-        num = idx.count(bbox)  # Count the number of items that are in this bounding box
-        print ("There are " + str(num) + " items in this bounding box.")
+        num = self.rtree.count(bbox)  # Count the number of items that are in this bounding box
+        # print ("There are " + str(num) + " items in this bounding box.")
         # Get the raw objects (linestrings) in the bounding box
-        linestring_objects = idx.nearest(input_street_linestring.bounds, num, objects='raw')
+        linestring_objects = self.rtree.nearest(input_street_linestring.bounds, num, objects='raw')
         # Convert the linestring objects back into street objects and store them in list
         street_objects = []
         for linestring in linestring_objects:
-            street_objects.append(linestring_street_dict[linestring.coords[0][0]])
+            street_objects.append(self.linestring_street_dict[linestring.coords[0][0]])
         # Debugging -------
         # Print the base street start and end node ids followed by start and end node ids of found nearby streets
-        print "Input street starts at node " + str(base_street.get_node_ids()[0]) + " and ends at " + str(base_street.get_node_ids()[-1])
-        print "Here are the nearby streets:"
-        for street in street_objects:
-            print str(street.get_node_ids()[0]) + "\t" + str(street.get_node_ids()[-1])
+        # print "Input street starts at node " + str(base_street.get_node_ids()[0]) + " and ends at " + str(base_street.get_node_ids()[-1])
+        # print "Here are the nearby streets:"
+        # for street in street_objects:
+        #     print str(street.get_node_ids()[0]) + "\t" + str(street.get_node_ids()[-1])
         # -----------------
         # Return the list of street objects; these are the streets near the input street
-        print("\n")
+        # print("\n")
         return street_objects
     def merge_parallel_street_segments3(self, threshold=0.5):
         """
@@ -1018,10 +1023,24 @@ class OSM(Network):
             streets = sorted(streets, key=lambda x: self.get_node(x.nids[0]).lat)
             do_break = True
             for street1 in streets:
-                self.get_rtree_nearby_ways(street1)
-                # nearby_streets = self.get_nearby_ways(street1)
+
                 overlap_list = []  # store tuples of (index, area_overlap pair)
-                for street2 in streets:
+
+                # Compare this street only with nearby streets, found using rtree
+                nearby_streets = self.get_rtree_nearby_ways(street1)
+                # Add the detected nearby streets to street1's list of neighbors
+                for neighbor in nearby_streets:
+                    street1.add_neighbor(neighbor)
+                nearby_streets_filtered = []
+                # Go through each of the nearby streets
+                # If a nearby street has street1 in its list of neighbors, this pair has already been compared,
+                # so we don't have to compare it again.
+                for neighbor in nearby_streets:
+                    if street1 in neighbor.get_neighbors():
+                        pass
+                    else:
+                        nearby_streets_filtered.append(neighbor)
+                for street2 in nearby_streets_filtered:
                     if street1 == street2 or set(street1.nids) == set(street2.nids):
                         continue
 
@@ -1066,9 +1085,11 @@ class OSM(Network):
 
                     self.remove_way(street1.id)
                     self.remove_way(street2.id)
+
                     for new_street in new_streets:
                         streets.append(new_street)
-
+                    # Create new rtree
+                    self.create_rtree()
                     do_break = False
             if do_break:
                 break

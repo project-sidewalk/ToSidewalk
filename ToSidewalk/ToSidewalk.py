@@ -10,6 +10,7 @@ from nodes import Node, Nodes
 from ways import Sidewalk, Sidewalks, Street
 from utilities import window, latlng_offset_size, latlng_offset
 from network import OSM, parse
+import time
 from datetime import datetime
 log.basicConfig(format="", level=log.DEBUG)
 
@@ -345,11 +346,13 @@ def main(street_network):
     return sidewalk_network
 
 if __name__ == "__main__":
-    filename = "../resources/SmallMap_04.osm"
+    filename = "../resources/dc-quarter.osm"
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/tests/out2340_3134.pbfr"
     street_network = parse(filename)
+    start_time = time.time()
     street_network.preprocess()
+    print("--- %s seconds ---" % (time.time() - start_time))
     sidewalk_network = main(street_network)
 
     # street_network.merge_parallel_street_segments2()
