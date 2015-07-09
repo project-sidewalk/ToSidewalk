@@ -9,6 +9,7 @@ from rtree import index
 import json
 import logging as log
 import math
+import time
 import sys
 import numpy as np
 
@@ -991,7 +992,7 @@ class OSM(Network):
         input_street_linestring = LineString(input_street_coords)
         # Create a bounding box by expanding the input street's bounding box
         # Then count the number of objects that are in that bounding box and store them in a list.
-        bbox = np.array(input_street_linestring.bounds) + np.array([-0.001, -0.001, 0.001, 0.001])  # Expand the bounding box a bit
+        bbox = np.array(input_street_linestring.bounds) + np.array([-0.0050, -0.00050, 0.00050, 0.00050])  # Expand the bounding box a bit
         num = self.rtree.count(bbox)  # Count the number of items that are in this bounding box
         # print ("There are " + str(num) + " items in this bounding box.")
         # Get the raw objects (linestrings) in the bounding box
@@ -1018,7 +1019,12 @@ class OSM(Network):
         """
         log.debug("Start merging the streets.")
         streets = self.get_ways()
+        iteration = 0
+
         while True:
+            start = time.time()
+            iteration+=1
+            print("...working on merge iteration "+str(iteration))
 
             streets = sorted(streets, key=lambda x: self.get_node(x.nids[0]).lat)
             do_break = True
@@ -1031,6 +1037,7 @@ class OSM(Network):
                 # Add the detected nearby streets to street1's list of neighbors
                 for neighbor in nearby_streets:
                     street1.add_neighbor(neighbor)
+                """
                 nearby_streets_filtered = []
                 # Go through each of the nearby streets
                 # If a nearby street has street1 in its list of neighbors, this pair has already been compared,
@@ -1040,7 +1047,8 @@ class OSM(Network):
                         pass
                     else:
                         nearby_streets_filtered.append(neighbor)
-                for street2 in nearby_streets_filtered:
+                """
+                for street2 in nearby_streets:
                     if street1 == street2 or set(street1.nids) == set(street2.nids):
                         continue
 
@@ -1091,6 +1099,7 @@ class OSM(Network):
                     # Create new rtree
                     self.create_rtree()
                     do_break = False
+            print("Iteration took %s seconds ---" % (time.time() - start))
             if do_break:
                 break
 
@@ -1249,8 +1258,13 @@ class OSM(Network):
                 self.remove_way(way.id)
             else:
                 for nid in way.get_node_ids():
-                    node = self.get_node(nid)
-                    node.append_way(way.id)
+                    try:
+                        node = self.get_node(nid)
+                        node.append_way(way.id)
+                    except:
+                        print "Removing NoneType Node"
+                        way.remove_node(nid)
+                        self.remove_way(way.id)
         self.nodes.clean()  # Remove nodes that are not connected to anything.
         self.clean_street_segmentation()
 
