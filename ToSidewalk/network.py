@@ -946,6 +946,10 @@ class OSM(Network):
             self.join_connected_ways(segments_to_merge)
 
     def create_rtree(self):
+        """
+        Creates an r-tree from this street network and updates the self.rtree field
+
+        """
         #print("Creating rtree")
         streets = self.get_ways()
         """
@@ -981,6 +985,11 @@ class OSM(Network):
             idx.insert(i, linestring.bounds, linestring)
         self.rtree = idx
     def get_rtree_nearby_ways(self, base_street):
+        """
+        This method queries self.rtree to retrieve the streets near the input base_street.
+        :param base_street: Street for which to search for neighboring streets
+        :return: List of streets around the base_street
+        """
         if self.rtree is None:
             self.create_rtree()
         # Create a linestring for the input street
