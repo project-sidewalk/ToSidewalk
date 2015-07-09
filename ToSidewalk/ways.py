@@ -442,10 +442,16 @@ class Street(Way):
         self.oneway = 'undefined'
         self.ref = 'undefined'
         self.hough = []
+        # Maintain a list of neighboring streets, populated during merge
+        self.neighbors = []
     def __hash__(self):
         start_nid = self.get_node_ids()[0]
         end_nid = self.get_node_ids()[-1]
         return hash((start_nid, end_nid))
+    def add_neighbor(self, new_neighbor):
+        self.neighbors.append(new_neighbor)
+    def get_neighbors(self):
+        return self.neighbors
     def get_start_latitude(self):
         start_node = self.get_nodes()[0]
         return start_node.lat
