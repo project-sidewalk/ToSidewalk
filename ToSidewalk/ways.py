@@ -442,6 +442,10 @@ class Street(Way):
         self.oneway = 'undefined'
         self.ref = 'undefined'
         self.hough = []
+    def __hash__(self):
+        start_nid = self.get_node_ids()[0]
+        end_nid = self.get_node_ids()[-1]
+        return hash((start_nid, end_nid))
     def get_start_latitude(self):
         start_node = self.get_nodes()[0]
         return start_node.lat
