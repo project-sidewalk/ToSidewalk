@@ -346,7 +346,7 @@ def main(street_network):
     return sidewalk_network
 
 if __name__ == "__main__":
-    filename = "../resources/dc6.osm"
+    filename = "../resources/SmallMap_04.osm"
     # singlefile for small files and debugging
     # batch for large osm file
     runmode = "singlefile"
