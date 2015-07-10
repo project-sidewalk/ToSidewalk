@@ -198,7 +198,8 @@ class Way(object):
         except AttributeError:
             print node_from, node_to
             log.debug("Way.swap_nodes(): Debug")
-
+        #except ValueError:
+        #    return
         for way_id in node_from.way_ids:
             node_to.append_way(way_id)
 
