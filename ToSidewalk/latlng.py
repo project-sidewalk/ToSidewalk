@@ -27,6 +27,10 @@ class LatLng(object):
 
 
     def location(self):
+        """Returns a tuple of latlng
+
+        :return: A tuple (lat, lng)
+        """
         return self.lat, self.lng
 
 def haversine(lon1, lat1, lon2, lat2):
