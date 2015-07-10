@@ -10,7 +10,8 @@ from nodes import Node, Nodes
 from ways import Sidewalk, Sidewalks, Street
 from utilities import window, latlng_offset_size, latlng_offset
 from network import OSM, parse
-
+import time
+from datetime import datetime
 log.basicConfig(format="", level=log.DEBUG)
 
 # dummy_street = Street()
@@ -241,7 +242,6 @@ def make_crosswalks(street_network, sidewalk_network):
                 # Using the four nodes (3 original nodes and a dummy node), create crosswalk nodes
                 vectors = [intersection_node.vector_to(adj_street_node, normalize=True) for adj_street_node in adj_street_nodes]
                 angles = [math.acos(np.dot(vectors[i - 1], vectors[i])) for i in range(3)]
-
                 idx = np.argmax(angles)
                 vec_idx = (idx + 1) % 3
                 dummy_vector = - vectors[vec_idx] * distance_to_sidewalk
@@ -258,6 +258,7 @@ def make_crosswalks(street_network, sidewalk_network):
                 crosswalk_nodes = make_crosswalk_nodes(intersection_node, adj_street_nodes)
             except ValueError:
                 raise
+
             crosswalk_node_ids = [node.id for node in crosswalk_nodes]
             crosswalk_node_ids.append(crosswalk_node_ids[0])
             # crosswalk = Sidewalk(None, crosswalk_node_ids, "crosswalk")
@@ -288,7 +289,6 @@ def make_crosswalks(street_network, sidewalk_network):
 def split_large_osm_file(filename):
     command = "java -Xmx4000M -jar splitter.jar --output=xml --output-dir=data --max-nodes=15000 " + filename + " > splitter.log"
     os.system(command)
-
 def merge_sidewalks(sidewalk_network1, sidewalk_network2):
     """Returns a merged sidewalk network
 
@@ -346,117 +346,121 @@ def main(street_network):
     return sidewalk_network
 
 if __name__ == "__main__":
-    # filename = "../resources/SmallMap_03.osm"
-    filename = "../resources/SmallMap_01.osm"
+    # # filename = "../resources/SmallMap_03.osm"
+    # filename = "../resources/SmallMap_01.osm"
+    # # filename = "../resources/ParallelLanes_03.osm"
+    # # filename = "../resources/tests/out2340_3134.pbfr"
+    # street_network = parse(filename)
+    # # street_network.parse_intersections()
+    # street_network.preprocess()
+    # sidewalk_network = main(street_network)
+    #
+    # # street_network.merge_parallel_street_segments2()
+    # with open("../resources/SmallMap_01_Sidewalks.geojson", "wb") as f:
+    #     geojson = sidewalk_network.export(data_type="ways")
+    #     print >>f, geojson
+    #
+    # with open("../resources/SmallMap_01_SidewalkNodes.geojson", "wb") as f:
+    #     geojson = sidewalk_network.export(data_type="nodes")
+    #     print >>f, geojson
+    #
+    # with open("../resources/SmallMap_01_Streets.geojson", "wb") as f:
+    #     geojson = street_network.export(data_type="ways")
+    #     print >>f, geojson
+    #
+    # with open("../resources/SmallMap_01_StreetNodes.geojson", "wb") as f:
+    #     geojson = street_network.export(data_type="nodes")
+
+    filename = "../resources/SmallMap_04.osm"
+    # singlefile for small files and debugging
+    # batch for large osm file
+    runmode = "singlefile"
     # filename = "../resources/ParallelLanes_03.osm"
     # filename = "../resources/tests/out2340_3134.pbfr"
-    street_network = parse(filename)
-    # street_network.parse_intersections()
-    street_network.preprocess()
-    sidewalk_network = main(street_network)
+    if runmode == "singlefile":
+        street_network = parse(filename)
+        start_time = time.time()
+        street_network.preprocess()
+        print("--- %s seconds ---" % (time.time() - start_time))
+        sidewalk_network = main(street_network)
 
-    # street_network.merge_parallel_street_segments2()
-    with open("../resources/SmallMap_01_Sidewalks.geojson", "wb") as f:
-        geojson = sidewalk_network.export(data_type="ways")
+        # street_network.merge_parallel_street_segments2()
+        with open("../resources/Sidewalk_Output.geojson", "wb") as f:
+            sidewalk_geojson = sidewalk_network.export(data_type="ways")
+            #print geojson
+            print >>f, sidewalk_geojson
+
+        with open("../resources/Sidewalk_Nodes_Output.geojson", "wb") as f:
+            sidewalk_nodes_geojson = sidewalk_network.export(data_type="nodes")
+            print >>f, sidewalk_nodes_geojson
+
+        with open("../resources/Streets_Output.geojson", "wb") as f:
+            streets_geojson = street_network.export(data_type="ways")
+            print >>f, streets_geojson
+
+        with open("../resources/Street_Nodes_Output.geojson", "wb") as f:
+            street_nodes_geojson = street_network.export(data_type="nodes")
+            print >>f, street_nodes_geojson
+
+            # print geojson
+        f = open('output.geojson', 'w')
+
+        print >>f, sidewalk_geojson
+        # print sidewalk_network.export()
+
+
+    elif runmode == "batch":
+        # Clear the data directory before beginning
+        shutil.rmtree('data/')
+        split_large_osm_file(filename)
+        files = glob.glob("data/*.gz")
+        log.debug("Working with " + str(files))
+        # Decompress each GZ file
+        for filename in files:
+            f = gzip.open(filename, 'rb')
+            file_content = f.read()
+            log.debug("writing to "+filename+".osm")
+            outfile = open(filename+".osm", "w")
+            outfile.write(file_content)
+            outfile.close()
+        files = glob.glob("data/*.osm")
+        # Parse, preprocess, main, join
+        street_networks = []
+        print "Batch parsing files..."
+        for filename in files:
+            #log.debug("Parsing " + filename)
+            try:
+                new_street_network = parse(filename)
+                street_networks.append(new_street_network)
+            except:
+                log.exception("Failed to create this street network, skipping...")
+                continue
+
+        print("Batch preprocessing street networks...")
+        for street_network in street_networks:
+            try:
+
+                street_network.preprocess()
+                print(street_network.export())
+            except:
+                log.exception("Error preprocessing this street network. Skipping.")
+                continue
+
+        print("Merging sidewalk networks...")
+        sidewalk_networks = []
+        #print("1")
+        for street_network in street_networks:
+            try:
+                sidewalk_networks.append(main(street_network))
+            except:
+                log.exception("Uh oh, creating this sidewalk network failed. Skipping...")
+                continue
+        sidewalk_network_main = sidewalk_networks[0]
+        #print("2")
+        for sidewalk_network in sidewalk_networks[1:]:
+            sidewalk_network_main = merge_sidewalks(sidewalk_network_main, sidewalk_network)
+        #print("3")
+        geojson = sidewalk_network_main.export(format="geojson")
+
+        f = open('output.geojson', 'w')
         print >>f, geojson
-
-    with open("../resources/SmallMap_01_SidewalkNodes.geojson", "wb") as f:
-        geojson = sidewalk_network.export(data_type="nodes")
-        print >>f, geojson
-
-    with open("../resources/SmallMap_01_Streets.geojson", "wb") as f:
-        geojson = street_network.export(data_type="ways")
-        print >>f, geojson
-
-    with open("../resources/SmallMap_01_StreetNodes.geojson", "wb") as f:
-        geojson = street_network.export(data_type="nodes")
-        print >>f, geojson
-
-    print geojson
-    # f = open('output.geojson', 'w')
-    # print >>f, geojson
-    # print sidewalk_network.export()
-
-    #filename = "../resources/SmallMap_04.osm"
-    # filename = "../resources/ParallelLanes_03.osm"
-    # filename = "../resources/tests/out2340_3134.pbfr"
-    """
-
-
-
-
-    # filename = "../resources/SimpleWay_01.osm"
-    # filename = "../resources/Simple4WayIntersection_01.osm"
-    filename = "../resources/SmallMap_01.osm"
-    filename = "../resources/SmallMap_02.osm"
-
-    # filename = "../resources/ParallelLanes_03.osm"
-    # filename = "../resources/MapPair_B_01.osm"
-    # filename = "../resources/SegmentedStreet_01.osm"
-    # filename = "../resources/ParallelLanes_03.osm"
-    #filename = "../resources/ParallelLanes_03.osm"
-    #filename = "../resources/MapPair_B_01.osm"
-    # filename = "../resources/SegmentedStreet_01.osm"
-    #filename = "../resources/ParallelLanes_03.osm"
-
-    #filename = "../resources/SmallMap_04.osm"
-
-
-    # Clear the data directory before beginning
-    shutil.rmtree('data/')
-    filename = "../resources/smallmapv2.osm"
-
-    split_large_osm_file(filename)
-
-    files = glob.glob("data/*.gz")
-    log.debug("Working with " + str(files))
-    # Decompress each GZ file
-    for filename in files:
-        f = gzip.open(filename, 'rb')
-        file_content = f.read()
-        log.debug("writing to "+filename+".osm")
-        outfile = open(filename+".osm", "w")
-        outfile.write(file_content)
-        outfile.close()
-    files = glob.glob("data/*.osm")
-
-    street_networks = []
-    for filename in files:
-        log.debug("Parsing " + filename)
-        try:
-            new_street_network = parse(filename)
-            street_networks.append(new_street_network)
-        except:
-            log.exception("Failed to create this street network, skipping...")
-            continue
-
-    print("Preprocessing street networks...")
-    for street_network in street_networks:
-        try:
-            street_network.preprocess()
-            print(street_network.export())
-        except:
-            log.debug("Error preprocessing this street network. Skipping.")
-            continue
-
-        street_network.parse_intersections()
-
-    print("Merging sidewalk networks...")
-    sidewalk_networks = []
-    print("1")
-    for street_network in street_networks:
-        try:
-            sidewalk_networks.append(main(street_network))
-        except:
-            log.exception("Uh oh, creating this sidewalk network failed. Skipping...")
-            continue
-    sidewalk_network_main = sidewalk_networks[0]
-    print("2")
-    for sidewalk_network in sidewalk_networks[1:]:
-        sidewalk_network_main = merge_sidewalks(sidewalk_network_main, sidewalk_network)
-    print("3")
-    geojson = sidewalk_network_main.export(format="geojson")
-
-    f = open('output.geojson','w')
-    print >>f, geojson
-    """
