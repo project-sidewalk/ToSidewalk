@@ -147,6 +147,7 @@ class SidewalkEdgesTable(Base):
     source = Column(Integer, name="source")
     target = Column(Integer, name="target")
 
+
 if __name__ == "__main__":
     setting_file = os.path.relpath("../../", os.path.dirname(__file__)) + "/.settings"
     db = DB(setting_file)
