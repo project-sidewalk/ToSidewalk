@@ -174,6 +174,11 @@ class Network(object):
         """
         return self.ways.get_list()
     def get_nearby_ways(self, base_street):
+        """
+        Retrieves streets near the input street using hough transform and kdtree
+        :param base_street: Street for which to look for nearby streets
+        :return: A list of nearby streets
+        """
         # Calculate hough points for all ways and build the tree
         streets = self.get_ways()
         # Dictionary will allow retrieval of original street using hough point as key
@@ -205,6 +210,10 @@ class Network(object):
         return nearby_streets
 
     def get_nearest_neighbor_pairs(self):
+        """
+        Finds pairs of streets for merging using hough transformation and kdtree
+        :return:
+        """
         streets = self.get_ways()
         # Dictionary will allow retrieval of original street using hough point as key
         hough_point_street_dict = {}

@@ -33,17 +33,26 @@ class Node(LatLng):
         return "Node object, id: " + str(self.id) + ", latlng: " + str(self.location())
 
     def angle_to(self, node):
+        """TBD
+        :param node: A node object
+        """
         y_node, x_node = node.location()
         y_self, x_self = self.location()
         return math.atan2(y_node - y_self, x_node - x_self)
 
     def append_sidewalk_node(self, way_id, node):
+        """TBD
+
+        :param way_id: TBD
+        :param ndoe: TBD
+        """
         self.sidewalk_nodes.setdefault(way_id, []).append(node)
 
     def append_way(self, wid):
         """
-        Add a way id to the list that keeps track of which ways are connected to the node
-        :param wid:
+        Add a way id to the list that keeps track of
+        which ways are connected to the node
+        :param wid: Way id
         :return:
         """
         if wid not in self.way_ids:
@@ -62,6 +71,7 @@ class Node(LatLng):
             self.append_way(wid)
 
     def belongs_to(self):
+        """TBD"""
         return self._parent_nodes
 
     def export(self):
@@ -81,7 +91,7 @@ class Node(LatLng):
 
     def get_adjacent_nodes(self):
         """
-        A list of Node objects that are adjacent to this Node object (self)
+        Return a list of Node objects that are adjacent to this Node object (self)
         :return: A list of nodes
         """
         network = self._parent_nodes.belongs_to()
@@ -90,7 +100,6 @@ class Node(LatLng):
     def get_geojson_features(self):
         """
         A utilitie method to export the data as a geojson dump
-
         :return: A dictionary of geojson features
         """
         feature = dict()
@@ -110,11 +119,16 @@ class Node(LatLng):
         return feature
 
     def get_way_ids(self):
+        """ Return a list of way_ids that are connected to this node.
+        :return: A list of way ids
+        """
         return self.way_ids
 
     def get_shared_way_ids(self, other):
         """
-        Other could be either a list of way ids, or a Node object
+        Other could be a Node object or a list of way ids
+        :param other: A Node object or a list of way ids
+        :return: A list of way ids that are shared between this node and other
         """
         if type(other) == list:
             return list(set(self.way_ids) & set(other))
@@ -122,9 +136,19 @@ class Node(LatLng):
             return list(set(self.way_ids) & set(other.get_way_ids()))
 
     def get_sidewalk_nodes(self, wid):
-        return self.sidewalk_nodes[wid]
+        """ Return sidewalk nodes
+        :param wid: A way id
+        :return: A list of node objects
+        """
+        if wid in self.sidewalk_nodes:
+            return self.sidewalk_nodes[wid]
+        else:
+            return None
 
     def has_sidewalk_nodes(self):
+        """ Check if this node has sidewalk nodes
+        :return: Boolean
+        """
         return len(self.sidewalk_nodes) > 0
 
     def is_intersection(self):
@@ -139,9 +163,10 @@ class Node(LatLng):
 
     def remove_way_id(self, wid):
         """
-        Remove a way id from the list that keeps track of what ways are connected to this node
-        :param wid:
-        :return:
+        Remove a way id from the list that keeps track of what ways
+        are connected to this node
+        :param wid: A way id
+        :return: return the way id of the deleted Way object
         """
         if wid in self.way_ids:
             self.way_ids.remove(wid)
@@ -149,9 +174,18 @@ class Node(LatLng):
         return None
 
     def vector(self):
+        """ Get a Numpy array representation of a latlng coordinate
+        :return: A latlng coordinate in a 2-d Numpy array
+        """
         return np.array(self.location())
 
     def vector_to(self, node, normalize=False):
+        """ Get a vector from the latlng coordinate of this node to
+        another node.
+        :param node: The target Node object.
+        :param normalize: Boolean.
+        :return: A vector in a 2-d Numpy array
+        """
         vec = np.array(node.location()) - np.array(self.location())
         if normalize and np.linalg.norm(vec) != 0:
             vec /= np.linalg.norm(vec)
@@ -183,7 +217,6 @@ class Nodes(object):
     def clean(self):
         """
         Remove all the nodes from the data structure if they are not connected to any ways
-        :return:
         """
         nodes = self.get_list()
         for node in nodes:
@@ -193,9 +226,9 @@ class Nodes(object):
     def create_polygon(self, node1, node2, r=15.):
         """
         Create a rectangular polygon from two nodes passed
-        :param nid1:
-        :param nid2:
-        :return:
+        :param nid1: A node id
+        :param nid2: Another node id
+        :return: A Shapely polygon (rectangle)
         """
         if type(node1) == StringType:
             node1 = self.get(node1)
@@ -243,12 +276,15 @@ class Nodes(object):
         """
         Remove a node from the data structure
         http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
-        :param nid:
-        :return:
+        :param nid: A node id
         """
         del self.nodes[nid]
 
     def update(self, nid, new_node):
+        """TBD
+        :param nid:
+        :param new_node:
+        """
         self.nodes[nid] = new_node
         return
 
