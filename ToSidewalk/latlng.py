@@ -34,11 +34,14 @@ class LatLng(object):
         return self.lat, self.lng
 
 def haversine(lon1, lat1, lon2, lat2):
-    """
-    Calculate the great circle distance between two points
+    """Calculate the great circle distance between two points
     on the earth (specified in decimal radians)
-
     http://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points
+    :param lon1: Longitude of the first point
+    :param lat1: Latitude of the first point
+    :param lon2: Longitude of the second point
+    :param lat2: Latitude of the second point
+    :return: A distance in meters
     """
     # haversine formula
     dlon = lon2 - lon1
