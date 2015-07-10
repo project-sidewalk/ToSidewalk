@@ -1,13 +1,16 @@
 from xml.etree import cElementTree as ET
 from shapely.geometry import Polygon, Point, LineString
-from datetime import datetime
 from types import StringType
 from itertools import combinations
 from heapq import heappush, heappop, heapify
-
+from scipy import spatial
+from operator import itemgetter
+from rtree import index
 import json
 import logging as log
 import math
+import time
+import sys
 import numpy as np
 
 
@@ -32,7 +35,8 @@ class Network(object):
         self.nodes._parent_network = self
 
         self.bounds = [100000.0, 100000.0, -100000.0, -100000.0]  # min lat, min lng, max lat, and max lng
-
+        self.rtree = None
+        self.linestring_street_dict = {}
         # Initialize the bounding box
         for node in self.nodes.get_list():
             # lat, lng = node.latlng.location(radian=False)
@@ -169,7 +173,95 @@ class Network(object):
         :return: A list of all the ways in the network
         """
         return self.ways.get_list()
+    def get_nearby_ways(self, base_street):
+        """
+        Retrieves streets near the input street using hough transform and kdtree
+        :param base_street: Street for which to look for nearby streets
+        :return: A list of nearby streets
+        """
+        # Calculate hough points for all ways and build the tree
+        streets = self.get_ways()
+        # Dictionary will allow retrieval of original street using hough point as key
+        hough_point_street_dict = {}
+        allpoints = []
+        for street in streets:
+            houghpoint = street.get_hough_point()
+            hough_point_street_dict[houghpoint[0]] = street
+            allpoints.append(houghpoint)
+        # Build the tree
+        tree = spatial.KDTree(allpoints)
+        # Convert to regular list
+        treedata = tree.data.tolist()
+        #print("Treedata")
+        #print(treedata)
 
+        base_hough_point = base_street.get_hough_point()
+
+        # Find 20 points closest to base
+        neighbors = tree.query(base_hough_point, k=10)
+        #print("Neighbors")
+        #print(neighbors)
+        # Go through each index and retrieve the street. Store streets in array.
+        nearby_streets = []
+        for index in neighbors[1]:
+            found_street = hough_point_street_dict[treedata[index][0]]
+            nearby_streets.append(found_street)
+         #   print(found_street)
+        return nearby_streets
+
+    def get_nearest_neighbor_pairs(self):
+        """
+        Finds pairs of streets for merging using hough transformation and kdtree
+        :return:
+        """
+        streets = self.get_ways()
+        # Dictionary will allow retrieval of original street using hough point as key
+        hough_point_street_dict = {}
+        allpoints = []
+        for street in streets:
+            houghpoint = street.get_hough_point()
+            hough_point_street_dict[houghpoint[0]] = street
+            allpoints.append(houghpoint)
+        tree = spatial.KDTree(allpoints)
+        treedata = tree.data.tolist()
+        treedata_unsorted = tree.data.tolist()
+        print(hough_point_street_dict)
+        for index,pair in enumerate(treedata):
+
+            neighbors = tree.query(pair,k=2)
+
+            if(neighbors[0][0] != 0):
+                distance_and_index = [neighbors[0][0],neighbors[1][0]]
+
+            else:
+                distance_and_index = [neighbors[0][1], neighbors[1][1]]
+
+            treedata[index].append(distance_and_index[0])
+            treedata[index].append(distance_and_index[1])
+
+        # Sort these pairs by distance
+        treedata = sorted(treedata,key=itemgetter(2))
+        parallel_pairs = []
+        for entry in treedata:
+            if 0.0 < entry[2] < 10:
+                new_pair = []
+                new_pair.append(entry[0])
+                new_pair.append(entry[1])
+                new_pair.append(treedata_unsorted[entry[3]][0])
+                new_pair.append(treedata_unsorted[entry[3]][1])
+                parallel_pairs.append(new_pair)
+        for pair in parallel_pairs:
+            street1 = hough_point_street_dict[pair[0]]
+            street2 = hough_point_street_dict[pair[2]]
+            street_pair = [street1, street2]
+            print("Streets " + str(street_pair[0].id) + " and " + str(street_pair[1].id))
+            print(street1.get_node_ids()[0])
+            print(street1.get_node_ids()[-1])
+            print(street2.get_node_ids()[0])
+            print(street2.get_node_ids()[-1])
+        #print("Parallel pairs" + str(parallel_pairs))
+        #print("Tree data "+ str(treedata))
+        #print "\n".join(str(x) for x in treedata)
     def parse_intersections(self):
         """
         TBD
@@ -360,7 +452,7 @@ class OSM(Network):
                     self.remove_way(way_id_2)
             except Exception as e:
                 log.exception("Something went wrong while cleaning street segmentation, so skipping...")
-                raise
+                #raise
 
     def export(self, format="geojson", data_type="ways"):
         """
@@ -862,20 +954,124 @@ class OSM(Network):
             self.remove_way(way_id)
             self.join_connected_ways(segments_to_merge)
 
-    def merge_parallel_street_segments3(self, threshold=0.5):
+    def create_rtree(self):
+        """
+        Creates an r-tree from this street network and updates the self.rtree field
+
+        """
+        #print("Creating rtree")
+        streets = self.get_ways()
+        """
+        # Make a list of start and end coordinates for each street
+
+        List structure:
+        [
+        [[x1, y1], [x2, y2]],
+        [[x3, y3], [x4, y4]],
+        ...
+        ]
+        """
+        coords_list = []
+        linestrings = []
+
+        for street in streets:
+            start_lat = street.get_start_latitude()
+            start_long = street.get_start_longitude()
+            end_lat = street.get_end_latitude()
+            end_long = street.get_end_longitude()
+            coords_list.append([[start_lat, start_long], [end_lat, end_long]])
+            # Create a linestring from the coordinates we just added and put it into the linestrings list
+            linestrings.append(LineString(coords_list[-1]))
+            # Add the linestring we just added to the dictionary.
+            # Key is the x coordinate of the linestring's start point
+            # Value is the street object
+            # Dictionary allows later retrieval of street object from linestring.
+            self.linestring_street_dict[linestrings[-1].coords[0][0]] = street
+
+        idx = index.Index()  # r-tree index
+        # Insert the linestrings into the rtree
+        for i, linestring in enumerate(linestrings):
+            idx.insert(i, linestring.bounds + np.array([-0.0010, -0.00010, 0.00010, 0.00010]), linestring)
+        self.rtree = idx
+    def get_rtree_nearby_ways(self, base_street):
+        """
+        This method queries self.rtree to retrieve the streets near the input base_street.
+        :param base_street: Street for which to search for neighboring streets
+        :return: List of streets around the base_street
+        """
+        if self.rtree is None:
+            self.create_rtree()
+        # Create a linestring for the input street
+        base_start_lat = base_street.get_start_latitude()
+        base_start_long = base_street.get_start_longitude()
+        base_end_lat = base_street.get_end_latitude()
+        base_end_long = base_street.get_end_longitude()
+        input_street_coords = [[base_start_lat,base_start_long],[base_end_lat,base_end_long]]
+        input_street_linestring = LineString(input_street_coords)
+        # Create a bounding box by expanding the input street's bounding box
+        # Then count the number of objects that are in that bounding box and store them in a list.
+        bbox = np.array(input_street_linestring.bounds) + np.array([-0.0010, -0.00010, 0.00010, 0.00010])  # Expand the bounding box a bit
+        num = self.rtree.count(bbox)  # Count the number of items that are in this bounding box
+        # print ("There are " + str(num) + " items in this bounding box.")
+        # Get the raw objects (linestrings) in the bounding box
+        linestring_objects = self.rtree.nearest(input_street_linestring.bounds, num, objects='raw')
+        # Convert the linestring objects back into street objects and store them in list
+        street_objects = []
+        for linestring in linestring_objects:
+            street_objects.append(self.linestring_street_dict[linestring.coords[0][0]])
+        # Debugging -------
+        # Print the base street start and end node ids followed by start and end node ids of found nearby streets
+        # print "Input street starts at node " + str(base_street.get_node_ids()[0]) + " and ends at " + str(base_street.get_node_ids()[-1])
+        # print "Here are the nearby streets:"
+        # for street in street_objects:
+        #     print str(street.get_node_ids()[0]) + "\t" + str(street.get_node_ids()[-1])
+        # -----------------
+        # Return the list of street objects; these are the streets near the input street
+        # print("\n")
+        return street_objects
+    def merge_parallel_street_segments3(self, threshold=0.3):
         """
         My freaking third attempt to merge parallel segemnts.
         :param threshold:
         :return:
         """
+        use_rtree = True
         log.debug("Start merging the streets.")
         streets = self.get_ways()
+        iteration = 0
+
         while True:
+            start = time.time()
+            iteration+=1
+            print("...working on merge iteration "+str(iteration))
+
             streets = sorted(streets, key=lambda x: self.get_node(x.nids[0]).lat)
             do_break = True
             for street1 in streets:
+
                 overlap_list = []  # store tuples of (index, area_overlap pair)
-                for street2 in streets:
+
+                # Compare this street only with nearby streets, found using rtree
+                if use_rtree:
+                    nearby_streets = self.get_rtree_nearby_ways(street1)
+                else:
+                    nearby_streets = streets
+                """
+                # Add the detected nearby streets to street1's list of neighbors
+                for neighbor in nearby_streets:
+                    street1.add_neighbor(neighbor)
+
+                nearby_streets_filtered = []
+                # Go through each of the nearby streets
+                # If a nearby street has street1 in its list of neighbors, this pair has already been compared,
+                # so we don't have to compare it again.
+                for neighbor in nearby_streets:
+                    if street1 in neighbor.get_neighbors():
+                        pass
+                    else:
+                        nearby_streets_filtered.append(neighbor)
+                """
+                for street2 in nearby_streets:
                     if street1 == street2 or set(street1.nids) == set(street2.nids):
                         continue
 
@@ -920,10 +1116,14 @@ class OSM(Network):
 
                     self.remove_way(street1.id)
                     self.remove_way(street2.id)
+
                     for new_street in new_streets:
                         streets.append(new_street)
-
+                    if use_rtree:
+                        # Create new rtree
+                        self.create_rtree()
                     do_break = False
+            print("Iteration took %s seconds ---" % (time.time() - start))
             if do_break:
                 break
 
@@ -1082,8 +1282,13 @@ class OSM(Network):
                 self.remove_way(way.id)
             else:
                 for nid in way.get_node_ids():
-                    node = self.get_node(nid)
-                    node.append_way(way.id)
+                    try:
+                        node = self.get_node(nid)
+                        node.append_way(way.id)
+                    except:
+                        print "Removing NoneType Node"
+                        way.remove_node(nid)
+                        self.remove_way(way.id)
         self.nodes.clean()  # Remove nodes that are not connected to anything.
         self.clean_street_segmentation()
 
@@ -1581,7 +1786,7 @@ def parse_intersections(nodes, ways):
     ways.set_intersection_node_ids(intersection_node_ids)
     return
 
-
+"""
 if __name__ == "__main__":
     # filename = "../resources/SegmentedStreet_01.osm"
     filename = "../resources/ParallelLanes_01.osm"
@@ -1597,3 +1802,4 @@ if __name__ == "__main__":
     geojson = street_network.export(format='geojson')
     print("Export finished" + str(datetime.now()))
     #print geojson
+"""
