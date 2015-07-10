@@ -3,7 +3,6 @@ import math
 import numpy as np
 import itertools
 import logging as log
-
 from shapely.geometry import Polygon, LineString, Point
 from utilities import latlng_offset_size, window
 from types import *
@@ -48,7 +47,6 @@ class Way(object):
     def belongs_to(self):
         """
         Returns a parent Ways object
-
         :return: A Ways object
         """
         return self._parent_ways
@@ -56,7 +54,6 @@ class Way(object):
     def export(self):
         """
         A utility method to export the data as a geojson dump
-
         :return: A geojson data in a string format.
         """
         if self._parent_ways and self._parent_ways._parent_network:
@@ -70,7 +67,6 @@ class Way(object):
     def get_geojson_features(self):
         """
         A utilitie method to export the data as a geojson dump
-
         :return: A dictionary of geojson features
         """
         coordinates = []
@@ -111,7 +107,6 @@ class Way(object):
     def get_node_ids(self):
         """
         Get a list of node ids
-
         :return: A list of node ids
         """
         return self.nids
@@ -119,7 +114,6 @@ class Way(object):
     def get_nodes(self):
         """
         Get nodes
-
         :return:
         """
         ways = self.belongs_to()
@@ -139,7 +133,6 @@ class Way(object):
         """
         Get node ids that are shared between two Way objects. other could be either
         a list of node ids or a Way object.
-
         :param other: A list of node ids or a Way object
         :return: A list of node ids
         """
@@ -151,7 +144,6 @@ class Way(object):
     def insert_node(self, insert_index, nid_to_insert):
         """
         Insert a node id into nids
-
         :param insert_index:
         :param nid_to_insert:
         """
@@ -163,11 +155,11 @@ class Way(object):
 
         Remove a node from nid (a list of node ids)
         http://stackoverflow.com/questions/2793324/is-there-a-simple-way-to-delete-a-list-element-by-value-in-python
-
         :param nid_to_remove: A node id
         """
         if isinstance(nid_to_remove, Node):
             nid_to_remove = nid_to_remove.id
+
 
         self.nids = [nid for nid in self.nids if nid != nid_to_remove]
         #
@@ -185,12 +177,13 @@ class Way(object):
         #             temp_network.remove_way(self)
 
     def swap_nodes(self, node_from, node_to):
+
         """
         Swap a node that forms the way with another node. The new node inherits previous node's way_ids
 
         :param nid_from: A node id or a Node object
         :param nid_to: A node id or a Node object
-        """
+         """
         network = self.belongs_to().belongs_to()
         if type(node_from) == StringType:
             node_from = network.get_node(node_from)
@@ -206,14 +199,14 @@ class Way(object):
         except AttributeError:
             print node_from, node_to
             log.debug("Way.swap_nodes(): Debug")
-
+        #except ValueError:
+        #    return
         for way_id in node_from.way_ids:
             node_to.append_way(way_id)
 
     def angle(self):
         """
         Get an angle formed by a vector from the first node to the last one.
-
         :return:
         """
         ways = self.belongs_to()
@@ -227,7 +220,6 @@ class Way(object):
     def is_parallel_to(self, other, threshold=10.):
         """
         Check if this way is parallel to another one
-
         :param other: A Way object or a way id
         :return:
         """
@@ -246,7 +238,6 @@ class Way(object):
     def on_same_street(self, other):
         """
         Is on the same street
-
         :param other:
         :return:
         """
@@ -299,7 +290,6 @@ class Way(object):
     def merge(self, other):
         """
         Merge two ways
-
         :param other:
         :return:
         """
@@ -402,8 +392,7 @@ class Ways(object):
 
     def add(self, way):
         """
-        Add a Way object into this Ways object
-
+        Add a Way object
         :param way: A Way object
         """
         way._parent_ways = self
@@ -412,7 +401,6 @@ class Ways(object):
     def belongs_to(self):
         """
         Return a parent network
-
         :return: A Network object
         """
         return self._parent_network
@@ -420,7 +408,6 @@ class Ways(object):
     def get(self, wid):
         """
         Search and return a Way object by its id
-
         :param wid: A way id
         :return: A Way object
         """
@@ -432,7 +419,6 @@ class Ways(object):
     def get_list(self):
         """
         Get a list of all Way objects in the data structure
-
         :return: A list of Way objects
         """
         return self.ways.values()
@@ -440,7 +426,6 @@ class Ways(object):
     def has(self, wid):
         """
         Checks if the way id exists
-
         :param wid: A way id
         :return: Boolean
         """
@@ -450,7 +435,6 @@ class Ways(object):
         """
         Remove a way from the data structure
         http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
-
         :param wid: A way id
         """
         del self.ways[wid]
@@ -467,11 +451,68 @@ class Street(Way):
         self.distance_to_sidewalk = 0.00008
         self.oneway = 'undefined'
         self.ref = 'undefined'
+        self.hough = []
+        # Maintain a list of neighboring streets, populated during merge
+        self.neighbors = []
+    def __hash__(self):
+        start_nid = self.get_node_ids()[0]
+        end_nid = self.get_node_ids()[-1]
+        return hash((start_nid, end_nid))
+    def add_neighbor(self, new_neighbor):
+        self.neighbors.append(new_neighbor)
+    def get_neighbors(self):
+        return self.neighbors
+    def get_start_latitude(self):
+        start_node = self.get_nodes()[0]
+        return start_node.lat
+    def get_start_longitude(self):
+        start_node = self.get_nodes()[0]
+        return start_node.lng
+    def get_end_latitude(self):
+        end_node = self.get_nodes()[-1]
+        return end_node.lat
+    def get_end_longitude(self):
+        end_node = self.get_nodes()[-1]
+        return end_node.lng
+    def get_hough_point(self):
+
+        start_lat = self.get_start_latitude()
+        start_long = self.get_start_longitude()
+        end_lat = self.get_end_latitude()
+        end_long = self.get_end_longitude()
+
+
+        # Recenter the origin
+        start_lat -= 38.9
+        start_long += 76.988
+        end_lat -= 38.9
+        end_long += 76.988
+        # Calculate what m and b are in slope-intercept form
+        x1 = start_lat
+        y1 = start_long
+        x2 = end_lat
+        y2 = end_long
+        x0 = 0
+        y0 = 0
+        try:
+            r = abs((y2 - y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1)/math.sqrt((y2-y1)**2 + (x2 - x1)**2)
+        except ZeroDivisionError:
+            r=100000
+        dx = x2 - x1
+        dy = y2 - y1
+        rads = math.atan2(-dy,dx)
+        rads %= 2 * math.pi
+        degs = math.radians((math.degrees(rads) + 90) % 360)
+
+
+        hough = [r, degs]
+        self.hough = hough
+
+        return hough
 
     def getdirection(self):
         """
         Get a direction of the street
-
         :return:
         """
         ways = self.belongs_to()
@@ -487,6 +528,7 @@ class Street(Way):
             return -1
 
     def set_oneway_tag(self, oneway_tag):
+
         """
         This method sets the oneway property of the Way object to "yes" or "no".
 
@@ -508,6 +550,7 @@ class Street(Way):
 
         :return: 
         """
+
         return self.oneway
 
     def get_ref_tag(self):
@@ -524,11 +567,13 @@ class Street(Way):
         return self.sidewalk_ids
 
     def get_length(self):
+
         """TBD"""
         ways = self.belongs_to()
         network = ways.belongs_to()
         start_node = network.get_node(self.get_node_ids()[0])
         end_node = network.get_node(self.get_node_ids()[-1])
+
         vec = np.array(start_node.location()) - np.array(end_node.location())
         length = abs(vec[0] - vec[-1])
         return length
@@ -544,7 +589,6 @@ class Sidewalk(Way):
     def set_street_id(self, street_id):
         """
         Set the parent street id
-
         :param street_id: A street id
         """
         self.street_id = street_id
@@ -553,3 +597,4 @@ class Sidewalks(Ways):
     def __init__(self):
         super(Sidewalks, self).__init__()
         self.street_id = None
+
