@@ -15,12 +15,14 @@ Base = declarative_base()
 
 class DB(object):
 
+
     def __init__(self, setting_file="../.settings"):
         """Interacting with PostGIS using Python
         http://gis.stackexchange.com/questions/147240/how-to-efficiently-use-a-postgres-db-with-python
         http://geoalchemy-2.readthedocs.org/en/latest/orm_tutorial.html
         """
         with file(setting_file) as f:
+
             j = json.loads(f.read())
 
             if "username" in j:
@@ -42,9 +44,11 @@ class DB(object):
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
 
+
     def example2(self):
         """Example
         """
+
         query = self.session.query(WaysTable)
         feature_collection = {
             "type": "FeatureCollection",
@@ -149,6 +153,8 @@ class SidewalkEdgesTable(Base):
 
 
 if __name__ == "__main__":
+
     setting_file = os.path.relpath("../../", os.path.dirname(__file__)) + "/.settings"
     db = DB(setting_file)
     print db.example_insert()
+
