@@ -47,7 +47,7 @@ class Way(object):
     def belongs_to(self):
         """
         Returns a parent Ways object
-        :return:
+        :return: A Ways object
         """
         return self._parent_ways
 
@@ -422,6 +422,14 @@ class Ways(object):
         """
         return self.ways.values()
 
+    def has(self, wid):
+        """
+        Checks if the way id exists
+        :param wid: A way id
+        :return: Boolean
+        """
+        return wid in self.ways
+
     def remove(self, wid):
         """
         Remove a way from the data structure
@@ -545,13 +553,16 @@ class Street(Way):
         return self.oneway
 
     def get_ref_tag(self):
+        """TBD"""
         return self.ref
 
     def append_sidewalk_id(self, way_id):
+        """TBD"""
         self.sidewalk_ids.append(way_id)
         return self
 
     def get_sidewalk_ids(self):
+        """TBD"""
         return self.sidewalk_ids
 
     def get_length(self):
