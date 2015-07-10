@@ -93,7 +93,8 @@ class Way(object):
             'x1': start.lng,
             'y1': start.lat,
             'x2': end.lng,
-            'y2': end.lat
+            'y2': end.lat,
+            'node_ids': self.nids
         }
         feature['type'] = 'Feature'
         feature['id'] = '%s' % (self.id)
