@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float
+from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, TIMESTAMP
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from geoalchemy2 import Geometry
@@ -10,11 +10,12 @@ import os
 import pprint as pp
 import numpy as np
 
+from ToSidewalk.db import *
+
 Base = declarative_base()
 
 
 class DB(object):
-
 
     def __init__(self, setting_file="../.settings"):
         """Interacting with PostGIS using Python
@@ -49,7 +50,7 @@ class DB(object):
         """Example
         """
 
-        query = self.session.query(WaysTable)
+        query = self.session.query(WayTable)
         feature_collection = {
             "type": "FeatureCollection",
             "features": []
@@ -71,9 +72,9 @@ class DB(object):
 
         :return:
         """
-        query = self.session.query(SidewalkEdgesTable)
+        query = self.session.query(SidewalkEdgeTable).filter_by(deleted=False)
         for item in query:
-            print item
+            print item.sidewalk_edge_id, item.x1, item.y1
 
     def example_insert(self):
         """
@@ -87,7 +88,7 @@ class DB(object):
         with open(filename) as f:
             geojson = json.loads(f.read())
 
-        table = SidewalkEdgesTable().__table__
+        table = SidewalkEdgeTable().__table__
         conn = self.engine.connect()
         for feature in geojson["features"]:
             # print pp.pprint(feature)
@@ -95,11 +96,7 @@ class DB(object):
             properties = feature["properties"]
 
             geom = from_shape(LineString(coordinates), srid=4326)
-            way_id = int(np.uint32(properties["id"]))  # [Issue X] I've just realized functions in pgrouting assume 32bit int, which kind of sucks. Hacking it for now with np.uint32
-            osm_ways = str(properties["osm_ways"])
-            cost = float(properties["cost"])
-            reverse_cost = float(properties["reverse_cost"])
-            user = properties["user"]
+            sidewalk_edge_id = int(np.uint32(properties["sidewalk_edge_id"]))  # [Issue X] I've just realized functions in pgrouting assume 32bit int, which kind of sucks. Hacking it for now with np.uint32
             x1 = float(properties["x1"])
             y1 = float(properties["y1"])
             x2 = float(properties["x2"])
@@ -109,52 +106,22 @@ class DB(object):
             target = int(np.uint32(properties["target"]))
 
             ins = table.insert().values(geom=geom,
-                                        way_id=way_id,
-                                        osm_ways=osm_ways,
-                                        cost=cost,
-                                        reverse_cost=reverse_cost,
-                                        user=user,
+                                        sidewalk_edge_id=sidewalk_edge_id,
                                         x1=x1,
                                         y1=y1,
                                         x2=x2,
                                         y2=y2,
                                         way_type=way_type,
                                         source=source,
-                                        target=target)
+                                        target=target,
+                                        deleted=False,
+                                        parent_sidewalk_edge_id=None)
 
             conn.execute(ins)
-
-
-class WaysTable(Base):
-    __tablename__ = "ogrgeojson"
-    ogc_fid = Column(Integer, primary_key=True)
-    wkb_geometry = Column(Geometry("LINESTRING"))
-    stroke = Column(String)
-    type = Column(String)
-    id = Column(String)
-    user = Column(String)
-
-class SidewalkEdgesTable(Base):
-    __tablename__ = "sidewalk_edges"
-    sidewalk_edge_id = Column(Integer, primary_key=True, autoincrement=True, name="sidewalk_edge_id")
-    way_id = Column(Integer, name="way_id")
-    geom = Column(Geometry("LineString", srid=4326), name="geom")
-    osm_ways = Column(String, name="osm_ways")
-    cost = Column(Float, name="cost")
-    reverse_cost = Column(Float, name="reverse_cost")
-    user = Column(String, name="user")
-    x1 = Column(Float, name="x1")
-    y1 = Column(Float, name="y1")
-    x2 = Column(Float, name="x2")
-    y2 = Column(Float, name="y2")
-    way_type = Column(String, name="way_type")
-    source = Column(Integer, name="source")
-    target = Column(Integer, name="target")
-
 
 if __name__ == "__main__":
 
     setting_file = os.path.relpath("../../", os.path.dirname(__file__)) + "/.settings"
     db = DB(setting_file)
-    print db.example_insert()
+    print db.example_select()
 
