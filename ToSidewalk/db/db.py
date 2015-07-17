@@ -10,7 +10,7 @@ import os
 import pprint as pp
 import numpy as np
 
-from ToSidewalk.db import *
+from ToSidewalk.db.SidewalkEdge import *
 
 Base = declarative_base()
 
