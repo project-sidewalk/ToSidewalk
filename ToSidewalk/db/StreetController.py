@@ -30,9 +30,8 @@ def split_streets(filename):
 
 def insert(filename):
     """
-    Example
-
-    http://geoalchemy-2.readthedocs.org/en/latest/core_tutorial.html
+    Insert streets
+    Example: http://geoalchemy-2.readthedocs.org/en/latest/core_tutorial.html
 
     :return:
     """
@@ -98,8 +97,28 @@ def insert(filename):
         trans.commit()
 
 
+def init_assignment_count():
+    database = db.DB('../../.settings')
+    assignment_count_table = StreetEdgeAssignmentCountTable.__table__
+
+    session = database.session
+    query = session.query(StreetEdgeTable.street_edge_id, StreetEdgeAssignmentCountTable.assignment_count, StreetEdgeAssignmentCountTable.completion_count).\
+        outerjoin(StreetEdgeAssignmentCountTable).\
+        filter(StreetEdgeAssignmentCountTable.assignment_count is not None)
+
+    connection = database.engine.connect()
+    with connection.begin() as trans:
+        for item in query:
+            street_edge_id = item[0]
+            ins = assignment_count_table.insert().values(street_edge_id=street_edge_id, assignment_count=0, completion_count=0)
+            connection.execute(ins)
+
+        trans.commit()
+
+
 if __name__ == "__main__":
     print("StreetController.py")
     filename = os.path.relpath("../../output", os.path.dirname(__file__)) + "/SmallMap_04_streets.osm"
     # insert(filename)
     # split_streets("../../resources/SmallMap_04.osm")
+    init_assignment_count()
