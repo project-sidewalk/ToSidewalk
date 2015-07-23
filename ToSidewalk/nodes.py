@@ -14,8 +14,11 @@ class Node(LatLng):
         # self.latlng = latlng  # Note: Would it be cleaner to inherit LatLng?
         super(Node, self).__init__(lat, lng)
 
+        if type(nid) is IntType and nid > 0x7fffffff:
+            nid = random.randint(0, 0x7fffffff)  # Generate a random unsigned integer.
+
         if nid is None:
-            ri = random.randint(0, 0xffffffff)  # Generate a random unsigned integer.
+            ri = random.randint(0, 0x7fffffff)  # Generate a random positive integer.
             self.id = str(ri)
         else:
             self.id = str(nid)

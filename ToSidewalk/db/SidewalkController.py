@@ -1,5 +1,5 @@
 import db
-from Sidewalk import SidewalkEdgeTable
+from SidewalkTables import SidewalkEdgeTable
 
 from geoalchemy2.shape import *
 from shapely.geometry import LineString

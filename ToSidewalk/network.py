@@ -604,6 +604,22 @@ class OSM(Network):
             filtered_parallel_pairs.append(pair)
         return [(streets[pair[0]].id, streets[pair[1]].id) for pair in filtered_parallel_pairs]
 
+    def get_coordinates(self, way, lnglat=False):
+        """
+        Get a list of latlng coordinates
+        :param way: A Way object
+        :param lnglat: If true, return a list of lnglat coordinates instead of latlng coordinates.
+        :return:
+        """
+        coords = []
+        for nid in way.get_node_ids():
+            node = self.get_node(nid)
+            if lnglat:
+                coords.append([node.lng, node.lat])
+            else:
+                coords.append([node.lat, node.lng])
+        return coords
+
     def get_distance(self, way):
         """ Get a distance of the passed way
 
@@ -1760,10 +1776,13 @@ def parse(filename):
     streets = Streets()
     street_nodes = Nodes()
     street_network = OSM(street_nodes, streets, bounds)
+    node_id_mapping = {}
     for node in nodes_tree:
         # mynode = Node(node.get("id"), node.get("lat"), node.get("lon"))
         # street_network.add_node(mynode)
-        street_network.create_node(node.get("id"), node.get("lat"), node.get("lon"))
+
+        new_node = street_network.create_node(int(node.get("id")), node.get("lat"), node.get("lon"))
+        node_id_mapping[int(node.get("id"))] = new_node.id
 
     valid_highways = {'primary', 'secondary', 'tertiary', 'residential'}
     for way in ways_tree:
@@ -1772,14 +1791,14 @@ def parse(filename):
         ref_tag = way.find(".//tag[@k='ref']")
         if highway_tag is not None and highway_tag.get("v") in valid_highways:
             node_elements = filter(lambda elem: elem.tag == "nd", list(way))
-            nids = [node.get("ref") for node in node_elements]
+            nids = [node_id_mapping[int(node.get("ref"))] for node in node_elements]
 
             # Sort the nodes by longitude.
             if street_nodes.get(nids[0]).lng > street_nodes.get(nids[-1]).lng:
                 nids = nids[::-1]
 
             way_type = highway_tag.get('v')
-            street = street_network.create_street(way.get("id"), nids, way_type)
+            street = street_network.create_street(int(way.get("id")), nids, way_type)
 
             for tag in way.findall('tag'):
                 if tag.attrib['k'] != "highway":

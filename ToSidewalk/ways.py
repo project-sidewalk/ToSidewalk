@@ -10,17 +10,22 @@ from types import *
 from nodes import Node
 
 class Way(object):
-    def __init__(self, wid=None, nids=[], type=None):
+    def __init__(self, wid=None, nids=[], way_type=None):
+        self._original_ways = []
+        if type(wid) is IntType and wid > 0x7fffffff:
+            self._original_ways.append(str(wid))
+            wid = random.randint(0, 0x7fffffff)  # Generate a random unsigned integer.
+
         if wid is None:
-            ri = random.randint(0, 0xffffffff)  # Generate a random unsigned integer.
+            ri = random.randint(0, 0x7fffffff)  # Generate a random unsigned integer.
             self.id = str(ri)
         else:
             self.id = str(wid)
         self.nids = list(nids)
-        self.type = type
+        self.type = way_type
         self.user = 'ProjectSidewalk'
         self._parent_ways = None
-        self._original_ways = []
+
         self._tags = []
 
         assert len(self.nids) > 1
