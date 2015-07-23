@@ -9,6 +9,7 @@ import os
 
 import db
 
+
 class SidewalkEdgeTable(db.Base):
     """
     Mapping to the sidewalk_edge table.
