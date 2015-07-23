@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean, TIMESTAMP, BIGINT
 from geoalchemy2 import Geometry
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship, backref
 
 import db
 
@@ -21,6 +23,9 @@ class StreetEdgeTable(db.Base):
     deleted = Column(Boolean, name="deleted")
     timestamp = Column(TIMESTAMP, name="timestamp")
 
+    # http://docs.sqlalchemy.org/en/rel_1_0/orm/basic_relationships.html
+    street_edge_assignment_count = relationship("StreetEdgeAssignmentCountTable", uselist=False, backref="street_edge")
+
 
 class StreetEdgeParentEdgeTable(db.Base):
     """
@@ -28,8 +33,8 @@ class StreetEdgeParentEdgeTable(db.Base):
     """
     __tablename__ = "street_edge_parent_edge"
     street_edge_parent_edge_id = Column(Integer, primary_key=True, name="street_edge_parent_edge_id")
-    street_edge_id = Column(BIGINT, name="street_edge_id")
-    parent_edge_id = Column(BIGINT, name="parent_edge_id")
+    street_edge_id = Column(BIGINT, ForeignKey('street_edge.street_edge_id'), name="street_edge_id")
+    parent_edge_id = Column(BIGINT, ForeignKey('street_edge.street_edge_id'), name="parent_edge_id")
 
 
 class StreetEdgeStreetNodeTable(db.Base):
@@ -38,8 +43,8 @@ class StreetEdgeStreetNodeTable(db.Base):
     """
     __tablename__ = "street_edge_street_node"
     street_edge_street_node_id = Column(Integer, primary_key=True, name="street_edge_street_node_id")
-    street_edge_id = Column(BIGINT, name="street_edge_id")
-    street_node_id = Column(BIGINT, name="street_node_id")
+    street_edge_id = Column(BIGINT, ForeignKey('street_edge.street_edge_id'), name="street_edge_id")
+    street_node_id = Column(BIGINT, ForeignKey('street_node.street_node_id'), name="street_node_id")
 
 
 class StreetNodeTable(db.Base):
@@ -51,6 +56,17 @@ class StreetNodeTable(db.Base):
     geom = Column(Geometry("Point", srid=4326), name="geom")
     lat = Column(Float, name="lat")
     lng = Column(Float, name="lng")
+
+
+class StreetEdgeAssignmentCountTable(db.Base):
+    """
+    Mapping to the street_edge_assignment_count
+    """
+    __tablename__ = "street_edge_assignment_count"
+    street_edge_assignment_count_id = Column(Integer, primary_key=True, name="street_edge_assignment_count_id")
+    street_edge_id = Column(Integer, ForeignKey('street_edge.street_edge_id'), name="street_edge_id")
+    assignment_count = Column(Integer, name="assignment_count")
+    completion_count = Column(Integer, name="completion_count")
 
 
 if __name__ == "__main__":
