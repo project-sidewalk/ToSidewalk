@@ -1,0 +1,3994 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6">
+<bounds minlat="38.8943000" minlon="-76.9886000" maxlat="38.9015000" maxlon="-76.9782000" />
+<node id="314062877" visible="true" user="ProjectSidewalk" lat="38.8971925" lon="-76.98220575" />
+<node id="582460070" visible="true" user="ProjectSidewalk" lat="38.9002018" lon="-76.9927451" />
+<node id="1484481543" visible="true" user="ProjectSidewalk" lat="38.8997358" lon="-76.9815011" />
+<node id="49763128" visible="true" user="ProjectSidewalk" lat="38.894783" lon="-76.986681" />
+<node id="49763124" visible="true" user="ProjectSidewalk" lat="38.894784" lon="-76.989012" />
+<node id="49763125" visible="true" user="ProjectSidewalk" lat="38.894785" lon="-76.988311" />
+<node id="49763126" visible="true" user="ProjectSidewalk" lat="38.894783" lon="-76.987527" />
+<node id="49763122" visible="true" user="ProjectSidewalk" lat="38.894784" lon="-76.990244" />
+<node id="49826874" visible="true" user="ProjectSidewalk" lat="38.905622" lon="-76.981863" />
+<node id="49826875" visible="true" user="ProjectSidewalk" lat="38.905907" lon="-76.981678" />
+<node id="49826876" visible="true" user="ProjectSidewalk" lat="38.905981" lon="-76.981631" />
+<node id="1106232710" visible="true" user="ProjectSidewalk" lat="38.8973643" lon="-76.9903085" />
+<node id="1944651389" visible="true" user="ProjectSidewalk" lat="38.89891105" lon="-76.99955695" />
+<node id="49794274" visible="true" user="ProjectSidewalk" lat="38.896664" lon="-76.982214" />
+<node id="49794271" visible="true" user="ProjectSidewalk" lat="38.896665" lon="-76.982488" />
+<node id="248234970" visible="true" user="ProjectSidewalk" lat="38.90132405" lon="-76.9984258" />
+<node id="1543820025" visible="true" user="ProjectSidewalk" lat="38.9002023" lon="-76.9962703" />
+<node id="1000725789" visible="true" user="ProjectSidewalk" lat="38.9032542" lon="-76.9913745" />
+<node id="940284592" visible="true" user="ProjectSidewalk" lat="38.8947831" lon="-76.994872" />
+<node id="919482592" visible="true" user="ProjectSidewalk" lat="38.8989111" lon="-76.9996049" />
+<node id="49778413" visible="true" user="ProjectSidewalk" lat="38.900821" lon="-76.982911" />
+<node id="1307189957" visible="true" user="ProjectSidewalk" lat="38.90060595" lon="-76.9824049719" />
+<node id="49777948" visible="true" user="ProjectSidewalk" lat="38.896115" lon="-76.986263" />
+<node id="49777940" visible="true" user="ProjectSidewalk" lat="38.896112" lon="-76.988525" />
+<node id="49777946" visible="true" user="ProjectSidewalk" lat="38.896119" lon="-76.987147" />
+<node id="49777945" visible="true" user="ProjectSidewalk" lat="38.896121" lon="-76.987901" />
+<node id="49777944" visible="true" user="ProjectSidewalk" lat="38.896115" lon="-76.988309" />
+<node id="1854402895" visible="true" user="ProjectSidewalk" lat="38.8942731" lon="-76.997695" />
+<node id="49763102" visible="true" user="ProjectSidewalk" lat="38.894785" lon="-76.995914" />
+<node id="49826859" visible="true" user="ProjectSidewalk" lat="38.90417" lon="-76.982802" />
+<node id="49763104" visible="true" user="ProjectSidewalk" lat="38.894783" lon="-76.994962" />
+<node id="49826853" visible="true" user="ProjectSidewalk" lat="38.903358" lon="-76.983327" />
+<node id="49826850" visible="true" user="ProjectSidewalk" lat="38.902706" lon="-76.983749" />
+<node id="49826851" visible="true" user="ProjectSidewalk" lat="38.903004" lon="-76.983549" />
+<node id="2071938234" visible="true" user="ProjectSidewalk" lat="38.9005106" lon="-76.985504" />
+<node id="49734142" visible="true" user="ProjectSidewalk" lat="38.895463" lon="-76.983644" />
+<node id="49734140" visible="true" user="ProjectSidewalk" lat="38.895396" lon="-76.983645" />
+<node id="736055199" visible="true" user="ProjectSidewalk" lat="38.8935782188" lon="-76.9883113437" />
+<node id="49738311" visible="true" user="ProjectSidewalk" lat="38.892571" lon="-76.988299" />
+<node id="1632482647" visible="true" user="ProjectSidewalk" lat="38.8958508" lon="-76.99379695" />
+<node id="1573989507" visible="true" user="ProjectSidewalk" lat="38.898907925" lon="-76.9915159" />
+<node id="1172835198" visible="true" user="ProjectSidewalk" lat="38.898908025" lon="-76.99615035" />
+<node id="49744858" visible="true" user="ProjectSidewalk" lat="38.893574" lon="-76.984571" />
+<node id="49744850" visible="true" user="ProjectSidewalk" lat="38.893574" lon="-76.98711" />
+<node id="635704953" visible="true" user="ProjectSidewalk" lat="38.89724725" lon="-76.982197375" />
+<node id="616981197" visible="true" user="ProjectSidewalk" lat="38.90132595" lon="-76.9949333" />
+<node id="321476616" visible="true" user="ProjectSidewalk" lat="38.895622" lon="-76.9853955" />
+<node id="1800890901" visible="true" user="ProjectSidewalk" lat="38.8964393625" lon="-76.9925793688" />
+<node id="49883424" visible="true" user="ProjectSidewalk" lat="38.898711" lon="-76.984567" />
+<node id="49883422" visible="true" user="ProjectSidewalk" lat="38.897729" lon="-76.98457" />
+<node id="49883429" visible="true" user="ProjectSidewalk" lat="38.892439" lon="-76.984572" />
+<node id="1787253687" visible="true" user="ProjectSidewalk" lat="38.8963618" lon="-76.9925626" />
+<node id="1677332275" visible="true" user="ProjectSidewalk" lat="38.8963365125" lon="-76.9926235625" />
+<node id="1382455980" visible="true" user="ProjectSidewalk" lat="38.9029008" lon="-76.9878347" />
+<node id="49777969" visible="true" user="ProjectSidewalk" lat="38.896117" lon="-76.982214" />
+<node id="49758295" visible="true" user="ProjectSidewalk" lat="38.892652" lon="-76.983646" />
+<node id="49758296" visible="true" user="ProjectSidewalk" lat="38.893081" lon="-76.983644" />
+<node id="49758293" visible="true" user="ProjectSidewalk" lat="38.8924574" lon="-76.9836416" />
+<node id="49758299" visible="true" user="ProjectSidewalk" lat="38.893617" lon="-76.983648" />
+<node id="1449347671" visible="true" user="ProjectSidewalk" lat="38.8938525" lon="-76.9984558" />
+<node id="1746979085" visible="true" user="ProjectSidewalk" lat="38.9013258" lon="-76.9948599" />
+<node id="1484481580" visible="true" user="ProjectSidewalk" lat="38.9001817" lon="-76.9833635" />
+<node id="49760915" visible="true" user="ProjectSidewalk" lat="38.895435" lon="-76.990245" />
+<node id="49793226" visible="true" user="ProjectSidewalk" lat="38.903668" lon="-76.984049" />
+<node id="49793220" visible="true" user="ProjectSidewalk" lat="38.902793" lon="-76.984628" />
+<node id="49793228" visible="true" user="ProjectSidewalk" lat="38.903954" lon="-76.98386" />
+<node id="49778012" visible="true" user="ProjectSidewalk" lat="38.89611" lon="-76.972752" />
+<node id="474289964" visible="true" user="ProjectSidewalk" lat="38.8990368" lon="-76.9861988" />
+<node id="49807256" visible="true" user="ProjectSidewalk" lat="38.900756" lon="-76.988309" />
+<node id="49730297" visible="true" user="ProjectSidewalk" lat="38.902739" lon="-76.990183" />
+<node id="1569898897" visible="true" user="ProjectSidewalk" lat="38.89613405" lon="-76.9931298" />
+<node id="1484481646" visible="true" user="ProjectSidewalk" lat="38.8984419" lon="-76.9741761" />
+<node id="212276693" visible="true" user="ProjectSidewalk" lat="38.899248" lon="-76.9855046" />
+<node id="49790030" visible="true" user="ProjectSidewalk" lat="38.901326" lon="-76.994961" />
+<node id="49790033" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.993755" />
+<node id="49790039" visible="true" user="ProjectSidewalk" lat="38.901318" lon="-76.990244" />
+<node id="49836887" visible="true" user="ProjectSidewalk" lat="38.897101" lon="-76.98221" />
+<node id="49836889" visible="true" user="ProjectSidewalk" lat="38.897183" lon="-76.982209" />
+<node id="49729701" visible="true" user="ProjectSidewalk" lat="38.896095" lon="-76.971791" />
+<node id="825591184" visible="true" user="ProjectSidewalk" lat="38.896479" lon="-76.980355" />
+<node id="1261177882" visible="true" user="ProjectSidewalk" lat="38.90020495" lon="-77.00052265" />
+<node id="49738294" visible="true" user="ProjectSidewalk" lat="38.8986943" lon="-76.987047" />
+<node id="49816406" visible="true" user="ProjectSidewalk" lat="38.902141" lon="-76.986047" />
+<node id="1124202213" visible="true" user="ProjectSidewalk" lat="38.8949317" lon="-76.9962814" />
+<node id="1511899531" visible="true" user="ProjectSidewalk" lat="38.901327875" lon="-76.996140975" />
+<node id="439926661" visible="true" user="ProjectSidewalk" lat="38.8995116" lon="-76.9802547" />
+<node id="49739585" visible="true" user="ProjectSidewalk" lat="38.894781" lon="-76.985504" />
+<node id="49739581" visible="true" user="ProjectSidewalk" lat="38.894103" lon="-76.985508" />
+<node id="49739583" visible="true" user="ProjectSidewalk" lat="38.894546" lon="-76.985504" />
+<node id="1443727085" visible="true" user="ProjectSidewalk" lat="38.9002054" lon="-76.9774934" />
+<node id="492221547" visible="true" user="ProjectSidewalk" lat="38.898911" lon="-76.9994317" />
+<node id="49795789" visible="true" user="ProjectSidewalk" lat="38.8984108" lon="-76.9777215" />
+<node id="49795785" visible="true" user="ProjectSidewalk" lat="38.898568" lon="-76.978635" />
+<node id="49795783" visible="true" user="ProjectSidewalk" lat="38.898651" lon="-76.979112" />
+<node id="49766042" visible="true" user="ProjectSidewalk" lat="38.906274" lon="-76.978995" />
+<node id="804419853" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.999476725" />
+<node id="2118579788" visible="true" user="ProjectSidewalk" lat="38.89594595" lon="-76.9937919" />
+<node id="1661617539" visible="true" user="ProjectSidewalk" lat="38.898908" lon="-76.9960865" />
+<node id="2129747532" visible="true" user="ProjectSidewalk" lat="38.8997084" lon="-76.9783357" />
+<node id="49777929" visible="true" user="ProjectSidewalk" lat="38.896115" lon="-76.991" />
+<node id="49777926" visible="true" user="ProjectSidewalk" lat="38.896118" lon="-76.991425" />
+<node id="49777923" visible="true" user="ProjectSidewalk" lat="38.896117" lon="-76.991628" />
+<node id="49758250" visible="true" user="ProjectSidewalk" lat="38.897326" lon="-76.983647" />
+<node id="49758251" visible="true" user="ProjectSidewalk" lat="38.897492" lon="-76.983649" />
+<node id="49758252" visible="true" user="ProjectSidewalk" lat="38.897692" lon="-76.983653" />
+<node id="49758253" visible="true" user="ProjectSidewalk" lat="38.897977" lon="-76.983644" />
+<node id="49758255" visible="true" user="ProjectSidewalk" lat="38.89843" lon="-76.983646" />
+<node id="237258489" visible="true" user="ProjectSidewalk" lat="38.8968075" lon="-76.9807185" />
+<node id="49889432" visible="true" user="ProjectSidewalk" lat="38.893487" lon="-76.987183" />
+<node id="49889435" visible="true" user="ProjectSidewalk" lat="38.893917" lon="-76.986816" />
+<node id="49889438" visible="true" user="ProjectSidewalk" lat="38.894376" lon="-76.986438" />
+<node id="878958727" visible="true" user="ProjectSidewalk" lat="38.900599" lon="-76.9824898438" />
+<node id="2014971240" visible="true" user="ProjectSidewalk" lat="38.8989071" lon="-76.9927653" />
+<node id="1943002204" visible="true" user="ProjectSidewalk" lat="38.8948547" lon="-76.9962713" />
+<node id="208058432" visible="true" user="ProjectSidewalk" lat="38.9013279" lon="-76.9962493" />
+<node id="2136207540" visible="true" user="ProjectSidewalk" lat="38.9033331" lon="-76.9915578" />
+<node id="49807212" visible="true" user="ProjectSidewalk" lat="38.893788" lon="-76.988309" />
+<node id="1462389819" visible="true" user="ProjectSidewalk" lat="38.8949047" lon="-76.99614855" />
+<node id="49849131" visible="true" user="ProjectSidewalk" lat="38.900763" lon="-76.990242" />
+<node id="1484481608" visible="true" user="ProjectSidewalk" lat="38.9002308" lon="-76.9837988" />
+<node id="334226697" visible="true" user="ProjectSidewalk" lat="38.8959276" lon="-76.9938368" />
+<node id="49739620" visible="true" user="ProjectSidewalk" lat="38.9006463" lon="-76.985513" />
+<node id="49739624" visible="true" user="ProjectSidewalk" lat="38.9007064" lon="-76.9855387" />
+<node id="1828122307" visible="true" user="ProjectSidewalk" lat="38.897332" lon="-76.9897595" />
+<node id="2129747516" visible="true" user="ProjectSidewalk" lat="38.8996121" lon="-76.9781554" />
+<node id="49766004" visible="true" user="ProjectSidewalk" lat="38.900396" lon="-76.979024" />
+<node id="253786438" visible="true" user="ProjectSidewalk" lat="38.8954216" lon="-76.9948545" />
+<node id="49766006" visible="true" user="ProjectSidewalk" lat="38.90055" lon="-76.979002" />
+<node id="49766002" visible="true" user="ProjectSidewalk" lat="38.900211" lon="-76.979068" />
+<node id="1333207634" visible="true" user="ProjectSidewalk" lat="38.9002018" lon="-76.9925345" />
+<node id="1506457205" visible="true" user="ProjectSidewalk" lat="38.9002029" lon="-76.9948406" />
+<node id="610830502" visible="true" user="ProjectSidewalk" lat="38.894783125" lon="-76.994948125" />
+<node id="1956717462" visible="true" user="ProjectSidewalk" lat="38.8916685" lon="-76.985511" />
+<node id="1988837108" visible="true" user="ProjectSidewalk" lat="38.8936274375" lon="-76.9883106875" />
+<node id="2038263839" visible="true" user="ProjectSidewalk" lat="38.9039685" lon="-76.98385" />
+<node id="49766008" visible="true" user="ProjectSidewalk" lat="38.900628" lon="-76.978996" />
+<node id="49766009" visible="true" user="ProjectSidewalk" lat="38.900829" lon="-76.978994" />
+<node id="49766005" visible="true" user="ProjectSidewalk" lat="38.900473" lon="-76.979011" />
+<node id="49794299" visible="true" user="ProjectSidewalk" lat="38.896417" lon="-76.978354" />
+<node id="1878329866" visible="true" user="ProjectSidewalk" lat="38.8968263" lon="-76.99162075" />
+<node id="1707673893" visible="true" user="ProjectSidewalk" lat="38.8981044" lon="-76.9778116" />
+<node id="334376636" visible="true" user="ProjectSidewalk" lat="38.8947401" lon="-76.9967516" />
+<node id="49778437" visible="true" user="ProjectSidewalk" lat="38.902678" lon="-76.981697" />
+<node id="49790053" visible="true" user="ProjectSidewalk" lat="38.9023776" lon="-76.9751901" />
+<node id="49790050" visible="true" user="ProjectSidewalk" lat="38.9019598" lon="-76.9762162" />
+<node id="49790056" visible="true" user="ProjectSidewalk" lat="38.9027897" lon="-76.9741734" />
+<node id="49739603" visible="true" user="ProjectSidewalk" lat="38.8993252" lon="-76.9855042" />
+<node id="49739600" visible="true" user="ProjectSidewalk" lat="38.898908" lon="-76.985504" />
+<node id="1060818789" visible="true" user="ProjectSidewalk" lat="38.89891095" lon="-76.9984316" />
+<node id="913710387" visible="true" user="ProjectSidewalk" lat="38.9002049" lon="-77.0004743" />
+<node id="49769705" visible="true" user="ProjectSidewalk" lat="38.898062" lon="-76.986509" />
+<node id="49769703" visible="true" user="ProjectSidewalk" lat="38.897333" lon="-76.986508" />
+<node id="49769708" visible="true" user="ProjectSidewalk" lat="38.89865" lon="-76.986515" />
+<node id="676394587" visible="true" user="ProjectSidewalk" lat="38.896956" lon="-76.9800015" />
+<node id="1438521846" visible="true" user="ProjectSidewalk" lat="38.9002032" lon="-77.0018928" />
+<node id="651249037" visible="true" user="ProjectSidewalk" lat="38.9002048" lon="-77.000414" />
+<node id="1484481494" visible="true" user="ProjectSidewalk" lat="38.8990327" lon="-76.9775414" />
+<node id="1484481416" visible="true" user="ProjectSidewalk" lat="38.9000876" lon="-76.983547" />
+<node id="49766022" visible="true" user="ProjectSidewalk" lat="38.9037213" lon="-76.978991" />
+<node id="49766020" visible="true" user="ProjectSidewalk" lat="38.902666" lon="-76.978993" />
+<node id="49766021" visible="true" user="ProjectSidewalk" lat="38.90302" lon="-76.97899" />
+<node id="49766026" visible="true" user="ProjectSidewalk" lat="38.904371" lon="-76.97899" />
+<node id="251545167" visible="true" user="ProjectSidewalk" lat="38.8960078" lon="-76.9934398" />
+<node id="49766029" visible="true" user="ProjectSidewalk" lat="38.90497" lon="-76.978989" />
+<node id="1410503671" visible="true" user="ProjectSidewalk" lat="38.9013239" lon="-76.993672" />
+<node id="86563518" visible="true" user="ProjectSidewalk" lat="38.8998902" lon="-76.9839291" />
+<node id="1923500151" visible="true" user="ProjectSidewalk" lat="38.898911975" lon="-77.000552775" />
+<node id="705647680" visible="true" user="ProjectSidewalk" lat="38.8930141" lon="-76.982212" />
+<node id="49788093" visible="true" user="ProjectSidewalk" lat="38.901164" lon="-76.980879" />
+<node id="49788097" visible="true" user="ProjectSidewalk" lat="38.90178" lon="-76.979367" />
+<node id="49788096" visible="true" user="ProjectSidewalk" lat="38.901634" lon="-76.979721" />
+<node id="49788094" visible="true" user="ProjectSidewalk" lat="38.901457" lon="-76.980161" />
+<node id="49778454" visible="true" user="ProjectSidewalk" lat="38.903726" lon="-76.981031" />
+<node id="49778456" visible="true" user="ProjectSidewalk" lat="38.903986" lon="-76.980862" />
+<node id="49760917" visible="true" user="ProjectSidewalk" lat="38.895437" lon="-76.989318" />
+<node id="2029305528" visible="true" user="ProjectSidewalk" lat="38.8948097" lon="-76.9965807" />
+<node id="49760918" visible="true" user="ProjectSidewalk" lat="38.895435" lon="-76.988791" />
+<node id="49756538" visible="true" user="ProjectSidewalk" lat="38.898907" lon="-76.992646" />
+<node id="49756532" visible="true" user="ProjectSidewalk" lat="38.8989083" lon="-76.9937579" />
+<node id="49756530" visible="true" user="ProjectSidewalk" lat="38.898909" lon="-76.994353" />
+<node id="49777988" visible="true" user="ProjectSidewalk" lat="38.896111" lon="-76.977567" />
+<node id="49777983" visible="true" user="ProjectSidewalk" lat="38.896111" lon="-76.978375" />
+<node id="49777981" visible="true" user="ProjectSidewalk" lat="38.896113" lon="-76.978989" />
+<node id="49739567" visible="true" user="ProjectSidewalk" lat="38.891609" lon="-76.98551" />
+<node id="49739565" visible="true" user="ProjectSidewalk" lat="38.891465" lon="-76.98551" />
+<node id="49754499" visible="true" user="ProjectSidewalk" lat="38.901567" lon="-76.987411" />
+<node id="49795810" visible="true" user="ProjectSidewalk" lat="38.904772" lon="-76.992225" />
+<node id="1499921500" visible="true" user="ProjectSidewalk" lat="38.9053668" lon="-76.9820265" />
+<node id="49730465" visible="true" user="ProjectSidewalk" lat="38.8999388" lon="-76.9839979" />
+<node id="1113213015" visible="true" user="ProjectSidewalk" lat="38.900625675" lon="-76.985514925" />
+<node id="671917325" visible="true" user="ProjectSidewalk" lat="38.8998213" lon="-76.9840863" />
+<node id="2031843810" visible="true" user="ProjectSidewalk" lat="38.896635" lon="-76.9918964" />
+<node id="49739609" visible="true" user="ProjectSidewalk" lat="38.900197" lon="-76.985504" />
+<node id="1382526848" visible="true" user="ProjectSidewalk" lat="38.9001953" lon="-76.9746841" />
+<node id="1382526841" visible="true" user="ProjectSidewalk" lat="38.8995649" lon="-76.9779001" />
+<node id="1382526844" visible="true" user="ProjectSidewalk" lat="38.900199" lon="-76.975698" />
+<node id="49769515" visible="true" user="ProjectSidewalk" lat="38.8977697" lon="-76.9694892" />
+<node id="49769513" visible="true" user="ProjectSidewalk" lat="38.8978052" lon="-76.9697601" />
+<node id="1009732865" visible="true" user="ProjectSidewalk" lat="38.90132" lon="-76.991512125" />
+<node id="1125625360" visible="true" user="ProjectSidewalk" lat="38.900201" lon="-76.9888448" />
+<node id="49742444" visible="true" user="ProjectSidewalk" lat="38.89201" lon="-76.980762" />
+<node id="49788018" visible="true" user="ProjectSidewalk" lat="38.8941493" lon="-76.998193" />
+<node id="49807184" visible="true" user="ProjectSidewalk" lat="38.892819" lon="-76.988312" />
+<node id="49807189" visible="true" user="ProjectSidewalk" lat="38.89297" lon="-76.988316" />
+<node id="1431237471" visible="true" user="ProjectSidewalk" lat="38.8963045" lon="-76.992705" />
+<node id="275046875" visible="true" user="ProjectSidewalk" lat="38.90020205" lon="-76.993811" />
+<node id="1262118852" visible="true" user="ProjectSidewalk" lat="38.896749" lon="-76.9916093" />
+<node id="49765986" visible="true" user="ProjectSidewalk" lat="38.897185" lon="-76.979937" />
+<node id="49765981" visible="true" user="ProjectSidewalk" lat="38.896919" lon="-76.980015" />
+<node id="49765983" visible="true" user="ProjectSidewalk" lat="38.896993" lon="-76.979988" />
+<node id="49765988" visible="true" user="ProjectSidewalk" lat="38.897644" lon="-76.979804" />
+<node id="49765989" visible="true" user="ProjectSidewalk" lat="38.898112" lon="-76.97967" />
+<node id="742155402" visible="true" user="ProjectSidewalk" lat="38.8933062" lon="-76.98075315" />
+<node id="49756512" visible="true" user="ProjectSidewalk" lat="38.898911" lon="-76.998448" />
+<node id="49756517" visible="true" user="ProjectSidewalk" lat="38.898908" lon="-76.996168" />
+<node id="275723869" visible="true" user="ProjectSidewalk" lat="38.896445" lon="-76.9925671" />
+<node id="1428350778" visible="true" user="ProjectSidewalk" lat="38.8996067" lon="-76.9799445" />
+<node id="1484482017" visible="true" user="ProjectSidewalk" lat="38.8992132" lon="-76.9785135" />
+<node id="1717990186" visible="true" user="ProjectSidewalk" lat="38.89656" lon="-76.98026925" />
+<node id="1596649017" visible="true" user="ProjectSidewalk" lat="38.8984231" lon="-76.9795809" />
+<node id="875511842" visible="true" user="ProjectSidewalk" lat="38.8986278" lon="-76.9870088" />
+<node id="49763101" visible="true" user="ProjectSidewalk" lat="38.894786" lon="-76.996061" />
+<node id="49873404" visible="true" user="ProjectSidewalk" lat="38.8978006" lon="-76.9779009" />
+<node id="49763109" visible="true" user="ProjectSidewalk" lat="38.894785" lon="-76.993756" />
+<node id="1234318222" visible="true" user="ProjectSidewalk" lat="38.8921433" lon="-76.9846186" />
+<node id="49794286" visible="true" user="ProjectSidewalk" lat="38.896805" lon="-76.980734" />
+<node id="1382526829" visible="true" user="ProjectSidewalk" lat="38.8987476" lon="-76.9759466" />
+<node id="759318807" visible="true" user="ProjectSidewalk" lat="38.899477" lon="-76.9800621" />
+<node id="1124063647" visible="true" user="ProjectSidewalk" lat="38.898094" lon="-76.9883014" />
+<node id="49792444" visible="true" user="ProjectSidewalk" lat="38.897436" lon="-76.975848" />
+<node id="705647642" visible="true" user="ProjectSidewalk" lat="38.893373" lon="-76.9807558" />
+<node id="705647641" visible="true" user="ProjectSidewalk" lat="38.8932394" lon="-76.9807505" />
+<node id="1890566476" visible="true" user="ProjectSidewalk" lat="38.9013262" lon="-76.9950524" />
+<node id="49778492" visible="true" user="ProjectSidewalk" lat="38.905662" lon="-76.979774" />
+<node id="1226652238" visible="true" user="ProjectSidewalk" lat="38.900204" lon="-76.9984941" />
+<node id="2020165220" visible="true" user="ProjectSidewalk" lat="38.8948987" lon="-76.9961645" />
+<node id="1484481684" visible="true" user="ProjectSidewalk" lat="38.8986652" lon="-76.9755027" />
+<node id="49756572" visible="true" user="ProjectSidewalk" lat="38.8988399" lon="-76.9836428" />
+<node id="1460434638" visible="true" user="ProjectSidewalk" lat="38.89639585" lon="-76.992688375" />
+<node id="1263548075" visible="true" user="ProjectSidewalk" lat="38.8971523" lon="-76.9906215" />
+<node id="705647749" visible="true" user="ProjectSidewalk" lat="38.8933751" lon="-76.9789936" />
+<node id="1950133985" visible="true" user="ProjectSidewalk" lat="38.8963744" lon="-76.99273475" />
+<node id="49873422" visible="true" user="ProjectSidewalk" lat="38.8973" lon="-76.975067" />
+<node id="1824556145" visible="true" user="ProjectSidewalk" lat="38.8947826" lon="-76.9964463" />
+<node id="1366265414" visible="true" user="ProjectSidewalk" lat="38.9165157" lon="-76.9731352" />
+<node id="1621370553" visible="true" user="ProjectSidewalk" lat="38.8968293" lon="-76.9916135" />
+<node id="173016213" visible="true" user="ProjectSidewalk" lat="38.8935305" lon="-76.9871465" />
+<node id="209702014" visible="true" user="ProjectSidewalk" lat="38.8989071" lon="-76.9925228" />
+<node id="1708649827" visible="true" user="ProjectSidewalk" lat="38.8940091" lon="-76.9983258" />
+<node id="1819753577" visible="true" user="ProjectSidewalk" lat="38.898908" lon="-76.9950652" />
+<node id="1362398018" visible="true" user="ProjectSidewalk" lat="38.8947858" lon="-76.9960884" />
+<node id="2055159827" visible="true" user="ProjectSidewalk" lat="38.900204875" lon="-77.000468325" />
+<node id="1881028752" visible="true" user="ProjectSidewalk" lat="38.90020185" lon="-76.992614775" />
+<node id="1499921480" visible="true" user="ProjectSidewalk" lat="38.9037282" lon="-76.983086" />
+<node id="495739692" visible="true" user="ProjectSidewalk" lat="38.900204" lon="-76.9985462" />
+<node id="49765941" visible="true" user="ProjectSidewalk" lat="38.895972" lon="-76.98076" />
+<node id="49765949" visible="true" user="ProjectSidewalk" lat="38.896111" lon="-76.980712" />
+<node id="529069107" visible="true" user="ProjectSidewalk" lat="38.8989079" lon="-76.9916342" />
+<node id="1484481801" visible="true" user="ProjectSidewalk" lat="38.8979263" lon="-76.9712702" />
+<node id="49739579" visible="true" user="ProjectSidewalk" lat="38.893681" lon="-76.985508" />
+<node id="49739571" visible="true" user="ProjectSidewalk" lat="38.891775" lon="-76.98551" />
+<node id="49739574" visible="true" user="ProjectSidewalk" lat="38.892291" lon="-76.985511" />
+<node id="49739575" visible="true" user="ProjectSidewalk" lat="38.892861" lon="-76.985507" />
+<node id="49739577" visible="true" user="ProjectSidewalk" lat="38.893575" lon="-76.985509" />
+<node id="49756558" visible="true" user="ProjectSidewalk" lat="38.8989073" lon="-76.986513" />
+<node id="49756556" visible="true" user="ProjectSidewalk" lat="38.898924" lon="-76.986711" />
+<node id="1213580392" visible="true" user="ProjectSidewalk" lat="38.8989084" lon="-76.9938291" />
+<node id="49769476" visible="true" user="ProjectSidewalk" lat="38.8985734" lon="-76.9741777" />
+<node id="49771295" visible="true" user="ProjectSidewalk" lat="38.9140934" lon="-76.9751017" />
+<node id="49768693" visible="true" user="ProjectSidewalk" lat="38.8968673" lon="-76.991521" />
+<node id="49768691" visible="true" user="ProjectSidewalk" lat="38.896118" lon="-76.991532" />
+<node id="1805686313" visible="true" user="ProjectSidewalk" lat="38.89544675" lon="-76.9950149" />
+<node id="1326692092" visible="true" user="ProjectSidewalk" lat="38.9006156" lon="-76.98266535" />
+<node id="1933920615" visible="true" user="ProjectSidewalk" lat="38.9080738" lon="-76.978219" />
+<node id="1893828502" visible="true" user="ProjectSidewalk" lat="38.8989081" lon="-76.9962604" />
+<node id="1090923113" visible="true" user="ProjectSidewalk" lat="38.8969067" lon="-76.9914291" />
+<node id="49788019" visible="true" user="ProjectSidewalk" lat="38.8943473" lon="-76.997714" />
+<node id="49788029" visible="true" user="ProjectSidewalk" lat="38.8964173" lon="-76.992642" />
+<node id="1292590518" visible="true" user="ProjectSidewalk" lat="38.8958308" lon="-76.9938462" />
+<node id="2010942045" visible="true" user="ProjectSidewalk" lat="38.9001993" lon="-76.987143" />
+<node id="49765966" visible="true" user="ProjectSidewalk" lat="38.896378" lon="-76.980759" />
+<node id="49765964" visible="true" user="ProjectSidewalk" lat="38.896314" lon="-76.980759" />
+<node id="49765960" visible="true" user="ProjectSidewalk" lat="38.896258" lon="-76.980755" />
+<node id="49765968" visible="true" user="ProjectSidewalk" lat="38.896667" lon="-76.980762" />
+<node id="123459415" visible="true" user="ProjectSidewalk" lat="38.8908855" lon="-76.9807635" />
+<node id="243595833" visible="true" user="ProjectSidewalk" lat="38.89890705" lon="-76.99270565" />
+<node id="49739559" visible="true" user="ProjectSidewalk" lat="38.889803" lon="-76.985506" />
+<node id="1361739977" visible="true" user="ProjectSidewalk" lat="38.8947851" lon="-76.9961671" />
+<node id="2037002483" visible="true" user="ProjectSidewalk" lat="38.90067635" lon="-76.98552585" />
+<node id="1375406095" visible="true" user="ProjectSidewalk" lat="38.9013221" lon="-76.9868402" />
+<node id="1253319772" visible="true" user="ProjectSidewalk" lat="38.9002002" lon="-76.9916376" />
+<node id="1851669285" visible="true" user="ProjectSidewalk" lat="38.90934955" lon="-76.9773752" />
+<node id="49778592" visible="true" user="ProjectSidewalk" lat="38.915774" lon="-76.973731" />
+<node id="1382465708" visible="true" user="ProjectSidewalk" lat="38.9001875" lon="-76.9728173" />
+<node id="1484481700" visible="true" user="ProjectSidewalk" lat="38.8988395" lon="-76.9764843" />
+<node id="49754505" visible="true" user="ProjectSidewalk" lat="38.902452" lon="-76.986785" />
+<node id="255080838" visible="true" user="ProjectSidewalk" lat="38.8962835" lon="-76.9805685" />
+<node id="741391160" visible="true" user="ProjectSidewalk" lat="38.9013201" lon="-76.99157735" />
+<node id="1461620657" visible="true" user="ProjectSidewalk" lat="38.895378" lon="-76.994962" />
+<node id="1409353994" visible="true" user="ProjectSidewalk" lat="38.9026131" lon="-76.974609" />
+<node id="49829354" visible="true" user="ProjectSidewalk" lat="38.903972" lon="-76.984763" />
+<node id="49769594" visible="true" user="ProjectSidewalk" lat="38.8991443" lon="-76.977509" />
+<node id="827213969" visible="true" user="ProjectSidewalk" lat="38.896326" lon="-76.992644" />
+<node id="661463902" visible="true" user="ProjectSidewalk" lat="38.8947765" lon="-76.977306" />
+<node id="49788039" visible="true" user="ProjectSidewalk" lat="38.8972263" lon="-76.990641" />
+<node id="49788038" visible="true" user="ProjectSidewalk" lat="38.8969823" lon="-76.991242" />
+<node id="49788030" visible="true" user="ProjectSidewalk" lat="38.8964583" lon="-76.992531" />
+<node id="49788033" visible="true" user="ProjectSidewalk" lat="38.8968233" lon="-76.991628" />
+<node id="1439840034" visible="true" user="ProjectSidewalk" lat="38.8992704" lon="-76.9836405" />
+<node id="49768712" visible="true" user="ProjectSidewalk" lat="38.903318" lon="-76.991522" />
+<node id="1567175115" visible="true" user="ProjectSidewalk" lat="38.896115" lon="-76.9931773" />
+<node id="49718928" visible="true" user="ProjectSidewalk" lat="38.900732" lon="-76.982967" />
+<node id="49718924" visible="true" user="ProjectSidewalk" lat="38.9006062" lon="-76.9826377" />
+<node id="49718925" visible="true" user="ProjectSidewalk" lat="38.900625" lon="-76.982693" />
+<node id="49718922" visible="true" user="ProjectSidewalk" lat="38.9005928" lon="-76.9825003" />
+<node id="49718920" visible="true" user="ProjectSidewalk" lat="38.9005995" lon="-76.9824231" />
+<node id="1620307985" visible="true" user="ProjectSidewalk" lat="38.8954232" lon="-76.9950728" />
+<node id="1484481512" visible="true" user="ProjectSidewalk" lat="38.8993404" lon="-76.9793027" />
+<node id="568437821" visible="true" user="ProjectSidewalk" lat="38.897264" lon="-76.9903522" />
+<node id="1723757649" visible="true" user="ProjectSidewalk" lat="38.895955" lon="-76.9807605" />
+<node id="1443170227" visible="true" user="ProjectSidewalk" lat="38.8953987" lon="-76.9855056" />
+<node id="1091519835" visible="true" user="ProjectSidewalk" lat="38.90053135" lon="-76.9824358" />
+<node id="49777991" visible="true" user="ProjectSidewalk" lat="38.896114" lon="-76.976316" />
+<node id="778787313" visible="true" user="ProjectSidewalk" lat="38.8989129" lon="-77.0019069" />
+<node id="1680718225" visible="true" user="ProjectSidewalk" lat="38.896311225" lon="-76.992684525" />
+<node id="864843973" visible="true" user="ProjectSidewalk" lat="38.9045075" lon="-76.9825825" />
+<node id="799044059" visible="true" user="ProjectSidewalk" lat="38.8997368" lon="-76.9783009562" />
+<node id="1382508849" visible="true" user="ProjectSidewalk" lat="38.9033013" lon="-76.9729191" />
+<node id="1470873861" visible="true" user="ProjectSidewalk" lat="38.8989082" lon="-76.9936524" />
+<node id="474013578" visible="true" user="ProjectSidewalk" lat="38.903021" lon="-76.9854295" />
+<node id="1031142129" visible="true" user="ProjectSidewalk" lat="38.896896025" lon="-76.9914544938" />
+<node id="49788050" visible="true" user="ProjectSidewalk" lat="38.8981763" lon="-76.988301" />
+<node id="49765922" visible="true" user="ProjectSidewalk" lat="38.890927" lon="-76.980764" />
+<node id="49765921" visible="true" user="ProjectSidewalk" lat="38.890844" lon="-76.980763" />
+<node id="49765927" visible="true" user="ProjectSidewalk" lat="38.892782" lon="-76.980762" />
+<node id="49765924" visible="true" user="ProjectSidewalk" lat="38.891762" lon="-76.98076" />
+<node id="706899966" visible="true" user="ProjectSidewalk" lat="38.896908" lon="-76.9912233" />
+<node id="294938076" visible="true" user="ProjectSidewalk" lat="38.8972022" lon="-76.9905077" />
+<node id="278420808" visible="true" user="ProjectSidewalk" lat="38.9013199" lon="-76.9914469" />
+<node id="522539792" visible="true" user="ProjectSidewalk" lat="38.9013242" lon="-76.9938467" />
+<node id="49734138" visible="true" user="ProjectSidewalk" lat="38.8989199" lon="-76.9762484" />
+<node id="49774081" visible="true" user="ProjectSidewalk" lat="38.900204" lon="-76.998442" />
+<node id="49774087" visible="true" user="ProjectSidewalk" lat="38.900203" lon="-76.994961" />
+<node id="49774088" visible="true" user="ProjectSidewalk" lat="38.900202" lon="-76.993757" />
+<node id="563928157" visible="true" user="ProjectSidewalk" lat="38.9002032" lon="-76.9950877" />
+<node id="49778559" visible="true" user="ProjectSidewalk" lat="38.912866" lon="-76.976076" />
+<node id="49836903" visible="true" user="ProjectSidewalk" lat="38.898494" lon="-76.98186" />
+<node id="1532655636" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.9996063" />
+<node id="1452773025" visible="true" user="ProjectSidewalk" lat="38.90020095" lon="-76.9914989" />
+<node id="692806906" visible="true" user="ProjectSidewalk" lat="38.9095416" lon="-76.9772706" />
+<node id="1409353981" visible="true" user="ProjectSidewalk" lat="38.9021495" lon="-76.9757502" />
+<node id="1728095767" visible="true" user="ProjectSidewalk" lat="38.9013242" lon="-77.00068695" />
+<node id="49878851" visible="true" user="ProjectSidewalk" lat="38.896455" lon="-76.980383" />
+<node id="49878853" visible="true" user="ProjectSidewalk" lat="38.896553" lon="-76.980274" />
+<node id="49878852" visible="true" user="ProjectSidewalk" lat="38.896503" lon="-76.980327" />
+<node id="49878856" visible="true" user="ProjectSidewalk" lat="38.896604" lon="-76.980224" />
+<node id="49878858" visible="true" user="ProjectSidewalk" lat="38.89663" lon="-76.9802" />
+<node id="49763158" visible="true" user="ProjectSidewalk" lat="38.89478" lon="-76.974958" />
+<node id="49758159" visible="true" user="ProjectSidewalk" lat="38.8983688" lon="-76.9730324" />
+<node id="49763151" visible="true" user="ProjectSidewalk" lat="38.894775" lon="-76.97768" />
+<node id="49763150" visible="true" user="ProjectSidewalk" lat="38.894778" lon="-76.978123" />
+<node id="49763152" visible="true" user="ProjectSidewalk" lat="38.894776" lon="-76.977353" />
+<node id="49763155" visible="true" user="ProjectSidewalk" lat="38.894778" lon="-76.976218" />
+<node id="49763154" visible="true" user="ProjectSidewalk" lat="38.894777" lon="-76.977259" />
+<node id="49763157" visible="true" user="ProjectSidewalk" lat="38.894779" lon="-76.974982" />
+<node id="49760916" visible="true" user="ProjectSidewalk" lat="38.895435" lon="-76.989841" />
+<node id="49794249" visible="true" user="ProjectSidewalk" lat="38.897331" lon="-76.989736" />
+<node id="49794247" visible="true" user="ProjectSidewalk" lat="38.897333" lon="-76.989783" />
+<node id="776661418" visible="true" user="ProjectSidewalk" lat="38.8989121" lon="-77.0006599" />
+<node id="1836633521" visible="true" user="ProjectSidewalk" lat="38.8989119" lon="-77.0004871" />
+<node id="49788032" visible="true" user="ProjectSidewalk" lat="38.8967093" lon="-76.991915" />
+<node id="49778536" visible="true" user="ProjectSidewalk" lat="38.911123" lon="-76.976758" />
+<node id="1402900704" visible="true" user="ProjectSidewalk" lat="38.8963601063" lon="-76.9925682813" />
+<node id="49778530" visible="true" user="ProjectSidewalk" lat="38.9102084" lon="-76.9770386" />
+<node id="1879219333" visible="true" user="ProjectSidewalk" lat="38.8946773" lon="-76.9967047" />
+<node id="49788036" visible="true" user="ProjectSidewalk" lat="38.8969153" lon="-76.991409" />
+<node id="1313467038" visible="true" user="ProjectSidewalk" lat="38.89629645" lon="-76.99272505" />
+<node id="414648692" visible="true" user="ProjectSidewalk" lat="38.8997114" lon="-76.9783176125" />
+<node id="49758306" visible="true" user="ProjectSidewalk" lat="38.894783" lon="-76.983648" />
+<node id="49758302" visible="true" user="ProjectSidewalk" lat="38.894433" lon="-76.983646" />
+<node id="49758300" visible="true" user="ProjectSidewalk" lat="38.893645" lon="-76.983647" />
+<node id="638898827" visible="true" user="ProjectSidewalk" lat="38.9072597" lon="-76.9787505" />
+<node id="1579257097" visible="true" user="ProjectSidewalk" lat="38.9002001" lon="-76.9915818" />
+<node id="1409353937" visible="true" user="ProjectSidewalk" lat="38.9013876" lon="-76.978993" />
+<node id="49781594" visible="true" user="ProjectSidewalk" lat="38.900189" lon="-76.973153" />
+<node id="1635776117" visible="true" user="ProjectSidewalk" lat="38.9062125" lon="-76.9789895" />
+<node id="776677726" visible="true" user="ProjectSidewalk" lat="38.8989109" lon="-76.9983693" />
+<node id="2098554415" visible="true" user="ProjectSidewalk" lat="38.8963837" lon="-76.992513" />
+<node id="1939195373" visible="true" user="ProjectSidewalk" lat="38.89687675" lon="-76.9914999875" />
+<node id="1409342602" visible="true" user="ProjectSidewalk" lat="38.8988364" lon="-76.9757857" />
+<node id="49771800" visible="true" user="ProjectSidewalk" lat="38.908005" lon="-76.980317" />
+<node id="49741069" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-77.000578" />
+<node id="859392500" visible="true" user="ProjectSidewalk" lat="38.893631" lon="-76.9836475" />
+<node id="49829335" visible="true" user="ProjectSidewalk" lat="38.901247" lon="-76.986665" />
+<node id="49777955" visible="true" user="ProjectSidewalk" lat="38.896111" lon="-76.984996" />
+<node id="2030716758" visible="true" user="ProjectSidewalk" lat="38.9001918" lon="-76.9737804" />
+<node id="49763138" visible="true" user="ProjectSidewalk" lat="38.894779" lon="-76.982212" />
+<node id="49763132" visible="true" user="ProjectSidewalk" lat="38.894782" lon="-76.98457" />
+<node id="49763130" visible="true" user="ProjectSidewalk" lat="38.894782" lon="-76.986097" />
+<node id="49826865" visible="true" user="ProjectSidewalk" lat="38.904536" lon="-76.982565" />
+<node id="49826863" visible="true" user="ProjectSidewalk" lat="38.904479" lon="-76.9826" />
+<node id="49826861" visible="true" user="ProjectSidewalk" lat="38.904193" lon="-76.982788" />
+<node id="49826869" visible="true" user="ProjectSidewalk" lat="38.904804" lon="-76.98239" />
+<node id="49826868" visible="true" user="ProjectSidewalk" lat="38.904632" lon="-76.982503" />
+<node id="871929738" visible="true" user="ProjectSidewalk" lat="38.898911" lon="-76.9984939" />
+<node id="734302038" visible="true" user="ProjectSidewalk" lat="38.900204" lon="-76.9994188" />
+<node id="49794262" visible="true" user="ProjectSidewalk" lat="38.897334" lon="-76.984574" />
+<node id="49794264" visible="true" user="ProjectSidewalk" lat="38.897329" lon="-76.983966" />
+<node id="1443170246" visible="true" user="ProjectSidewalk" lat="38.9005589" lon="-76.9826852" />
+<node id="49738304" visible="true" user="ProjectSidewalk" lat="38.898921" lon="-76.987503" />
+<node id="49738305" visible="true" user="ProjectSidewalk" lat="38.892012" lon="-76.98551" />
+<node id="49778517" visible="true" user="ProjectSidewalk" lat="38.9092901" lon="-76.9774141" />
+<node id="49778511" visible="true" user="ProjectSidewalk" lat="38.90782" lon="-76.978387" />
+<node id="49744848" visible="true" user="ProjectSidewalk" lat="38.893575" lon="-76.988311" />
+<node id="503265468" visible="true" user="ProjectSidewalk" lat="38.90049225" lon="-76.97900975" />
+<node id="806521151" visible="true" user="ProjectSidewalk" lat="38.9039932" lon="-76.9931049" />
+<node id="49883417" visible="true" user="ProjectSidewalk" lat="38.901239" lon="-76.981055" />
+<node id="49883415" visible="true" user="ProjectSidewalk" lat="38.901574" lon="-76.981906" />
+<node id="1773148303" visible="true" user="ProjectSidewalk" lat="38.897433" lon="-76.9899384" />
+<node id="49718923" visible="true" user="ProjectSidewalk" lat="38.9005928" lon="-76.9825604" />
+<node id="506632312" visible="true" user="ProjectSidewalk" lat="38.8974798" lon="-76.990026" />
+<node id="688861716" visible="true" user="ProjectSidewalk" lat="38.8988895" lon="-76.9863603" />
+<node id="824372891" visible="true" user="ProjectSidewalk" lat="38.89676645" lon="-76.99156575" />
+<node id="702719784" visible="true" user="ProjectSidewalk" lat="38.8948767" lon="-76.9962179" />
+<node id="1363633466" visible="true" user="ProjectSidewalk" lat="38.89890805" lon="-76.9962142" />
+<node id="776677308" visible="true" user="ProjectSidewalk" lat="38.9013241" lon="-76.9983436" />
+<node id="1488723826" visible="true" user="ProjectSidewalk" lat="38.89535375" lon="-76.9950228" />
+<node id="49763115" visible="true" user="ProjectSidewalk" lat="38.894785" lon="-76.992645" />
+<node id="49826848" visible="true" user="ProjectSidewalk" lat="38.902425" lon="-76.983929" />
+<node id="49826846" visible="true" user="ProjectSidewalk" lat="38.902223" lon="-76.984067" />
+<node id="49763119" visible="true" user="ProjectSidewalk" lat="38.894783" lon="-76.99153" />
+<node id="49826840" visible="true" user="ProjectSidewalk" lat="38.900648" lon="-76.985177" />
+<node id="847651343" visible="true" user="ProjectSidewalk" lat="38.8947842" lon="-76.996268" />
+<node id="1423739241" visible="true" user="ProjectSidewalk" lat="38.8949327" lon="-76.9960792" />
+<node id="1011314429" visible="true" user="ProjectSidewalk" lat="38.902766" lon="-76.984647" />
+<node id="700028799" visible="true" user="ProjectSidewalk" lat="38.8947795" lon="-76.97497" />
+<node id="546455166" visible="true" user="ProjectSidewalk" lat="38.89172175" lon="-76.9855105" />
+<node id="928649620" visible="true" user="ProjectSidewalk" lat="38.9013243" lon="-77.0007248" />
+<node id="49744867" visible="true" user="ProjectSidewalk" lat="38.893504" lon="-76.983648" />
+<node id="1079407260" visible="true" user="ProjectSidewalk" lat="38.8961165" lon="-76.990142" />
+<node id="1431263280" visible="true" user="ProjectSidewalk" lat="38.899647" lon="-76.97827595" />
+<node id="49777915" visible="true" user="ProjectSidewalk" lat="38.8961893" lon="-76.993196" />
+<node id="49777919" visible="true" user="ProjectSidewalk" lat="38.896119" lon="-76.992643" />
+<node id="49763094" visible="true" user="ProjectSidewalk" lat="38.8947803" lon="-76.996653" />
+<node id="49739592" visible="true" user="ProjectSidewalk" lat="38.895758" lon="-76.985508" />
+<node id="49739593" visible="true" user="ProjectSidewalk" lat="38.896115" lon="-76.985508" />
+<node id="49739590" visible="true" user="ProjectSidewalk" lat="38.895645" lon="-76.985507" />
+<node id="49739596" visible="true" user="ProjectSidewalk" lat="38.896722" lon="-76.985508" />
+<node id="49739598" visible="true" user="ProjectSidewalk" lat="38.897332" lon="-76.985505" />
+<node id="876820597" visible="true" user="ProjectSidewalk" lat="38.8990011" lon="-76.986082" />
+<node id="49756506" visible="true" user="ProjectSidewalk" lat="38.898911" lon="-76.999509" />
+<node id="49793234" visible="true" user="ProjectSidewalk" lat="38.90447" lon="-76.983517" />
+<node id="49793232" visible="true" user="ProjectSidewalk" lat="38.904178" lon="-76.983712" />
+<node id="49793230" visible="true" user="ProjectSidewalk" lat="38.903983" lon="-76.98384" />
+<node id="49769494" visible="true" user="ProjectSidewalk" lat="38.898064" lon="-76.9712514" />
+<node id="441577692" visible="true" user="ProjectSidewalk" lat="38.8968412" lon="-76.9913898" />
+<node id="163012393" visible="true" user="ProjectSidewalk" lat="38.900204" lon="-76.9984317" />
+<node id="461559799" visible="true" user="ProjectSidewalk" lat="38.8947833" lon="-76.9950865" />
+<node id="368660727" visible="true" user="ProjectSidewalk" lat="38.896794825" lon="-76.991498625" />
+<node id="49778002" visible="true" user="ProjectSidewalk" lat="38.896114" lon="-76.974601" />
+<node id="49788040" visible="true" user="ProjectSidewalk" lat="38.8972763" lon="-76.990527" />
+<node id="49807229" visible="true" user="ProjectSidewalk" lat="38.896719" lon="-76.988308" />
+<node id="49807226" visible="true" user="ProjectSidewalk" lat="38.896464" lon="-76.988309" />
+<node id="49807220" visible="true" user="ProjectSidewalk" lat="38.895046" lon="-76.988312" />
+<node id="49787645" visible="true" user="ProjectSidewalk" lat="38.90514" lon="-76.982173" />
+<node id="1199687976" visible="true" user="ProjectSidewalk" lat="38.893679875" lon="-76.988310375" />
+<node id="735933887" visible="true" user="ProjectSidewalk" lat="38.8989081" lon="-76.99493105" />
+<node id="49790025" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.999509" />
+<node id="49790024" visible="true" user="ProjectSidewalk" lat="38.901327" lon="-77.002036" />
+<node id="49790029" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.998446" />
+<node id="49836893" visible="true" user="ProjectSidewalk" lat="38.897302" lon="-76.982189" />
+<node id="49836891" visible="true" user="ProjectSidewalk" lat="38.897243" lon="-76.982202" />
+<node id="49756497" visible="true" user="ProjectSidewalk" lat="38.898913" lon="-77.002038" />
+<node id="1137091209" visible="true" user="ProjectSidewalk" lat="38.896346" lon="-76.980759" />
+<node id="2136461655" visible="true" user="ProjectSidewalk" lat="38.898908275" lon="-76.99372295" />
+<node id="2129747548" visible="true" user="ProjectSidewalk" lat="38.899763" lon="-76.9782162" />
+<node id="416450669" visible="true" user="ProjectSidewalk" lat="38.8989082" lon="-76.994849" />
+<node id="2129747541" visible="true" user="ProjectSidewalk" lat="38.8997451" lon="-76.9783294" />
+<node id="2129747545" visible="true" user="ProjectSidewalk" lat="38.8997597" lon="-76.9778985" />
+<node id="1412427877" visible="true" user="ProjectSidewalk" lat="38.8973387" lon="-76.990246" />
+<node id="49777938" visible="true" user="ProjectSidewalk" lat="38.896116" lon="-76.989296" />
+<node id="49777932" visible="true" user="ProjectSidewalk" lat="38.896116" lon="-76.990244" />
+<node id="49777933" visible="true" user="ProjectSidewalk" lat="38.896116" lon="-76.990126" />
+<node id="49777936" visible="true" user="ProjectSidewalk" lat="38.896117" lon="-76.990099" />
+<node id="705647738" visible="true" user="ProjectSidewalk" lat="38.8932331" lon="-76.978999" />
+<node id="49790034" visible="true" user="ProjectSidewalk" lat="38.901322" lon="-76.992643" />
+<node id="49826880" visible="true" user="ProjectSidewalk" lat="38.906646" lon="-76.981206" />
+<node id="1484482023" visible="true" user="ProjectSidewalk" lat="38.8974837" lon="-76.9678584" />
+<node id="588929638" visible="true" user="ProjectSidewalk" lat="38.894785225" lon="-76.996152975" />
+<node id="49793217" visible="true" user="ProjectSidewalk" lat="38.901824" lon="-76.985306" />
+<node id="49793211" visible="true" user="ProjectSidewalk" lat="38.900935" lon="-76.985929" />
+<node id="49889429" visible="true" user="ProjectSidewalk" lat="38.893095" lon="-76.987499" />
+<node id="435511781" visible="true" user="ProjectSidewalk" lat="38.89891295" lon="-77.00197245" />
+<node id="1857648976" visible="true" user="ProjectSidewalk" lat="38.9013222" lon="-76.9927394" />
+<node id="49807200" visible="true" user="ProjectSidewalk" lat="38.893646" lon="-76.988311" />
+<node id="49807204" visible="true" user="ProjectSidewalk" lat="38.893669" lon="-76.98831" />
+<node id="49807208" visible="true" user="ProjectSidewalk" lat="38.893729" lon="-76.98831" />
+<node id="647245787" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-77.0004389" />
+<node id="1282195212" visible="true" user="ProjectSidewalk" lat="38.89371375" lon="-76.98830975" />
+<node id="1675880682" visible="true" user="ProjectSidewalk" lat="38.8961175" lon="-76.99158" />
+<node id="2129747529" visible="true" user="ProjectSidewalk" lat="38.8996668" lon="-76.9783315" />
+<node id="49777019" visible="true" user="ProjectSidewalk" lat="38.89955" lon="-76.988305" />
+<node id="695139402" visible="true" user="ProjectSidewalk" lat="38.89611775" lon="-76.9915025" />
+<node id="49746693" visible="true" user="ProjectSidewalk" lat="38.894191" lon="-76.98831" />
+<node id="49746697" visible="true" user="ProjectSidewalk" lat="38.894181" lon="-76.986599" />
+<node id="2129747522" visible="true" user="ProjectSidewalk" lat="38.8996423" lon="-76.9782854" />
+<node id="1193738174" visible="true" user="ProjectSidewalk" lat="38.9013219" lon="-76.992565" />
+<node id="49758241" visible="true" user="ProjectSidewalk" lat="38.896112" lon="-76.983648" />
+<node id="49758244" visible="true" user="ProjectSidewalk" lat="38.896667" lon="-76.983644" />
+<node id="49758249" visible="true" user="ProjectSidewalk" lat="38.897167" lon="-76.983644" />
+<node id="903745527" visible="true" user="ProjectSidewalk" lat="38.9002031" lon="-76.99502435" />
+<node id="1046663369" visible="true" user="ProjectSidewalk" lat="38.8968232" lon="-76.9914315" />
+<node id="842885670" visible="true" user="ProjectSidewalk" lat="38.9002021" lon="-76.993865" />
+<node id="511845045" visible="true" user="ProjectSidewalk" lat="38.9002041" lon="-76.9996113" />
+<node id="638898885" visible="true" user="ProjectSidewalk" lat="38.9071666" lon="-76.9788117" />
+<node id="378844056" visible="true" user="ProjectSidewalk" lat="38.896420425" lon="-76.9926277375" />
+<node id="1220912955" visible="true" user="ProjectSidewalk" lat="38.89890795" lon="-76.9915806" />
+<node id="49790064" visible="true" user="ProjectSidewalk" lat="38.903721" lon="-76.97189" />
+<node id="49739633" visible="true" user="ProjectSidewalk" lat="38.900823" lon="-76.985664" />
+<node id="2039921028" visible="true" user="ProjectSidewalk" lat="38.8947602" lon="-76.9967023" />
+<node id="1289602839" visible="true" user="ProjectSidewalk" lat="38.8940752" lon="-76.9981739" />
+<node id="1484481847" visible="true" user="ProjectSidewalk" lat="38.8982478" lon="-76.9730704" />
+<node id="1828875717" visible="true" user="ProjectSidewalk" lat="38.8989125" lon="-76.9837936" />
+<node id="2129747546" visible="true" user="ProjectSidewalk" lat="38.8997622" lon="-76.9782843" />
+<node id="1666344310" visible="true" user="ProjectSidewalk" lat="38.8967839" lon="-76.9915222" />
+<node id="562838697" visible="true" user="ProjectSidewalk" lat="38.8957015" lon="-76.9855075" />
+<node id="49758268" visible="true" user="ProjectSidewalk" lat="38.900131" lon="-76.983442" />
+<node id="49758261" visible="true" user="ProjectSidewalk" lat="38.899792" lon="-76.983624" />
+<node id="49758263" visible="true" user="ProjectSidewalk" lat="38.899917" lon="-76.983617" />
+<node id="1297186432" visible="true" user="ProjectSidewalk" lat="38.8989079" lon="-76.9914512" />
+<node id="291649277" visible="true" user="ProjectSidewalk" lat="38.8996777" lon="-76.978305825" />
+<node id="49766019" visible="true" user="ProjectSidewalk" lat="38.902506" lon="-76.978993" />
+<node id="49766018" visible="true" user="ProjectSidewalk" lat="38.901927" lon="-76.978994" />
+<node id="49794288" visible="true" user="ProjectSidewalk" lat="38.89681" lon="-76.980703" />
+<node id="1382465702" visible="true" user="ProjectSidewalk" lat="38.9001907" lon="-76.9735388" />
+<node id="797953425" visible="true" user="ProjectSidewalk" lat="38.8963705" lon="-76.9927445" />
+<node id="1002723957" visible="true" user="ProjectSidewalk" lat="38.9013261" lon="-76.9950067" />
+<node id="49734737" visible="true" user="ProjectSidewalk" lat="38.903789" lon="-76.992637" />
+<node id="49787671" visible="true" user="ProjectSidewalk" lat="38.90498" lon="-76.982276" />
+<node id="49728947" visible="true" user="ProjectSidewalk" lat="38.9067196" lon="-76.9791059" />
+<node id="49788089" visible="true" user="ProjectSidewalk" lat="38.90108" lon="-76.981084" />
+<node id="49788085" visible="true" user="ProjectSidewalk" lat="38.9006003" lon="-76.9821836" />
+<node id="850984229" visible="true" user="ProjectSidewalk" lat="38.894956" lon="-76.9962217" />
+<node id="776975923" visible="true" user="ProjectSidewalk" lat="38.8998545" lon="-76.9836205" />
+<node id="218772334" visible="true" user="ProjectSidewalk" lat="38.9041815" lon="-76.982795" />
+<node id="1720386905" visible="true" user="ProjectSidewalk" lat="38.9005985" lon="-76.9825565875" />
+<node id="49778426" visible="true" user="ProjectSidewalk" lat="38.901736" lon="-76.982321" />
+<node id="49790047" visible="true" user="ProjectSidewalk" lat="38.9014381" lon="-76.9774977" />
+<node id="49790041" visible="true" user="ProjectSidewalk" lat="38.90132" lon="-76.98831" />
+<node id="49767269" visible="true" user="ProjectSidewalk" lat="38.903638" lon="-76.989559" />
+<node id="1375406091" visible="true" user="ProjectSidewalk" lat="38.9024886" lon="-76.9895767" />
+<node id="49756526" visible="true" user="ProjectSidewalk" lat="38.898908" lon="-76.994961" />
+<node id="1375406094" visible="true" user="ProjectSidewalk" lat="38.9019515" lon="-76.9883161" />
+<node id="1645391562" visible="true" user="ProjectSidewalk" lat="38.91281495" lon="-76.9761184" />
+<node id="849516344" visible="true" user="ProjectSidewalk" lat="38.896595" lon="-76.980234625" />
+<node id="776586036" visible="true" user="ProjectSidewalk" lat="38.9013241" lon="-77.0006491" />
+<node id="49777997" visible="true" user="ProjectSidewalk" lat="38.896111" lon="-76.975113" />
+<node id="49777990" visible="true" user="ProjectSidewalk" lat="38.896116" lon="-76.977257" />
+<node id="49777993" visible="true" user="ProjectSidewalk" lat="38.896113" lon="-76.97622" />
+<node id="1657040106" visible="true" user="ProjectSidewalk" lat="38.8997499" lon="-76.9782585781" />
+<node id="1484482014" visible="true" user="ProjectSidewalk" lat="38.9001243" lon="-76.9838283" />
+<node id="49730476" visible="true" user="ProjectSidewalk" lat="38.900575" lon="-76.985504" />
+<node id="49730472" visible="true" user="ProjectSidewalk" lat="38.9002392" lon="-76.984987" />
+<node id="49836899" visible="true" user="ProjectSidewalk" lat="38.898021" lon="-76.981991" />
+<node id="73040441" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.993736425" />
+<node id="49766030" visible="true" user="ProjectSidewalk" lat="38.905629" lon="-76.978988" />
+<node id="49766039" visible="true" user="ProjectSidewalk" lat="38.906151" lon="-76.978984" />
+<node id="49889442" visible="true" user="ProjectSidewalk" lat="38.895605" lon="-76.98541" />
+<node id="49889440" visible="true" user="ProjectSidewalk" lat="38.89536" lon="-76.985614" />
+<node id="49889444" visible="true" user="ProjectSidewalk" lat="38.895639" lon="-76.985381" />
+<node id="49769485" visible="true" user="ProjectSidewalk" lat="38.8982143" lon="-76.9721526" />
+<node id="862736953" visible="true" user="ProjectSidewalk" lat="38.90721315" lon="-76.9787811" />
+<node id="1075571000" visible="true" user="ProjectSidewalk" lat="38.8996272" lon="-76.9782204" />
+<node id="49836910" visible="true" user="ProjectSidewalk" lat="38.899417" lon="-76.98159" />
+<node id="1541249029" visible="true" user="ProjectSidewalk" lat="38.9169007" lon="-76.9728181" />
+<node id="49769505" visible="true" user="ProjectSidewalk" lat="38.8978553" lon="-76.9700739" />
+<node id="49769500" visible="true" user="ProjectSidewalk" lat="38.8979117" lon="-76.9703904" />
+<node id="49781593" visible="true" user="ProjectSidewalk" lat="38.900186" lon="-76.972479" />
+<node id="49807195" visible="true" user="ProjectSidewalk" lat="38.893529" lon="-76.988312" />
+<node id="49807192" visible="true" user="ProjectSidewalk" lat="38.89312" lon="-76.988314" />
+<node id="34043943" visible="true" user="ProjectSidewalk" lat="38.898911025" lon="-76.999494325" />
+<node id="448756352" visible="true" user="ProjectSidewalk" lat="38.8968180125" lon="-76.9914442125" />
+<node id="1443727079" visible="true" user="ProjectSidewalk" lat="38.9002009" lon="-76.976219" />
+<node id="1443727078" visible="true" user="ProjectSidewalk" lat="38.9001971" lon="-76.9751877" />
+<node id="49766046" visible="true" user="ProjectSidewalk" lat="38.906453" lon="-76.979023" />
+<node id="662647171" visible="true" user="ProjectSidewalk" lat="38.8939765" lon="-76.9983567" />
+<node id="615757390" visible="true" user="ProjectSidewalk" lat="38.9006042" lon="-76.982612875" />
+<node id="1484482020" visible="true" user="ProjectSidewalk" lat="38.8975756" lon="-76.968993" />
+<node id="521287499" visible="true" user="ProjectSidewalk" lat="38.90332555" lon="-76.9915399" />
+<node id="1484481448" visible="true" user="ProjectSidewalk" lat="38.9002435" lon="-76.9840911" />
+<node id="422395884" visible="true" user="ProjectSidewalk" lat="38.9013202" lon="-76.9916277" />
+<node id="2054792441" visible="true" user="ProjectSidewalk" lat="38.8947061" lon="-76.9966342" />
+<node id="1599437261" visible="true" user="ProjectSidewalk" lat="38.8988203" lon="-76.9865177" />
+<node id="49847497" visible="true" user="ProjectSidewalk" lat="38.894267" lon="-76.97987" />
+<node id="49847495" visible="true" user="ProjectSidewalk" lat="38.89393" lon="-76.979872" />
+<node id="1125625359" visible="true" user="ProjectSidewalk" lat="38.900201" lon="-76.9895575" />
+<node id="1587978428" visible="true" user="ProjectSidewalk" lat="38.893628" lon="-76.9855085" />
+<node id="49803345" visible="true" user="ProjectSidewalk" lat="38.897613" lon="-76.976844" />
+<node id="49734137" visible="true" user="ProjectSidewalk" lat="38.8989564" lon="-76.9764495" />
+<node id="49778464" visible="true" user="ProjectSidewalk" lat="38.904405" lon="-76.980585" />
+<node id="446378733" visible="true" user="ProjectSidewalk" lat="38.8989224" lon="-76.9871296" />
+<node id="49765997" visible="true" user="ProjectSidewalk" lat="38.8994773" lon="-76.9792672" />
+<node id="49765992" visible="true" user="ProjectSidewalk" lat="38.898723" lon="-76.979494" />
+<node id="2029874564" visible="true" user="ProjectSidewalk" lat="38.90020365" lon="-76.99621865" />
+<node id="49760920" visible="true" user="ProjectSidewalk" lat="38.895438" lon="-76.98831" />
+<node id="49756566" visible="true" user="ProjectSidewalk" lat="38.898907" lon="-76.98457" />
+<node id="49756560" visible="true" user="ProjectSidewalk" lat="38.898888" lon="-76.986177" />
+<node id="49816414" visible="true" user="ProjectSidewalk" lat="38.901508" lon="-76.984565" />
+<node id="1484482004" visible="true" user="ProjectSidewalk" lat="38.9001598" lon="-76.9843165" />
+<node id="1484481457" visible="true" user="ProjectSidewalk" lat="38.9002955" lon="-76.9843433" />
+<node id="1484482001" visible="true" user="ProjectSidewalk" lat="38.9001661" lon="-76.9849655" />
+<node id="1262003260" visible="true" user="ProjectSidewalk" lat="38.8961135" lon="-76.976268" />
+<node id="1582286892" visible="true" user="ProjectSidewalk" lat="38.901322" lon="-76.9926281" />
+<node id="49873430" visible="true" user="ProjectSidewalk" lat="38.897167" lon="-76.974299" />
+<node id="49756562" visible="true" user="ProjectSidewalk" lat="38.898891" lon="-76.985899" />
+<node id="1484492726" visible="true" user="ProjectSidewalk" lat="38.9001979" lon="-76.9861497" />
+<node id="1104092835" visible="true" user="ProjectSidewalk" lat="38.900204025" lon="-76.999488975" />
+<node id="152484496" visible="true" user="ProjectSidewalk" lat="38.89890835" lon="-76.9937935" />
+<node id="49788067" visible="true" user="ProjectSidewalk" lat="38.8991173" lon="-76.985996" />
+<node id="49826882" visible="true" user="ProjectSidewalk" lat="38.90688" lon="-76.98105" />
+<node id="49826884" visible="true" user="ProjectSidewalk" lat="38.907208" lon="-76.980834" />
+<node id="99898360" visible="true" user="ProjectSidewalk" lat="38.8955128" lon="-76.9948529" />
+<node id="49728949" visible="true" user="ProjectSidewalk" lat="38.900665" lon="-76.983008" />
+<node id="49778480" visible="true" user="ProjectSidewalk" lat="38.905004" lon="-76.980202" />
+<node id="49778487" visible="true" user="ProjectSidewalk" lat="38.905362" lon="-76.979975" />
+<node id="1138011966" visible="true" user="ProjectSidewalk" lat="38.896516" lon="-76.9803145" />
+<node id="49756549" visible="true" user="ProjectSidewalk" lat="38.8989153" lon="-76.9882938" />
+<node id="49756542" visible="true" user="ProjectSidewalk" lat="38.898908" lon="-76.991527" />
+<node id="49756545" visible="true" user="ProjectSidewalk" lat="38.898907" lon="-76.990243" />
+<node id="1435839922" visible="true" user="ProjectSidewalk" lat="38.897988" lon="-76.9885703" />
+<node id="747250399" visible="true" user="ProjectSidewalk" lat="38.900201075" lon="-76.99372995" />
+<node id="219975688" visible="true" user="ProjectSidewalk" lat="38.90020405" lon="-76.99955915" />
+<node id="642887123" visible="true" user="ProjectSidewalk" lat="38.9013278" lon="-76.9960738" />
+<node id="49744895" visible="true" user="ProjectSidewalk" lat="38.893325" lon="-76.982213" />
+<node id="585434593" visible="true" user="ProjectSidewalk" lat="38.8935675" lon="-76.98364775" />
+<node id="49793218" visible="true" user="ProjectSidewalk" lat="38.902739" lon="-76.984666" />
+<node id="49793214" visible="true" user="ProjectSidewalk" lat="38.901545" lon="-76.985503" />
+<node id="776677136" visible="true" user="ProjectSidewalk" lat="38.900204" lon="-76.9983693" />
+<node id="955802360" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.9993958" />
+<node id="49889425" visible="true" user="ProjectSidewalk" lat="38.892727" lon="-76.98779" />
+<node id="486497347" visible="true" user="ProjectSidewalk" lat="38.897142" lon="-76.9822095" />
+<node id="49767411" visible="true" user="ProjectSidewalk" lat="38.8949803" lon="-76.996162" />
+<node id="1728868620" visible="true" user="ProjectSidewalk" lat="38.8946917" lon="-76.99666945" />
+<node id="356335688" visible="true" user="ProjectSidewalk" lat="38.89478315" lon="-76.99502425" />
+<node id="1906792349" visible="true" user="ProjectSidewalk" lat="38.8937585" lon="-76.9883095" />
+<node id="1041015189" visible="true" user="ProjectSidewalk" lat="38.90132795" lon="-76.99620815" />
+<node id="49816392" visible="true" user="ProjectSidewalk" lat="38.904521" lon="-76.991632" />
+<node id="49816396" visible="true" user="ProjectSidewalk" lat="38.903859" lon="-76.990081" />
+<node id="49816394" visible="true" user="ProjectSidewalk" lat="38.904193" lon="-76.990865" />
+<node id="1484481817" visible="true" user="ProjectSidewalk" lat="38.8980912" lon="-76.9721851" />
+<node id="520337396" visible="true" user="ProjectSidewalk" lat="38.8968468" lon="-76.991570875" />
+<node id="1444897308" visible="true" user="ProjectSidewalk" lat="38.896082" lon="-76.9934587" />
+<node id="49739569" visible="true" user="ProjectSidewalk" lat="38.891728" lon="-76.985512" />
+<node id="49739562" visible="true" user="ProjectSidewalk" lat="38.890569" lon="-76.985511" />
+<node id="49739560" visible="true" user="ProjectSidewalk" lat="38.88994" lon="-76.985496" />
+<node id="49739564" visible="true" user="ProjectSidewalk" lat="38.890932" lon="-76.98551" />
+<node id="49798515" visible="true" user="ProjectSidewalk" lat="38.897447" lon="-76.981422" />
+<node id="49798512" visible="true" user="ProjectSidewalk" lat="38.897571" lon="-76.982116" />
+<node id="49763147" visible="true" user="ProjectSidewalk" lat="38.894779" lon="-76.979871" />
+<node id="36258720" visible="true" user="ProjectSidewalk" lat="38.8958708" lon="-76.9937477" />
+<node id="49763143" visible="true" user="ProjectSidewalk" lat="38.89478" lon="-76.980762" />
+<node id="49763149" visible="true" user="ProjectSidewalk" lat="38.894778" lon="-76.978995" />
+<node id="49774054" visible="true" user="ProjectSidewalk" lat="38.9001935" lon="-76.9741738" />
+<node id="49769464" visible="true" user="ProjectSidewalk" lat="38.8987821" lon="-76.9754732" />
+<node id="133739070" visible="true" user="ProjectSidewalk" lat="38.898911" lon="-76.9985398" />
+<node id="1484500612" visible="true" user="ProjectSidewalk" lat="38.9009948" lon="-76.9883094" />
+<node id="49778587" visible="true" user="ProjectSidewalk" lat="38.915076" lon="-76.974311" />
+<node id="49778585" visible="true" user="ProjectSidewalk" lat="38.914603" lon="-76.974693" />
+<node id="1382508877" visible="true" user="ProjectSidewalk" lat="38.9052676" lon="-76.9789885" />
+<node id="980766475" visible="true" user="ProjectSidewalk" lat="38.905944" lon="-76.9816545" />
+<node id="49767437" visible="true" user="ProjectSidewalk" lat="38.900205" lon="-76.996167" />
+<node id="49767439" visible="true" user="ProjectSidewalk" lat="38.901328" lon="-76.996167" />
+<node id="49769580" visible="true" user="ProjectSidewalk" lat="38.8998697" lon="-76.9814626" />
+<node id="49788027" visible="true" user="ProjectSidewalk" lat="38.8963783" lon="-76.992725" />
+<node id="49788024" visible="true" user="ProjectSidewalk" lat="38.8959643" lon="-76.993747" />
+<node id="49788022" visible="true" user="ProjectSidewalk" lat="38.8954703" lon="-76.994957" />
+<node id="184255882" visible="true" user="ProjectSidewalk" lat="38.9002018" lon="-76.991416" />
+<node id="705647635" visible="true" user="ProjectSidewalk" lat="38.8933793" lon="-76.979868" />
+<node id="49765974" visible="true" user="ProjectSidewalk" lat="38.896749" lon="-76.980106" />
+<node id="1732672562" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.99955765" />
+<node id="49718911" visible="true" user="ProjectSidewalk" lat="38.9007234" lon="-76.981969" />
+<node id="49718917" visible="true" user="ProjectSidewalk" lat="38.9006129" lon="-76.9823201" />
+<node id="1902726317" visible="true" user="ProjectSidewalk" lat="38.9002019" lon="-76.99269505" />
+<node id="540215983" visible="true" user="ProjectSidewalk" lat="38.896302" lon="-76.980757" />
+<node id="1721796123" visible="true" user="ProjectSidewalk" lat="38.9004345" lon="-76.9790175" />
+<node id="49774079" visible="true" user="ProjectSidewalk" lat="38.900204" lon="-76.999507" />
+<node id="49758259" visible="true" user="ProjectSidewalk" lat="38.899652" lon="-76.983634" />
+<node id="49886149" visible="true" user="ProjectSidewalk" lat="38.894603" lon="-76.978997" />
+<node id="49886147" visible="true" user="ProjectSidewalk" lat="38.894295" lon="-76.978994" />
+<node id="49886145" visible="true" user="ProjectSidewalk" lat="38.893981" lon="-76.978994" />
+<node id="49886143" visible="true" user="ProjectSidewalk" lat="38.893663" lon="-76.978992" />
+<node id="49778568" visible="true" user="ProjectSidewalk" lat="38.913408" lon="-76.975656" />
+<node id="646031052" visible="true" user="ProjectSidewalk" lat="38.9174353" lon="-76.9723542" />
+<node id="1484481735" visible="true" user="ProjectSidewalk" lat="38.9001369" lon="-76.9830585" />
+<node id="838043907" visible="true" user="ProjectSidewalk" lat="38.8953295" lon="-76.9950836" />
+<node id="2020355311" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.998508" />
+<node id="1298661124" visible="true" user="ProjectSidewalk" lat="38.89611" lon="-76.9722546" />
+<node id="16792459" visible="true" user="ProjectSidewalk" lat="38.9013241" lon="-77.000632475" />
+<node id="202032289" visible="true" user="ProjectSidewalk" lat="38.9013221" lon="-76.9926912" />
+<node id="530690785" visible="true" user="ProjectSidewalk" lat="38.8947856125" lon="-76.9961069875" />
+<node id="49788048" visible="true" user="ProjectSidewalk" lat="38.8980623" lon="-76.988589" />
+<node id="49788044" visible="true" user="ProjectSidewalk" lat="38.8974523" lon="-76.990095" />
+<node id="49788046" visible="true" user="ProjectSidewalk" lat="38.8975073" lon="-76.989957" />
+<node id="49788042" visible="true" user="ProjectSidewalk" lat="38.8973383" lon="-76.990371" />
+<node id="49788043" visible="true" user="ProjectSidewalk" lat="38.8973903" lon="-76.990246" />
+<node id="49768706" visible="true" user="ProjectSidewalk" lat="38.9002" lon="-76.991526" />
+<node id="49768708" visible="true" user="ProjectSidewalk" lat="38.90132" lon="-76.991527" />
+<node id="49765919" visible="true" user="ProjectSidewalk" lat="38.890386" lon="-76.980762" />
+<node id="49765918" visible="true" user="ProjectSidewalk" lat="38.8898" lon="-76.980764" />
+<node id="49829343" visible="true" user="ProjectSidewalk" lat="38.90276" lon="-76.985609" />
+<node id="49829341" visible="true" user="ProjectSidewalk" lat="38.902479" lon="-76.985809" />
+<node id="49829347" visible="true" user="ProjectSidewalk" lat="38.903501" lon="-76.985089" />
+<node id="49829345" visible="true" user="ProjectSidewalk" lat="38.903056" lon="-76.985405" />
+<node id="49829344" visible="true" user="ProjectSidewalk" lat="38.902986" lon="-76.985454" />
+<node id="1415323853" visible="true" user="ProjectSidewalk" lat="38.8939928" lon="-76.99834125" />
+<node id="49718930" visible="true" user="ProjectSidewalk" lat="38.898909" lon="-76.985719" />
+<node id="49777013" visible="true" user="ProjectSidewalk" lat="38.899553" lon="-76.99024" />
+<node id="49777015" visible="true" user="ProjectSidewalk" lat="38.899549" lon="-76.989465" />
+<node id="49763160" visible="true" user="ProjectSidewalk" lat="38.894775" lon="-76.974597" />
+<node id="49763167" visible="true" user="ProjectSidewalk" lat="38.89473" lon="-76.974408" />
+<node id="49774091" visible="true" user="ProjectSidewalk" lat="38.900202" lon="-76.992645" />
+<node id="49774093" visible="true" user="ProjectSidewalk" lat="38.900201" lon="-76.99024" />
+<node id="49774098" visible="true" user="ProjectSidewalk" lat="38.900201" lon="-76.988308" />
+<node id="1715418609" visible="true" user="ProjectSidewalk" lat="38.9005681375" lon="-76.9855094625" />
+<node id="1138265945" visible="true" user="ProjectSidewalk" lat="38.897337" lon="-76.9901761" />
+<node id="1443170230" visible="true" user="ProjectSidewalk" lat="38.8954895" lon="-76.9855061" />
+<node id="1443170233" visible="true" user="ProjectSidewalk" lat="38.9005266" lon="-76.9825141" />
+<node id="1443170235" visible="true" user="ProjectSidewalk" lat="38.9005361" lon="-76.9823575" />
+<node id="49778543" visible="true" user="ProjectSidewalk" lat="38.912467" lon="-76.976293" />
+<node id="49778548" visible="true" user="ProjectSidewalk" lat="38.912627" lon="-76.976232" />
+<node id="49778549" visible="true" user="ProjectSidewalk" lat="38.9127639" lon="-76.9761608" />
+<node id="49878850" visible="true" user="ProjectSidewalk" lat="38.896309" lon="-76.98054" />
+<node id="1735482940" visible="true" user="ProjectSidewalk" lat="38.896116" lon="-76.990185" />
+<node id="291298128" visible="true" user="ProjectSidewalk" lat="38.8962884" lon="-76.9927451" />
+<node id="1739588557" visible="true" user="ProjectSidewalk" lat="38.89478465" lon="-76.99621755" />
+<node id="484568065" visible="true" user="ProjectSidewalk" lat="38.89478495" lon="-76.9966415" />
+<node id="1483560138" visible="true" user="ProjectSidewalk" lat="38.9013241" lon="-76.99380085" />
+<node id="1067866114" visible="true" user="ProjectSidewalk" lat="38.8961531" lon="-76.9930823" />
+<node id="1798324824" visible="true" user="ProjectSidewalk" lat="38.8972513" lon="-76.990584" />
+<node id="49756492" visible="true" user="ProjectSidewalk" lat="38.8989151" lon="-77.0035135" />
+<node id="49852766" visible="true" user="ProjectSidewalk" lat="38.897632" lon="-76.969505" />
+<node id="1357591237" visible="true" user="ProjectSidewalk" lat="38.898908" lon="-76.9950131" />
+<node id="1484481777" visible="true" user="ProjectSidewalk" lat="38.8977853" lon="-76.9704358" />
+<node id="49765931" visible="true" user="ProjectSidewalk" lat="38.894258" lon="-76.980762" />
+<node id="49765930" visible="true" user="ProjectSidewalk" lat="38.893942" lon="-76.980761" />
+<node id="49878848" visible="true" user="ProjectSidewalk" lat="38.896258" lon="-76.980597" />
+<node id="49765939" visible="true" user="ProjectSidewalk" lat="38.895938" lon="-76.980761" />
+<node id="49741052" visible="true" user="ProjectSidewalk" lat="38.898912" lon="-77.000577" />
+<node id="49741058" visible="true" user="ProjectSidewalk" lat="38.900205" lon="-77.000571" />
+<node id="49829364" visible="true" user="ProjectSidewalk" lat="38.904767" lon="-76.98421" />
+<node id="49758147" visible="true" user="ProjectSidewalk" lat="38.896108" lon="-76.973696" />
+<node id="49765735" visible="true" user="ProjectSidewalk" lat="38.895471" lon="-76.980762" />
+<node id="49765730" visible="true" user="ProjectSidewalk" lat="38.895466" lon="-76.982211" />
+<node id="49794253" visible="true" user="ProjectSidewalk" lat="38.897333" lon="-76.988306" />
+<node id="800432201" visible="true" user="ProjectSidewalk" lat="38.89717725" lon="-76.9905646" />
+<node id="49778529" visible="true" user="ProjectSidewalk" lat="38.9098286" lon="-76.9771539" />
+<node id="49778525" visible="true" user="ProjectSidewalk" lat="38.9095865" lon="-76.9772478" />
+<node id="49778520" visible="true" user="ProjectSidewalk" lat="38.909409" lon="-76.9773363" />
+<node id="49778522" visible="true" user="ProjectSidewalk" lat="38.9094967" lon="-76.9772934" />
+<node id="646031013" visible="true" user="ProjectSidewalk" lat="38.9172305" lon="-76.9725465" />
+<node id="1654325802" visible="true" user="ProjectSidewalk" lat="38.901324" lon="-76.99857" />
+<node id="1198324284" visible="true" user="ProjectSidewalk" lat="38.9002001" lon="-76.9936489" />
+<node id="1484481958" visible="true" user="ProjectSidewalk" lat="38.8973253" lon="-76.9658563" />
+<node id="1487536415" visible="true" user="ProjectSidewalk" lat="38.89891205" lon="-77.00061845" />
+<way id="1467592431" visible="true" user="ProjectSidewalk">
+<nd ref="49798512" />
+<nd ref="49836899" />
+<tag k="highway" v="residential" />
+<tag k="name" v="16th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="16th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1947329477" visible="true" user="ProjectSidewalk">
+<nd ref="49763149" />
+<nd ref="49777981" />
+<tag k="highway" v="residential" />
+<tag k="name" v="18th Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="18th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1039270947" visible="true" user="ProjectSidewalk">
+<nd ref="49765986" />
+<nd ref="49765988" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="724753395" visible="true" user="ProjectSidewalk">
+<nd ref="1443170227" />
+<nd ref="1443170230" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="462769130" visible="true" user="ProjectSidewalk">
+<nd ref="49777919" />
+<nd ref="695139402" />
+<nd ref="49777929" />
+<nd ref="1079407260" />
+<nd ref="49777938" />
+<nd ref="49777940" />
+<nd ref="49777944" />
+<tag k="highway" v="residential" />
+<tag k="name" v="E Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="E" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="12715781" visible="true" user="ProjectSidewalk">
+<nd ref="49763138" />
+<nd ref="49765730" />
+<tag k="highway" v="residential" />
+<tag k="name" v="16th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="16th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="813322269" visible="true" user="ProjectSidewalk">
+<nd ref="1484481416" />
+<nd ref="1484481543" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="7" />
+<tag k="name" v="Benning Road Northeast" />
+<tag k="note:lanes" v="3 eastbound, 4 westbound" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Benning" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="742158591" visible="true" user="ProjectSidewalk">
+<nd ref="688861716" />
+<nd ref="876820597" />
+<tag k="highway" v="primary" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+</way>
+<way id="1451708798" visible="true" user="ProjectSidewalk">
+<nd ref="1484481543" />
+<nd ref="439926661" />
+<nd ref="759318807" />
+<nd ref="1484481512" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="7" />
+<tag k="name" v="Benning Road Northeast" />
+<tag k="note:lanes" v="3 eastbound, 4 westbound" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Benning" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1955655554" visible="true" user="ProjectSidewalk">
+<nd ref="49807229" />
+<nd ref="49807226" />
+<nd ref="49777944" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="761607599" visible="true" user="ProjectSidewalk">
+<nd ref="49739593" />
+<nd ref="49739596" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1128248981" visible="true" user="ProjectSidewalk">
+<nd ref="49739593" />
+<nd ref="49777955" />
+<tag k="highway" v="residential" />
+<tag k="name" v="E Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="E" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6054785" visible="true" user="ProjectSidewalk">
+<nd ref="49760915" />
+<nd ref="49760916" />
+<nd ref="49760917" />
+<nd ref="49760918" />
+<nd ref="49760920" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Duncan Place Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Duncan" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Pl" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="927673412" visible="true" user="ProjectSidewalk">
+<nd ref="49793217" />
+<nd ref="49816414" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Morse Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Morse" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1832448146" visible="true" user="ProjectSidewalk">
+<nd ref="49738294" />
+<nd ref="875511842" />
+<tag k="highway" v="residential" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A63" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="3599189" visible="true" user="ProjectSidewalk">
+<nd ref="876820597" />
+<nd ref="212276693" />
+<tag k="highway" v="primary" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+</way>
+<way id="618687975" visible="true" user="ProjectSidewalk">
+<nd ref="876820597" />
+<nd ref="49718930" />
+<tag k="highway" v="residential" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A63" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="1158366543" visible="true" user="ProjectSidewalk">
+<nd ref="1449347671" />
+<nd ref="1415323853" />
+<nd ref="1289602839" />
+<nd ref="1854402895" />
+<nd ref="1728868620" />
+<nd ref="1824556145" />
+<tag k="highway" v="primary" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+</way>
+<way id="834738140" visible="true" user="ProjectSidewalk">
+<nd ref="1484481448" />
+<nd ref="1484481608" />
+<nd ref="1484481580" />
+<tag k="highway" v="primary" />
+<tag k="FIXME:lanes" v="verify" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="H Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="railway" v="tram" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="H" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76234354" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+</way>
+<way id="1394556773" visible="true" user="ProjectSidewalk">
+<nd ref="49765918" />
+<nd ref="49765919" />
+<nd ref="123459415" />
+<nd ref="49765924" />
+<nd ref="49742444" />
+<nd ref="49765927" />
+<nd ref="742155402" />
+<nd ref="49765930" />
+<nd ref="49765931" />
+<nd ref="49763143" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1179579247" visible="true" user="ProjectSidewalk">
+<nd ref="49738304" />
+<nd ref="446378733" />
+<nd ref="49756556" />
+<nd ref="49756558" />
+<tag k="highway" v="residential" />
+<tag k="name" v="G Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="G" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1383278234" visible="true" user="ProjectSidewalk">
+<nd ref="49739598" />
+<nd ref="49794262" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6062030" visible="true" user="ProjectSidewalk">
+<nd ref="49849131" />
+<nd ref="49807256" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Wylie Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Wylie" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="130889753" visible="true" user="ProjectSidewalk">
+<nd ref="49765968" />
+<nd ref="540215983" />
+<nd ref="49765949" />
+<tag k="highway" v="residential" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1354931966" visible="true" user="ProjectSidewalk">
+<nd ref="49793211" />
+<nd ref="49793214" />
+<nd ref="49793217" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Staples Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Staples" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6062038" visible="true" user="ProjectSidewalk">
+<nd ref="49807229" />
+<nd ref="49739596" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Emerald Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Emerald" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="822276186" visible="true" user="ProjectSidewalk">
+<nd ref="49765730" />
+<nd ref="49765735" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Isherwood Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Isherwood" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="2020822025" visible="true" user="ProjectSidewalk">
+<nd ref="49765949" />
+<nd ref="49777981" />
+<tag k="highway" v="residential" />
+<tag k="name" v="E Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="E" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6056973" visible="true" user="ProjectSidewalk">
+<nd ref="49766009" />
+<nd ref="49790047" />
+<nd ref="49790050" />
+<nd ref="1409353981" />
+<nd ref="49790053" />
+<nd ref="1409353994" />
+<nd ref="49790056" />
+<nd ref="1382508849" />
+<nd ref="49790064" />
+<tag k="highway" v="residential" />
+<tag k="name" v="I Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="I" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="771495824" visible="true" user="ProjectSidewalk">
+<nd ref="49756572" />
+<nd ref="1439840034" />
+<nd ref="49758259" />
+<nd ref="776975923" />
+<nd ref="1484481416" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="15th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="15th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76230244:76230414:76230419:76230421:76230422:76230436:76230438:76230441:76230444:76230485:76230487:76230490:76230492:76238422" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1034408793" visible="true" user="ProjectSidewalk">
+<nd ref="49788018" />
+<nd ref="49788019" />
+<nd ref="484568065" />
+<nd ref="850984229" />
+<nd ref="1805686313" />
+<nd ref="99898360" />
+<nd ref="2118579788" />
+<nd ref="1444897308" />
+<nd ref="49777915" />
+<nd ref="1800890901" />
+<nd ref="49788032" />
+<nd ref="1031142129" />
+<nd ref="49788038" />
+<nd ref="1798324824" />
+<nd ref="1106232710" />
+<nd ref="506632312" />
+<nd ref="49788048" />
+<nd ref="49788050" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="-1" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6051484" visible="true" user="ProjectSidewalk">
+<nd ref="49718928" />
+<nd ref="1307189957" />
+<nd ref="49718911" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76231305:76231273:76231250:76231252:76242980:76242979:76230281:76240330:76240326:76240327:76242986:76242987:76240337:76240338:76230290:76230292:76229951:76229957:76229961:76229988:76230313:76240329:76231246" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1846379271" visible="true" user="ProjectSidewalk">
+<nd ref="49765968" />
+<nd ref="237258489" />
+<nd ref="49765974" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1503110408" visible="true" user="ProjectSidewalk">
+<nd ref="49790024" />
+<nd ref="16792459" />
+<nd ref="647245787" />
+<nd ref="804419853" />
+<nd ref="248234970" />
+<nd ref="1511899531" />
+<nd ref="616981197" />
+<nd ref="73040441" />
+<nd ref="1582286892" />
+<nd ref="1009732865" />
+<nd ref="49790039" />
+<nd ref="49790041" />
+<tag k="highway" v="residential" />
+<tag k="name" v="I Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="I" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="567006158" visible="true" user="ProjectSidewalk">
+<nd ref="1484481512" />
+<nd ref="1484482017" />
+<nd ref="1484481494" />
+<nd ref="1484481700" />
+<nd ref="1382526829" />
+<nd ref="1484481684" />
+<nd ref="1484481646" />
+<nd ref="1484481847" />
+<nd ref="1484481817" />
+<nd ref="1484481801" />
+<nd ref="1484481777" />
+<nd ref="49852766" />
+<nd ref="1484482020" />
+<nd ref="1484482023" />
+<nd ref="1484481958" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="7" />
+<tag k="name" v="Benning Road Northeast" />
+<tag k="note:lanes" v="3 eastbound, 4 westbound" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Benning" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="751964238" visible="true" user="ProjectSidewalk">
+<nd ref="49777019" />
+<nd ref="49756549" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="185104477" visible="true" user="ProjectSidewalk">
+<nd ref="49766002" />
+<nd ref="503265468" />
+<nd ref="49766008" />
+<nd ref="49766009" />
+<tag k="highway" v="secondary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="850511125" visible="true" user="ProjectSidewalk">
+<nd ref="49728947" />
+<nd ref="862736953" />
+<nd ref="49778511" />
+<nd ref="1933920615" />
+<nd ref="1851669285" />
+<nd ref="692806906" />
+<nd ref="49778529" />
+<nd ref="49778530" />
+<nd ref="49778536" />
+<nd ref="49778543" />
+<nd ref="49778548" />
+<nd ref="1645391562" />
+<nd ref="49778568" />
+<nd ref="49771295" />
+<nd ref="49778585" />
+<nd ref="49778587" />
+<nd ref="49778592" />
+<nd ref="1366265414" />
+<nd ref="1541249029" />
+<nd ref="646031013" />
+<nd ref="646031052" />
+<tag k="highway" v="primary" />
+<tag k="FIXME" v="check lanes" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="6" />
+<tag k="name" v="Bladensburg Road Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A31" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Bladensburg" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20018" />
+<tag k="tiger:zip_right" v="20018" />
+</way>
+<way id="162323291" visible="true" user="ProjectSidewalk">
+<nd ref="49774098" />
+<nd ref="49777019" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="1531018941" visible="true" user="ProjectSidewalk">
+<nd ref="49777983" />
+<nd ref="49794299" />
+<nd ref="49794299" />
+<nd ref="49765974" />
+<tag k="highway" v="residential" />
+<tag k="name" v="18th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="18th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="2048250419" visible="true" user="ProjectSidewalk">
+<nd ref="49836903" />
+<nd ref="49836910" />
+<nd ref="1484481543" />
+<tag k="highway" v="residential" />
+<tag k="name" v="16th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="16th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1129007100" visible="true" user="ProjectSidewalk">
+<nd ref="49756492" />
+<nd ref="435511781" />
+<nd ref="1923500151" />
+<nd ref="34043943" />
+<nd ref="1060818789" />
+<nd ref="1172835198" />
+<nd ref="735933887" />
+<nd ref="49756530" />
+<nd ref="2136461655" />
+<nd ref="243595833" />
+<nd ref="209702014" />
+<nd ref="1573989507" />
+<nd ref="49756545" />
+<nd ref="49756549" />
+<tag k="highway" v="residential" />
+<tag k="name" v="G Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="G" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1077862814" visible="true" user="ProjectSidewalk">
+<nd ref="1484481580" />
+<nd ref="1484481735" />
+<nd ref="49769580" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="3" />
+<tag k="name" v="Benning Road Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="railway" v="tram" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Benning" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1654240580" visible="true" user="ProjectSidewalk">
+<nd ref="1824556145" />
+<nd ref="1462389819" />
+<nd ref="1488723826" />
+<nd ref="253786438" />
+<nd ref="1632482647" />
+<nd ref="251545167" />
+<nd ref="1569898897" />
+<nd ref="1402900704" />
+<nd ref="2031843810" />
+<nd ref="448756352" />
+<nd ref="706899966" />
+<nd ref="800432201" />
+<nd ref="568437821" />
+<nd ref="1138265945" />
+<tag k="highway" v="primary" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+</way>
+<way id="101377790" visible="true" user="ProjectSidewalk">
+<nd ref="49777969" />
+<nd ref="49794274" />
+<tag k="highway" v="residential" />
+<tag k="name" v="16th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="16th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1139274709" visible="true" user="ProjectSidewalk">
+<nd ref="474289964" />
+<nd ref="49788067" />
+<nd ref="49739603" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="-1" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="752644500" visible="true" user="ProjectSidewalk">
+<nd ref="1484481580" />
+<nd ref="49728949" />
+<tag k="highway" v="primary" />
+<tag k="FIXME" v="check lanes" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="6" />
+<tag k="name" v="Bladensburg Road Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A31" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Bladensburg" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20018" />
+<tag k="tiger:zip_right" v="20018" />
+</way>
+<way id="1665663331" visible="true" user="ProjectSidewalk">
+<nd ref="49763130" />
+<nd ref="49739585" />
+<tag k="highway" v="residential" />
+<tag k="name" v="D Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="139622853" visible="true" user="ProjectSidewalk">
+<nd ref="49756558" />
+<nd ref="474289964" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="-1" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="623603374" visible="true" user="ProjectSidewalk">
+<nd ref="49758244" />
+<nd ref="49758249" />
+<nd ref="49758250" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="15th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="15th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76230244:76230414:76230419:76230421:76230422:76230436:76230438:76230441:76230444:76230485:76230487:76230490:76230492:76238422" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="172696187" visible="true" user="ProjectSidewalk">
+<nd ref="49766009" />
+<nd ref="1409353937" />
+<nd ref="49766018" />
+<tag k="highway" v="secondary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1878764482" visible="true" user="ProjectSidewalk">
+<nd ref="49836899" />
+<nd ref="49836903" />
+<tag k="highway" v="residential" />
+<tag k="name" v="16th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="16th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1075090566" visible="true" user="ProjectSidewalk">
+<nd ref="49739585" />
+<nd ref="49763132" />
+<tag k="highway" v="residential" />
+<tag k="name" v="D Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1441201575" visible="true" user="ProjectSidewalk">
+<nd ref="49763125" />
+<nd ref="49746693" />
+<nd ref="736055199" />
+<nd ref="49807192" />
+<nd ref="49807189" />
+<nd ref="49807184" />
+<nd ref="49738311" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="1311863647" visible="true" user="ProjectSidewalk">
+<nd ref="49788093" />
+<nd ref="49788094" />
+<nd ref="49788096" />
+<nd ref="49788097" />
+<nd ref="49766018" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="4" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76231305:76231273:76231250:76231252:76242980:76242979:76230281:76240330:76240326:76240327:76242986:76242987:76240337:76240338:76230290:76230292:76229951:76229957:76229961:76229988:76230313:76240329:76231246" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1917750700" visible="true" user="ProjectSidewalk">
+<nd ref="1375406094" />
+<nd ref="49790041" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="1515695473" visible="true" user="ProjectSidewalk">
+<nd ref="49758306" />
+<nd ref="49763138" />
+<tag k="highway" v="residential" />
+<tag k="name" v="D Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="572986288" visible="true" user="ProjectSidewalk">
+<nd ref="49807256" />
+<nd ref="49774098" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="2138515536" visible="true" user="ProjectSidewalk">
+<nd ref="49794264" />
+<nd ref="49758250" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1222047252" visible="true" user="ProjectSidewalk">
+<nd ref="49769703" />
+<nd ref="49739598" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="2037035085" visible="true" user="ProjectSidewalk">
+<nd ref="49889425" />
+<nd ref="49889429" />
+<nd ref="173016213" />
+<nd ref="49889435" />
+<nd ref="49746697" />
+<nd ref="49889438" />
+<nd ref="49763130" />
+<tag k="highway" v="residential" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Tennessee Avenue Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Tennessee" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76230417:76230418:76230430:76230343:76230348:76242989:76242990:76230339:76242991:76242992:76240347" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1409131342" visible="true" user="ProjectSidewalk">
+<nd ref="49769580" />
+<nd ref="1428350778" />
+<nd ref="49765997" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="3" />
+<tag k="name" v="Benning Road Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="railway" v="tram" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Benning" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1053149378" visible="true" user="ProjectSidewalk">
+<nd ref="1443170230" />
+<nd ref="562838697" />
+<nd ref="49739593" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="598310168" visible="true" user="ProjectSidewalk">
+<nd ref="49829335" />
+<nd ref="49793211" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="Florida Avenue Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Florida" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="2064140317" visible="true" user="ProjectSidewalk">
+<nd ref="49765735" />
+<nd ref="1723757649" />
+<nd ref="49765949" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="234706402" visible="true" user="ProjectSidewalk">
+<nd ref="1824556145" />
+<nd ref="530690785" />
+<nd ref="49763102" />
+<nd ref="610830502" />
+<nd ref="49763109" />
+<nd ref="49763115" />
+<nd ref="49763119" />
+<nd ref="49763122" />
+<nd ref="49763124" />
+<nd ref="49763125" />
+<tag k="highway" v="residential" />
+<tag k="cycleway" v="lane" />
+<tag k="name" v="D Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="138043255" visible="true" user="ProjectSidewalk">
+<nd ref="49760920" />
+<nd ref="49807220" />
+<nd ref="49763125" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="1235716675" visible="true" user="ProjectSidewalk">
+<nd ref="49756549" />
+<nd ref="49738304" />
+<tag k="highway" v="residential" />
+<tag k="name" v="G Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="G" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="218127540" visible="true" user="ProjectSidewalk">
+<nd ref="1596649017" />
+<nd ref="1707673893" />
+<tag k="highway" v="residential" />
+<tag k="oneway" v="no" />
+<tag k="surface" v="asphalt" />
+</way>
+<way id="549727966" visible="true" user="ProjectSidewalk">
+<nd ref="49739598" />
+<nd ref="49739600" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1639828565" visible="true" user="ProjectSidewalk">
+<nd ref="212276693" />
+<nd ref="49739603" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1134051106" visible="true" user="ProjectSidewalk">
+<nd ref="49777955" />
+<nd ref="49794264" />
+<tag k="highway" v="residential" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Tennessee Avenue Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Tennessee" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76230417:76230418:76230430:76230343:76230348:76242989:76242990:76230339:76242991:76242992:76240347" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1409730220" visible="true" user="ProjectSidewalk">
+<nd ref="1375406094" />
+<nd ref="49754499" />
+<nd ref="1375406095" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="Florida Avenue Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Florida" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="2040489158" visible="true" user="ProjectSidewalk">
+<nd ref="49739633" />
+<nd ref="49826840" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Florida Avenue Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Florida" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="606931274" visible="true" user="ProjectSidewalk">
+<nd ref="49788050" />
+<nd ref="1124063647" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="936399219" visible="true" user="ProjectSidewalk">
+<nd ref="49777944" />
+<nd ref="49777945" />
+<nd ref="49777946" />
+<nd ref="49777948" />
+<nd ref="49739593" />
+<tag k="highway" v="residential" />
+<tag k="name" v="E Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="E" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6062708" visible="true" user="ProjectSidewalk">
+<nd ref="49794262" />
+<nd ref="49883422" />
+<nd ref="49883424" />
+<nd ref="49756566" />
+<tag k="highway" v="residential" />
+<tag k="name" v="14th Place Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Pl" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6062709" visible="true" user="ProjectSidewalk">
+<nd ref="1234318222" />
+<nd ref="49883429" />
+<nd ref="49744858" />
+<nd ref="49763132" />
+<tag k="highway" v="residential" />
+<tag k="name" v="14th Place Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Pl" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="526273673" visible="true" user="ProjectSidewalk">
+<nd ref="49765997" />
+<nd ref="49766002" />
+<tag k="highway" v="secondary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1000333616" visible="true" user="ProjectSidewalk">
+<nd ref="705647738" />
+<nd ref="705647749" />
+<nd ref="49886143" />
+<nd ref="49886145" />
+<nd ref="49886147" />
+<nd ref="49886149" />
+<nd ref="49763149" />
+<tag k="highway" v="residential" />
+<tag k="name" v="18th Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="18th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6057334" visible="true" user="ProjectSidewalk">
+<nd ref="49765992" />
+<nd ref="49795783" />
+<nd ref="49795785" />
+<nd ref="49795789" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Gales Place Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Gales" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Pl" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1483861316" visible="true" user="ProjectSidewalk">
+<nd ref="49758241" />
+<nd ref="49734142" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="15th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="15th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="56228626" visible="true" user="ProjectSidewalk">
+<nd ref="49763147" />
+<nd ref="49847497" />
+<nd ref="49847495" />
+<nd ref="705647635" />
+<tag k="highway" v="residential" />
+<tag k="name" v="17th Place Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Pl" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1114595860" visible="true" user="ProjectSidewalk">
+<nd ref="49738304" />
+<nd ref="49738294" />
+<tag k="highway" v="residential" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A63" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="1309243187" visible="true" user="ProjectSidewalk">
+<nd ref="1484481543" />
+<nd ref="49769580" />
+<tag k="highway" v="residential" />
+<tag k="name" v="16th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="16th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="963246486" visible="true" user="ProjectSidewalk">
+<nd ref="49739603" />
+<nd ref="49730465" />
+<nd ref="1484481416" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="-1" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="485048220" visible="true" user="ProjectSidewalk">
+<nd ref="49758306" />
+<nd ref="49758302" />
+<nd ref="585434593" />
+<nd ref="49758296" />
+<nd ref="49758295" />
+<nd ref="49758293" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="15th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="15th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="112454531" visible="true" user="ProjectSidewalk">
+<nd ref="49778426" />
+<nd ref="49883415" />
+<nd ref="49883417" />
+<nd ref="49788093" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Neal Street Northeast" />
+<tag k="sidewalk" v="left" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Neal" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="648836815" visible="true" user="ProjectSidewalk">
+<nd ref="474289964" />
+<nd ref="876820597" />
+<tag k="highway" v="residential" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A63" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="1340936153" visible="true" user="ProjectSidewalk">
+<nd ref="49765730" />
+<nd ref="49777969" />
+<tag k="highway" v="residential" />
+<tag k="name" v="16th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="16th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="89016865" visible="true" user="ProjectSidewalk">
+<nd ref="49794253" />
+<nd ref="49769703" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="203015466" visible="true" user="ProjectSidewalk">
+<nd ref="1382526841" />
+<nd ref="1657040106" />
+<nd ref="2129747545" />
+<tag k="highway" v="residential" />
+<tag k="access" v="yes" />
+<tag k="oneway" v="no" />
+<tag k="surface" v="paved" />
+</way>
+<way id="1128543033" visible="true" user="ProjectSidewalk">
+<nd ref="49756566" />
+<nd ref="1828875717" />
+<nd ref="49756572" />
+<tag k="highway" v="residential" />
+<tag k="name" v="G Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="G" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="431798485" visible="true" user="ProjectSidewalk">
+<nd ref="49765989" />
+<nd ref="49873404" />
+<nd ref="49803345" />
+<nd ref="49792444" />
+<nd ref="49873422" />
+<nd ref="49873430" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Gales Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Gales" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1276445263" visible="true" user="ProjectSidewalk">
+<nd ref="49763138" />
+<nd ref="49763143" />
+<tag k="highway" v="residential" />
+<tag k="name" v="D Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="309721944" visible="true" user="ProjectSidewalk">
+<nd ref="49718928" />
+<nd ref="49778413" />
+<tag k="highway" v="primary" />
+<tag k="FIXME" v="check lanes" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="6" />
+<tag k="name" v="Bladensburg Road Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A31" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Bladensburg" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20018" />
+<tag k="tiger:zip_right" v="20018" />
+</way>
+<way id="1223601163" visible="true" user="ProjectSidewalk">
+<nd ref="49734142" />
+<nd ref="49734140" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="15th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="15th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="247318751" visible="true" user="ProjectSidewalk">
+<nd ref="49739585" />
+<nd ref="1443170227" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="460032928" visible="true" user="ProjectSidewalk">
+<nd ref="1138265945" />
+<nd ref="1828122307" />
+<nd ref="49794253" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1436954730" visible="true" user="ProjectSidewalk">
+<nd ref="49826840" />
+<nd ref="49816414" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Holbrook Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Holbrook" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6055973" visible="true" user="ProjectSidewalk">
+<nd ref="49777013" />
+<nd ref="49777015" />
+<nd ref="49777019" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Linden Place Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Linden" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Pl" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1761612389" visible="true" user="ProjectSidewalk">
+<nd ref="49758244" />
+<nd ref="49758241" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="15th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="15th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1606827510" visible="true" user="ProjectSidewalk">
+<nd ref="49816414" />
+<nd ref="49778413" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Morse Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Morse" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="2070236185" visible="true" user="ProjectSidewalk">
+<nd ref="1599437261" />
+<nd ref="49769708" />
+<nd ref="49769705" />
+<nd ref="49769703" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Elliott Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Elliott" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6055691" visible="true" user="ProjectSidewalk">
+<nd ref="49766002" />
+<nd ref="1443727085" />
+<nd ref="1443727079" />
+<nd ref="1382526844" />
+<nd ref="1443727078" />
+<nd ref="1382526848" />
+<nd ref="49774054" />
+<nd ref="2030716758" />
+<nd ref="1382465702" />
+<nd ref="49781594" />
+<nd ref="1382465708" />
+<nd ref="49781593" />
+<tag k="highway" v="residential" />
+<tag k="name" v="H Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="H" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="357894982" visible="true" user="ProjectSidewalk">
+<nd ref="49763143" />
+<nd ref="49765735" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="998612715" visible="true" user="ProjectSidewalk">
+<nd ref="49816406" />
+<nd ref="49793217" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Morse Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Morse" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1228333276" visible="true" user="ProjectSidewalk">
+<nd ref="1484481512" />
+<nd ref="49765997" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="749718272" visible="true" user="ProjectSidewalk">
+<nd ref="1484481416" />
+<nd ref="49758268" />
+<nd ref="1484481580" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="2030776086" visible="true" user="ProjectSidewalk">
+<nd ref="49763132" />
+<nd ref="49758306" />
+<tag k="highway" v="residential" />
+<tag k="name" v="D Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="149190101" visible="true" user="ProjectSidewalk">
+<nd ref="49777981" />
+<nd ref="49777983" />
+<tag k="highway" v="residential" />
+<tag k="name" v="E Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="E" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1330220560" visible="true" user="ProjectSidewalk">
+<nd ref="49777969" />
+<nd ref="49765949" />
+<tag k="highway" v="residential" />
+<tag k="name" v="E Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="E" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1433016188" visible="true" user="ProjectSidewalk">
+<nd ref="1599437261" />
+<nd ref="688861716" />
+<tag k="highway" v="primary" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+</way>
+<way id="1768983336" visible="true" user="ProjectSidewalk">
+<nd ref="49795810" />
+<nd ref="49816392" />
+<nd ref="49816394" />
+<nd ref="49816396" />
+<nd ref="49767269" />
+<nd ref="1382455980" />
+<nd ref="49754505" />
+<nd ref="49816406" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Morse Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Morse" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="474305513" visible="true" user="ProjectSidewalk">
+<nd ref="49756558" />
+<nd ref="1599437261" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Elliott Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Elliott" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="210266345" visible="true" user="ProjectSidewalk">
+<nd ref="49777955" />
+<nd ref="49758241" />
+<tag k="highway" v="residential" />
+<tag k="name" v="E Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="E" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6061946" visible="true" user="ProjectSidewalk">
+<nd ref="1443170227" />
+<nd ref="49734140" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Duncan Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Duncan" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1872511586" visible="true" user="ProjectSidewalk">
+<nd ref="49778426" />
+<nd ref="49778437" />
+<nd ref="49778454" />
+<nd ref="49778456" />
+<nd ref="49778464" />
+<nd ref="49778480" />
+<nd ref="49778487" />
+<nd ref="49778492" />
+<nd ref="49728947" />
+<tag k="highway" v="primary" />
+<tag k="FIXME" v="check lanes" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="6" />
+<tag k="name" v="Bladensburg Road Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A31" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Bladensburg" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20018" />
+<tag k="tiger:zip_right" v="20018" />
+</way>
+<way id="240619277" visible="true" user="ProjectSidewalk">
+<nd ref="49758244" />
+<nd ref="49794271" />
+<nd ref="49794274" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1944448197" visible="true" user="ProjectSidewalk">
+<nd ref="49816414" />
+<nd ref="49826846" />
+<nd ref="49826848" />
+<nd ref="49826850" />
+<nd ref="49826851" />
+<nd ref="49826853" />
+<nd ref="1499921480" />
+<nd ref="218772334" />
+<nd ref="864843973" />
+<nd ref="49826868" />
+<nd ref="49826869" />
+<nd ref="49787671" />
+<nd ref="49787645" />
+<nd ref="1499921500" />
+<nd ref="49826874" />
+<nd ref="980766475" />
+<nd ref="49826880" />
+<nd ref="49826882" />
+<nd ref="49826884" />
+<nd ref="49771800" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Holbrook Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Holbrook" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="47157520" visible="true" user="ProjectSidewalk">
+<nd ref="49836903" />
+<nd ref="49765989" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Gales Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Gales" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1457392554" visible="true" user="ProjectSidewalk">
+<nd ref="705647680" />
+<nd ref="49744895" />
+<nd ref="49763138" />
+<tag k="highway" v="residential" />
+<tag k="name" v="16th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="16th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="432889613" visible="true" user="ProjectSidewalk">
+<nd ref="49794274" />
+<nd ref="49765968" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1294345418" visible="true" user="ProjectSidewalk">
+<nd ref="49739600" />
+<nd ref="212276693" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="763135440" visible="true" user="ProjectSidewalk">
+<nd ref="49734140" />
+<nd ref="49758306" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="15th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="15th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1045503343" visible="true" user="ProjectSidewalk">
+<nd ref="49774098" />
+<nd ref="2010942045" />
+<nd ref="1484492726" />
+<nd ref="49739609" />
+<tag k="highway" v="primary" />
+<tag k="FIXME:lanes" v="verify" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="H Street Northeast" />
+<tag k="railway" v="tram" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="H" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="951841312" visible="true" user="ProjectSidewalk">
+<nd ref="806521151" />
+<nd ref="49734737" />
+<nd ref="521287499" />
+<nd ref="1000725789" />
+<nd ref="49730297" />
+<nd ref="1375406091" />
+<nd ref="1375406094" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="Florida Avenue Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Florida" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="356236725" visible="true" user="ProjectSidewalk">
+<nd ref="49718930" />
+<nd ref="49739600" />
+<tag k="highway" v="residential" />
+<tag k="name" v="G Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="G" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="62845129" visible="true" user="ProjectSidewalk">
+<nd ref="49739603" />
+<nd ref="49739609" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1093545739" visible="true" user="ProjectSidewalk">
+<nd ref="875511842" />
+<nd ref="1599437261" />
+<tag k="highway" v="primary" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+</way>
+<way id="2019824384" visible="true" user="ProjectSidewalk">
+<nd ref="49794253" />
+<nd ref="49807229" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="6053545" visible="true" user="ProjectSidewalk">
+<nd ref="49739633" />
+<nd ref="1715418609" />
+<nd ref="49739609" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1628701440" visible="true" user="ProjectSidewalk">
+<nd ref="49816406" />
+<nd ref="49829341" />
+<nd ref="49829343" />
+<nd ref="474013578" />
+<nd ref="49829347" />
+<nd ref="49829354" />
+<nd ref="49829364" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Orren Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Orren" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="112909448" visible="true" user="ProjectSidewalk">
+<nd ref="49763147" />
+<nd ref="49763149" />
+<tag k="highway" v="residential" />
+<tag k="name" v="D Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1374674633" visible="true" user="ProjectSidewalk">
+<nd ref="1138265945" />
+<nd ref="1773148303" />
+<nd ref="1435839922" />
+<nd ref="1124063647" />
+<tag k="highway" v="primary" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+</way>
+<way id="1370141664" visible="true" user="ProjectSidewalk">
+<nd ref="49788050" />
+<nd ref="49738294" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="-1" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="542032287" visible="true" user="ProjectSidewalk">
+<nd ref="49793211" />
+<nd ref="49739633" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="Florida Avenue Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Florida" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="234706406" visible="true" user="ProjectSidewalk">
+<nd ref="688861716" />
+<nd ref="49756560" />
+<nd ref="49756562" />
+<nd ref="49718930" />
+<tag k="highway" v="residential" />
+<tag k="name" v="G Street Northeast" />
+<tag k="oneway" v="-1" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="G" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1566121641" visible="true" user="ProjectSidewalk">
+<nd ref="49794262" />
+<nd ref="49794264" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1816676624" visible="true" user="ProjectSidewalk">
+<nd ref="49718911" />
+<nd ref="49788089" />
+<nd ref="49788093" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="4" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76231305:76231273:76231250:76231252:76242980:76242979:76230281:76240330:76240326:76240327:76242986:76242987:76240337:76240338:76230290:76230292:76229951:76229957:76229961:76229988:76230313:76240329:76231246" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="889729150" visible="true" user="ProjectSidewalk">
+<nd ref="1412427877" />
+<nd ref="1138265945" />
+<tag k="highway" v="residential" />
+<tag k="name" v="F Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="F" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1310907551" visible="true" user="ProjectSidewalk">
+<nd ref="49765997" />
+<nd ref="49769594" />
+<nd ref="49734137" />
+<nd ref="49734138" />
+<nd ref="1409342602" />
+<nd ref="49769464" />
+<nd ref="49769476" />
+<nd ref="49758159" />
+<nd ref="49769485" />
+<nd ref="49769494" />
+<nd ref="49769500" />
+<nd ref="49769505" />
+<nd ref="49769513" />
+<nd ref="49769515" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="3" />
+<tag k="name" v="Benning Road Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="railway" v="tram" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Benning" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="326886946" visible="true" user="ProjectSidewalk">
+<nd ref="49829335" />
+<nd ref="49816406" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Orren Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Orren" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1477523078" visible="true" user="ProjectSidewalk">
+<nd ref="49766018" />
+<nd ref="49766019" />
+<nd ref="49766020" />
+<nd ref="49766021" />
+<nd ref="49766022" />
+<nd ref="49766026" />
+<nd ref="49766029" />
+<nd ref="1382508877" />
+<nd ref="49766030" />
+<nd ref="1635776117" />
+<nd ref="49766046" />
+<nd ref="49728947" />
+<tag k="highway" v="secondary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1832193721" visible="true" user="ProjectSidewalk">
+<nd ref="49763149" />
+<nd ref="49763150" />
+<nd ref="49763151" />
+<nd ref="661463902" />
+<nd ref="49763155" />
+<nd ref="700028799" />
+<nd ref="49763160" />
+<nd ref="49763167" />
+<tag k="highway" v="residential" />
+<tag k="name" v="D Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="434711528" visible="true" user="ProjectSidewalk">
+<nd ref="49756572" />
+<nd ref="49836903" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Gales Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Gales" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1952356802" visible="true" user="ProjectSidewalk">
+<nd ref="49765988" />
+<nd ref="49765989" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="341632317" visible="true" user="ProjectSidewalk">
+<nd ref="49778413" />
+<nd ref="49778426" />
+<tag k="highway" v="primary" />
+<tag k="FIXME" v="check lanes" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="6" />
+<tag k="name" v="Bladensburg Road Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A31" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Bladensburg" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20018" />
+<tag k="tiger:zip_right" v="20018" />
+</way>
+<way id="1768501521" visible="true" user="ProjectSidewalk">
+<nd ref="1124063647" />
+<nd ref="49794253" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="1421991543" visible="true" user="ProjectSidewalk">
+<nd ref="49739559" />
+<nd ref="49739560" />
+<nd ref="49739562" />
+<nd ref="49739564" />
+<nd ref="49739565" />
+<nd ref="546455166" />
+<nd ref="49738305" />
+<nd ref="49739574" />
+<nd ref="49739575" />
+<nd ref="1587978428" />
+<nd ref="49739581" />
+<nd ref="49739583" />
+<nd ref="49739585" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="966973763" visible="true" user="ProjectSidewalk">
+<nd ref="49790041" />
+<nd ref="1375406095" />
+<tag k="highway" v="residential" />
+<tag k="name" v="I Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="I" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="529305632" visible="true" user="ProjectSidewalk">
+<nd ref="49738294" />
+<nd ref="49756558" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="-1" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="51156935" visible="true" user="ProjectSidewalk">
+<nd ref="1443170230" />
+<nd ref="321476616" />
+<nd ref="49777955" />
+<tag k="highway" v="residential" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Tennessee Avenue Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Tennessee" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76230417:76230418:76230430:76230343:76230348:76242989:76242990:76230339:76242991:76242992:76240347" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="558050019" visible="true" user="ProjectSidewalk">
+<nd ref="49765989" />
+<nd ref="1596649017" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1634394536" visible="true" user="ProjectSidewalk">
+<nd ref="1124063647" />
+<nd ref="875511842" />
+<tag k="highway" v="primary" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+</way>
+<way id="279924982" visible="true" user="ProjectSidewalk">
+<nd ref="49739609" />
+<nd ref="49730472" />
+<nd ref="1484481448" />
+<tag k="highway" v="primary" />
+<tag k="FIXME:lanes" v="verify" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="H Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="railway" v="tram" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="H" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76234354" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+</way>
+<way id="6062757" visible="true" user="ProjectSidewalk">
+<nd ref="49836899" />
+<nd ref="49765988" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Kramer Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Kramer" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1150459788" visible="true" user="ProjectSidewalk">
+<nd ref="49794274" />
+<nd ref="635704953" />
+<nd ref="49798512" />
+<tag k="highway" v="residential" />
+<tag k="name" v="16th Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="16th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1237073974" visible="true" user="ProjectSidewalk">
+<nd ref="1375406095" />
+<nd ref="49829335" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="Florida Avenue Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Florida" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="131052417" visible="true" user="ProjectSidewalk">
+<nd ref="49728949" />
+<nd ref="1443170246" />
+<nd ref="1091519835" />
+<nd ref="49788085" />
+<nd ref="49718911" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Maryland" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76231305:76231273:76231250:76231252:76242980:76242979:76230281:76240330:76240326:76240327:76242986:76242987:76240337:76240338:76230290:76230292:76229951:76229957:76229961:76229988:76230313:76240329:76231246" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1664992242" visible="true" user="ProjectSidewalk">
+<nd ref="49793217" />
+<nd ref="1011314429" />
+<nd ref="49793226" />
+<nd ref="2038263839" />
+<nd ref="49793232" />
+<nd ref="49793234" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Staples Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Staples" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="338311159" visible="true" user="ProjectSidewalk">
+<nd ref="49758250" />
+<nd ref="49758251" />
+<nd ref="49758252" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="15th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="15th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76230244:76230414:76230419:76230421:76230422:76230436:76230438:76230441:76230444:76230485:76230487:76230490:76230492:76238422" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1767714748" visible="true" user="ProjectSidewalk">
+<nd ref="49763143" />
+<nd ref="49763147" />
+<tag k="highway" v="residential" />
+<tag k="name" v="D Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1687337163" visible="true" user="ProjectSidewalk">
+<nd ref="212276693" />
+<nd ref="671917325" />
+<nd ref="86563518" />
+<nd ref="1484481416" />
+<tag k="highway" v="primary" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Maryland Avenue Northeast" />
+<tag k="oneway" v="yes" />
+</way>
+<way id="6062583" visible="true" user="ProjectSidewalk">
+<nd ref="49765949" />
+<nd ref="255080838" />
+<nd ref="849516344" />
+<nd ref="49765974" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Eames Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Eames" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76234353" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+</way>
+<way id="894545881" visible="true" user="ProjectSidewalk">
+<nd ref="49739609" />
+<nd ref="1484482001" />
+<nd ref="1484482004" />
+<nd ref="1484482014" />
+<nd ref="1484481416" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="7" />
+<tag k="name" v="Benning Road Northeast" />
+<tag k="note:lanes" v="3 eastbound, 4 westbound" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Benning" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1492483147" visible="true" user="ProjectSidewalk">
+<nd ref="49777944" />
+<nd ref="49760920" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="1513047367" visible="true" user="ProjectSidewalk">
+<nd ref="49765974" />
+<nd ref="676394587" />
+<nd ref="49765986" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1518806310" visible="true" user="ProjectSidewalk">
+<nd ref="49756549" />
+<nd ref="49788050" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="107306883" visible="true" user="ProjectSidewalk">
+<nd ref="49763130" />
+<nd ref="49889440" />
+<nd ref="1443170230" />
+<tag k="highway" v="residential" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Tennessee Avenue Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Tennessee" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76230417:76230418:76230430:76230343:76230348:76242989:76242990:76230339:76242991:76242992:76240347" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="978288606" visible="true" user="ProjectSidewalk">
+<nd ref="49758252" />
+<nd ref="49758253" />
+<nd ref="49758255" />
+<nd ref="49756572" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="15th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="15th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76230244:76230414:76230419:76230421:76230422:76230436:76230438:76230441:76230444:76230485:76230487:76230490:76230492:76238422" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="105673004" visible="true" user="ProjectSidewalk">
+<nd ref="49826840" />
+<nd ref="1484481457" />
+<nd ref="1484481448" />
+<tag k="highway" v="primary" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="Florida Avenue Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Florida" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="360154033" visible="true" user="ProjectSidewalk">
+<nd ref="49777983" />
+<nd ref="49777988" />
+<nd ref="49777990" />
+<nd ref="1262003260" />
+<nd ref="49777997" />
+<nd ref="49778002" />
+<nd ref="49758147" />
+<nd ref="49778012" />
+<nd ref="1298661124" />
+<nd ref="49729701" />
+<tag k="highway" v="residential" />
+<tag k="name" v="E Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="E" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="6057470" visible="true" user="ProjectSidewalk">
+<nd ref="49798512" />
+<nd ref="49798515" />
+<nd ref="49765986" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Rosedale Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Rosedale" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1188059104" visible="true" user="ProjectSidewalk">
+<nd ref="49765992" />
+<nd ref="1484481512" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="1129144494" visible="true" user="ProjectSidewalk">
+<nd ref="49790041" />
+<nd ref="1484500612" />
+<nd ref="49807256" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="2" />
+<tag k="name" v="13th Street Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="13th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="yes" />
+<tag k="tiger:zip_left" v="20002" />
+</way>
+<way id="141211397" visible="true" user="ProjectSidewalk">
+<nd ref="49734142" />
+<nd ref="49765730" />
+<tag k="highway" v="residential" />
+<tag k="name" v="Isherwood Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Isherwood" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="654793788" visible="true" user="ProjectSidewalk">
+<nd ref="1596649017" />
+<nd ref="49765992" />
+<tag k="highway" v="tertiary" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="2" />
+<tag k="name" v="17th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="17th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="62447482" visible="true" user="ProjectSidewalk">
+<nd ref="49739600" />
+<nd ref="49756566" />
+<tag k="highway" v="residential" />
+<tag k="name" v="G Street Northeast" />
+<tag k="sidewalk" v="both" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="G" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="640571527" visible="true" user="ProjectSidewalk">
+<nd ref="49739596" />
+<nd ref="49739598" />
+<tag k="highway" v="tertiary" />
+<tag k="cycleway" v="lane" />
+<tag k="HFCS" v="Collector" />
+<tag k="lanes" v="1" />
+<tag k="name" v="14th Street Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="14th" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="601765592" visible="true" user="ProjectSidewalk">
+<nd ref="1438521846" />
+<nd ref="2055159827" />
+<nd ref="1104092835" />
+<nd ref="163012393" />
+<nd ref="2029874564" />
+<nd ref="903745527" />
+<nd ref="1506457205" />
+<nd ref="747250399" />
+<nd ref="1881028752" />
+<nd ref="1452773025" />
+<nd ref="49774093" />
+<nd ref="1125625359" />
+<nd ref="1125625360" />
+<nd ref="49774098" />
+<tag k="highway" v="primary" />
+<tag k="FIXME:lanes" v="verify" />
+<tag k="HFCS" v="Principal Arterial" />
+<tag k="lanes" v="4" />
+<tag k="name" v="H Street Northeast" />
+<tag k="railway" v="tram" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="H" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+</way>
+<way id="131052463" visible="true" user="ProjectSidewalk">
+<nd ref="49794264" />
+<nd ref="49758252" />
+<tag k="highway" v="residential" />
+<tag k="lanes" v="1" />
+<tag k="name" v="Tennessee Avenue Northeast" />
+<tag k="oneway" v="yes" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Tennessee" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Ave" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:separated" v="no" />
+<tag k="tiger:source" v="tiger_import_dch_v0.6_20070809" />
+<tag k="tiger:tlid" v="76230417:76230418:76230430:76230343:76230348:76242989:76242990:76230339:76242991:76242992:76240347" />
+<tag k="tiger:upload_uuid" v="bulk_upload.pl-0113c5d6-c16d-484f-906b-0f8ab7b6b04e" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+<way id="830393154" visible="true" user="ProjectSidewalk">
+<nd ref="49728949" />
+<nd ref="49718928" />
+<tag k="highway" v="primary" />
+<tag k="FIXME" v="check lanes" />
+<tag k="HFCS" v="Minor Arterial" />
+<tag k="lanes" v="6" />
+<tag k="name" v="Bladensburg Road Northeast" />
+<tag k="source:HFCS" v="District of Columbia (DC GIS)" />
+<tag k="tiger:cfcc" v="A31" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="Bladensburg" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="Rd" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20018" />
+<tag k="tiger:zip_right" v="20018" />
+</way>
+<way id="1913848861" visible="true" user="ProjectSidewalk">
+<nd ref="49763125" />
+<nd ref="49763126" />
+<nd ref="49763128" />
+<nd ref="49763130" />
+<tag k="highway" v="residential" />
+<tag k="name" v="D Street Northeast" />
+<tag k="tiger:cfcc" v="A41" />
+<tag k="tiger:county" v="District of Columbia, DC" />
+<tag k="tiger:name_base" v="D" />
+<tag k="tiger:name_direction_suffix" v="NE" />
+<tag k="tiger:name_type" v="St" />
+<tag k="tiger:reviewed" v="no" />
+<tag k="tiger:zip_left" v="20002" />
+<tag k="tiger:zip_right" v="20002" />
+</way>
+</osm>
