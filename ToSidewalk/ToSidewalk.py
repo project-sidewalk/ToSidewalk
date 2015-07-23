@@ -287,8 +287,15 @@ def make_crosswalks(street_network, sidewalk_network):
     return
 
 def split_large_osm_file(filename):
-    command = "java -Xmx4000M -jar splitter.jar --output=xml --output-dir=data --max-nodes=15000 " + filename + " > splitter.log"
+    """Splits a large OSM files
+
+    :param filename:
+    :return:
+    """
+    command = "java -Xmx4000M -jar ./lib/splitter.jar --output=xml --output-dir=data --max-nodes=15000 " + filename + " > splitter.log"
     os.system(command)
+
+
 def merge_sidewalks(sidewalk_network1, sidewalk_network2):
     """Returns a merged sidewalk network
 
@@ -385,25 +392,25 @@ if __name__ == "__main__":
         sidewalk_network = main(street_network)
 
         # street_network.merge_parallel_street_segments2()
-        with open("../resources/Sidewalk_Output.geojson", "wb") as f:
+        with open("../output/Sidewalk_Output.geojson", "wb") as f:
             sidewalk_geojson = sidewalk_network.export(data_type="ways")
             #print geojson
             print >>f, sidewalk_geojson
 
-        with open("../resources/Sidewalk_Nodes_Output.geojson", "wb") as f:
+        with open("../output/Sidewalk_Nodes_Output.geojson", "wb") as f:
             sidewalk_nodes_geojson = sidewalk_network.export(data_type="nodes")
             print >>f, sidewalk_nodes_geojson
 
-        with open("../resources/Streets_Output.geojson", "wb") as f:
+        with open("../output/Streets_Output.geojson", "wb") as f:
             streets_geojson = street_network.export(data_type="ways")
             print >>f, streets_geojson
 
-        with open("../resources/Street_Nodes_Output.geojson", "wb") as f:
+        with open("../output/Street_Nodes_Output.geojson", "wb") as f:
             street_nodes_geojson = street_network.export(data_type="nodes")
             print >>f, street_nodes_geojson
 
             # print geojson
-        f = open('output.geojson', 'w')
+        f = open('../output/output.geojson', 'w')
 
         print >>f, sidewalk_geojson
         # print sidewalk_network.export()
@@ -462,5 +469,5 @@ if __name__ == "__main__":
         #print("3")
         geojson = sidewalk_network_main.export(format="geojson")
 
-        f = open('output.geojson', 'w')
+        f = open('../output/output.geojson', 'w')
         print >>f, geojson
