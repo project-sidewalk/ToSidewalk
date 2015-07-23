@@ -286,6 +286,7 @@ def make_crosswalks(street_network, sidewalk_network):
             continue
     return
 
+
 def split_large_osm_file(filename):
     """Splits a large OSM files
 
