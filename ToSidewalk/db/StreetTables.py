@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, TIMESTAMP
+from sqlalchemy import Column, Integer, String, Float, Boolean, TIMESTAMP, BIGINT
 from geoalchemy2 import Geometry
 
 import db
@@ -27,8 +27,9 @@ class StreetEdgeParentEdgeTable(db.Base):
     Mapping to the street_edge_parent_edge table.
     """
     __tablename__ = "street_edge_parent_edge"
-    street_edge_id = Column(Integer, primary_key=True, name="street_edge_id")
-    parent_edge_id = Column(Integer, name="parent_edge_id")
+    street_edge_parent_edge_id = Column(Integer, primary_key=True, name="street_edge_parent_edge_id")
+    street_edge_id = Column(BIGINT, name="street_edge_id")
+    parent_edge_id = Column(BIGINT, name="parent_edge_id")
 
 
 class StreetEdgeStreetNodeTable(db.Base):
@@ -36,15 +37,16 @@ class StreetEdgeStreetNodeTable(db.Base):
     Mapping to the street_edge_street_node table.
     """
     __tablename__ = "street_edge_street_node"
-    street_edge_id = Column(Integer, primary_key=True, name="street_edge_id")
-    street_node_id = Column(Integer, name="street_node_id")
+    street_edge_street_node_id = Column(Integer, primary_key=True, name="street_edge_street_node_id")
+    street_edge_id = Column(BIGINT, name="street_edge_id")
+    street_node_id = Column(BIGINT, name="street_node_id")
 
 
 class StreetNodeTable(db.Base):
     """
     Mapping to the street_node table.
     """
-    __tablename__ = "street_node_table"
+    __tablename__ = "street_node"
     street_edge_id = Column(Integer, primary_key=True, name="street_node_id")
     geom = Column(Geometry("Point", srid=4326), name="geom")
     lat = Column(Float, name="lat")
