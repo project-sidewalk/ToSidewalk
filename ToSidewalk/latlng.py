@@ -1,5 +1,6 @@
 from math import radians, cos, sin, asin, sqrt
 
+
 class LatLng(object):
     def __init__(self, lat, lng, node_id=None):
         self.lat = float(lat)
@@ -32,6 +33,7 @@ class LatLng(object):
         :return: A tuple (lat, lng)
         """
         return self.lat, self.lng
+
 
 def haversine(lon1, lat1, lon2, lat2):
     """Calculate the great circle distance between two points

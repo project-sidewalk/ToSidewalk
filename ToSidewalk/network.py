@@ -445,9 +445,13 @@ class OSM(Network):
                         combined_nids = way_1.nids + way_2.nids[1::-1]
 
                     # Create a new way from way_1 and way_2. Then remove the two ways from self.way
-                    new_street = self.create_street(None, combined_nids)
+                    # Inheritying way_1.type and way_1 tags could potentially be a problem.
+                    new_street = self.create_street(None, combined_nids, way_1.type)
                     new_street.add_original_way(way_1)
                     new_street.add_original_way(way_2)
+                    for tag in way_1.get_tags():
+                        new_street.add_tag(tag)
+
                     self.remove_way(way_id_1)
                     self.remove_way(way_id_2)
             except Exception as e:
@@ -460,22 +464,20 @@ class OSM(Network):
         Todo: Implement geojson format for export.
         """
         if format == 'osm':
-            header = """
-<?xml version="1.0" encoding="UTF-8"?>
+            header = """<?xml version="1.0" encoding="UTF-8"?>
 <osm version="0.6">
 <bounds minlat="%s" minlon="%s" maxlat="%s" maxlon="%s" />
 """ % (str(self.bounds[0]), str(self.bounds[1]), str(self.bounds[2]), str(self.bounds[3]))
 
             footer = "</osm>"
             node_list = []
-            for node in self.nodes.get_list():
-                lat, lng = node.latlng.location(radian=False)
-                node_str = """<node id="%s" visible="true" user="test" lat="%s" lon="%s" />""" % (str(node.id), str(lat), str(lng))
+            for node in self.get_nodes():
+                node_str = """<node id="%s" visible="true" user="%s" lat="%s" lon="%s" />""" % (str(node.id), str(node.user), str(node.lat), str(node.lng))
                 node_list.append(node_str)
 
             way_list = []
             for way in self.ways.get_list():
-                way_str = """<way id="%s" visible="true" user="test">""" % (str(way.id))
+                way_str = """<way id="%s" visible="true" user="%s">""" % (str(way.id), str(way.user))
                 way_list.append(way_str)
                 for nid in way.get_node_ids():
                     nid_str = """<nd ref="%s" />""" % (str(nid))
@@ -489,6 +491,10 @@ class OSM(Network):
                         # http://wiki.openstreetmap.org/wiki/Tag:footway%3Dsidewalk
                         tag = """<tag k="%s" v="%s" />""" % ("footway", "sidewalk")
                     way_list.append(tag)
+
+                for tag in way.get_tags():
+                    tag_string = """<tag k="%s" v="%s" />""" % (tag["k"], tag["v"])
+                    way_list.append(tag_string)
                 way_list.append("</way>")
 
             osm = header + "\n".join(node_list) + "\n" + "\n".join(way_list) + "\n" + footer
@@ -1704,12 +1710,16 @@ class OSM(Network):
                     for idx in intersection_indices:
                         if idx != 0 and idx != len(way.nids) - 1:
                             new_nids = way.nids[prev_idx:idx + 1]
-                            street = self.create_street(None, new_nids)
+                            street = self.create_street(None, new_nids, way.type)
                             street.add_original_way(way)
+                            for tag in way.get_tags():
+                                street.add_tag(tag)
                             prev_idx = idx
                     new_nids = way.nids[prev_idx:]
-                    street = self.create_street(None, new_nids)
+                    street = self.create_street(None, new_nids, way.type)
                     street.add_original_way(way)
+                    for tag in way.get_tags():
+                        street.add_tag(tag)
                     self.remove_way(way.id)
 
     def update_node_cardinality(self):
@@ -1768,7 +1778,15 @@ def parse(filename):
             if street_nodes.get(nids[0]).lng > street_nodes.get(nids[-1]).lng:
                 nids = nids[::-1]
 
-            street = street_network.create_street(way.get("id"), nids)
+            way_type = highway_tag.get('v')
+            street = street_network.create_street(way.get("id"), nids, way_type)
+
+            for tag in way.findall('tag'):
+                if tag.attrib['k'] != "highway":
+                    street.add_tag(tag.attrib)
+
+
+
             if oneway_tag is not None:
                 street.set_oneway_tag('yes')
             else:
