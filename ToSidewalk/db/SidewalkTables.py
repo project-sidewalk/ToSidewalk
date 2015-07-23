@@ -22,4 +22,4 @@ class SidewalkEdgeTable(db.Base):
 
 
 if __name__ == "__main__":
-    print("Sidewalk.py")
+    print("SidewalkTables.py")
