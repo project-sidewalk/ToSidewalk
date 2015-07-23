@@ -3,9 +3,11 @@ import json
 import numpy as np
 import math
 import logging as log
+import random
 from types import *
 from shapely.geometry import Polygon, LineString, Point
 from utilities import latlng_offset_size, window
+
 
 class Node(LatLng):
     def __init__(self, nid=None, lat=None, lng=None):
@@ -13,10 +15,12 @@ class Node(LatLng):
         super(Node, self).__init__(lat, lng)
 
         if nid is None:
-            self.id = str(id(self))
+            ri = random.randint(0, 0xffffffff)  # Generate a random unsigned integer.
+            self.id = str(ri)
         else:
             self.id = str(nid)
 
+        self.user = "ProjectSidewalk"
         self.way_ids = []
         self.sidewalk_nodes = {}
         self.min_intersection_cardinality = 2
@@ -74,20 +78,20 @@ class Node(LatLng):
         """TBD"""
         return self._parent_nodes
 
-    def export(self):
+    def export(self, format="geojson"):
 
         """
         Export this node's information in Geojson format.
         """
         if self._parent_nodes and self._parent_nodes._parent_network:
-
-            geojson = {}
-            geojson['type'] = "FeatureCollection"
-            geojson['features'] = []
-            for way_id in self.way_ids:
-                way = self._parent_nodes._parent_network.ways.get(way_id)
-                geojson['features'].append(way.get_geojson_features())
-            return json.dumps(geojson)
+            if format=="geojson":
+                geojson = {}
+                geojson['type'] = "FeatureCollection"
+                geojson['features'] = []
+                for way_id in self.way_ids:
+                    way = self._parent_nodes._parent_network.ways.get(way_id)
+                    geojson['features'].append(way.get_geojson_features())
+                return json.dumps(geojson)
 
     def get_adjacent_nodes(self):
         """

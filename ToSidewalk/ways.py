@@ -3,6 +3,7 @@ import math
 import numpy as np
 import itertools
 import logging as log
+import random
 from shapely.geometry import Polygon, LineString, Point
 from utilities import latlng_offset_size, window
 from types import *
@@ -11,16 +12,33 @@ from nodes import Node
 class Way(object):
     def __init__(self, wid=None, nids=[], type=None):
         if wid is None:
-            self.id = str(id(self))
+            ri = random.randint(0, 0xffffffff)  # Generate a random unsigned integer.
+            self.id = str(ri)
         else:
             self.id = str(wid)
         self.nids = list(nids)
         self.type = type
-        self.user = 'test'
+        self.user = 'ProjectSidewalk'
         self._parent_ways = None
         self._original_ways = []
+        self._tags = []
 
         assert len(self.nids) > 1
+
+    def add_tag(self, tag):
+        """
+        Appends a tag into self._tags
+        :param tag: An osm tag
+        :return:
+        """
+        self._tags.append(tag)
+
+    def get_tags(self):
+        """
+        Returns a list of tags
+        :return:
+        """
+        return self._tags
 
     def add_original_way(self, way):
         """
