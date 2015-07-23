@@ -1,16 +1,12 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, TIMESTAMP
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import *
-from shapely.geometry import LineString, mapping, Point
-import shapely.wkb as wkb
+from shapely.geometry import LineString
 import json
 import os
-import pprint as pp
 import numpy as np
-
-from ToSidewalk.db.SidewalkEdge import *
 
 Base = declarative_base()
 
@@ -45,36 +41,6 @@ class DB(object):
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
 
-
-    def example2(self):
-        """Example
-        """
-
-        query = self.session.query(WayTable)
-        feature_collection = {
-            "type": "FeatureCollection",
-            "features": []
-        }
-
-        for item in query:
-            linestring = mapping(LineString(wkb.loads(str(item.wkb_geometry), hex=True)))
-            feature = {
-                "type": "Feature",
-                "geometry": linestring,
-                "properties": {}
-            }
-            feature_collection["features"].append(feature)
-        return json.dumps(feature_collection)
-
-    def example_select(self):
-        """
-        Example
-
-        :return:
-        """
-        query = self.session.query(SidewalkEdgeTable).filter_by(deleted=False)
-        for item in query:
-            print item.sidewalk_edge_id, item.x1, item.y1
 
     def example_insert(self):
         """
@@ -118,6 +84,7 @@ class DB(object):
                                         parent_sidewalk_edge_id=None)
 
             conn.execute(ins)
+
 
 if __name__ == "__main__":
 
