@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean, TIMESTAMP
 from geoalchemy2 import Geometry
 
-from ToSidewalk.db import db
+import db
 
 class SidewalkEdgeTable(db.Base):
     """
@@ -18,5 +18,12 @@ class SidewalkEdgeTable(db.Base):
     source = Column(Integer, name="source")
     target = Column(Integer, name="target")
     deleted = Column(Boolean, name="deleted")
-    parent_sidewalk_edge_id = Column(Integer, name="parent_sidewalk_edge_id")
     timestamp = Column(TIMESTAMP, name="timestamp")
+
+
+if __name__ == "__main__":
+    database = db.DB("../../.settings")
+    session = database.session
+    query = session.query(SidewalkEdgeTable).filter_by(deleted=False)
+    for item in query:
+        print item.sidewalk_edge_id, item.x1, item.y1
