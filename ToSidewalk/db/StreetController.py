@@ -68,8 +68,8 @@ def insert(filename):
             street_id = int(street.id)
             x1 = coordinates[0][0]
             y1 = coordinates[0][1]
-            x2 = coordinates[1][0]
-            y2 = coordinates[1][1]
+            x2 = coordinates[-1][0]
+            y2 = coordinates[-1][1]
             street_type = street.type
             source = int(street.nids[0])
             target = int(street.nids[-1])
