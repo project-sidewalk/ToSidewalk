@@ -17,6 +17,7 @@ log.basicConfig(format="", level=log.DEBUG)
 # dummy_street = Street()
 distance_to_sidewalk = 0.00008
 
+
 def make_sidewalk_nodes(street, prev_node, curr_node, next_node):
     if prev_node is None:
         v = - curr_node.vector_to(next_node, normalize=False)
@@ -33,7 +34,7 @@ def make_sidewalk_nodes(street, prev_node, curr_node, next_node):
     v_cn_n = curr_node.vector_to(next_node, normalize=True)
     v_sidewalk = v_cp_n + v_cn_n
 
-    if np.linalg.norm(v_sidewalk) < 0.0000000001:
+    if np.linalg.norm(v_sidewalk) < 1e-10:
         v_sidewalk_n = np.array([v_cn_n[1], - v_cn_n[0]])
     else:
         v_sidewalk_n = v_sidewalk / np.linalg.norm(v_sidewalk)
@@ -383,8 +384,6 @@ if __name__ == "__main__":
     # singlefile for small files and debugging
     # batch for large osm file
     runmode = "singlefile"
-    # filename = "../resources/ParallelLanes_03.osm"
-    # filename = "../resources/tests/out2340_3134.pbfr"
     if runmode == "singlefile":
         street_network = parse(filename)
         start_time = time.time()
