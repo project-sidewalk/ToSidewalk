@@ -4,6 +4,7 @@ import numpy as np
 
 from types import *
 
+
 def area(p1, p2, p3):
     """
     Given three points (x1, y1), (x2, y2), (x3, y3), return the area of the triangle that is formed by the three points.
@@ -16,6 +17,7 @@ def area(p1, p2, p3):
     v2 = np.array(p3) - np.array(p2)
     area = np.cross(v1, v2) / 2
     return abs(area)
+
 
 def foot(x1, y1, a, b, c):
     """
@@ -32,6 +34,7 @@ def foot(x1, y1, a, b, c):
     y2 = - b * (a * x1 + b * y1 + c) / (a * a + b * b) + y1
     return x2, y2
 
+
 def points_to_line(p1, p2):
     """
     Given two points p1 and p2, return a line a*x + b*x + c = 0
@@ -44,6 +47,7 @@ def points_to_line(p1, p2):
     p2_star = np.array([p2[0], p2[1], 1])
     line = np.cross(p1_star, p2_star)
     return line[0], line[1], line[2]
+
 
 def latlng_offset(lat_origin, **kwargs):
     """
@@ -73,6 +77,7 @@ def latlng_offset(lat_origin, **kwargs):
     dlng = float(dx) / (111111 * math.cos(math.radians(lat_origin)))
     return dlat, dlng
 
+
 def latlng_offset_size(lat_origin, **kwargs):
     """
     Given an coordinate (lat, lng) and displacement (dx, dy) in meters, return the size of offset in latlng
@@ -93,6 +98,7 @@ def latlng_offset_size(lat_origin, **kwargs):
     dlat = float(dy) / 111111
     dlng = float(dx) / (111111 * math.cos(math.radians(lat_origin)))
     return math.sqrt(dlat * dlat + dlng * dlng)
+
 
 def window(seq, n=2, padding=None):
     """
