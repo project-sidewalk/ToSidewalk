@@ -41,11 +41,11 @@ INNER JOIN nodes ON nodes.id == ways_nodes.node_id'''
     for record in map(NodeRecord._make, cursor.fetchall()):
         if prev_id != record.way_id:
             prev_id = record.way_id
-            ways_string += """</way>\n<way id="%s">\n""" % str(record.way_id)
-        ways_string += """  <nd ref="%s"\>\n""" % str(record.node_id)
+            ways_string += """  <tag k="highway" v="primary"/>\n</way>\n<way id="%s">\n""" % str(record.way_id)
+        ways_string += """  <nd ref="%s"/>\n""" % str(record.node_id)
 
     ways_string += "</way>"
-    ways_string = ways_string[7:]  # Remove the redundant </way> at the beginning
+    ways_string = ways_string[40:]  # Remove the redundant </way> at the beginning
 
     osm_string = "\n".join((header_string, bounding_box_string, nodes_string, ways_string, "</osm>"))
     connection.close()
