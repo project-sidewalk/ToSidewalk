@@ -2,7 +2,15 @@ import unittest
 import math
 from ToSidewalk.latlng import *
 
+
 class TestLatLngMethods(unittest.TestCase):
+
+    def test_angle_to(self):
+        self.assertAlmostEqual(LatLng(0, 0).angle_to(LatLng(1, 1)), math.atan2(1, 1))
+
+    def test_distance(self):
+        self.assertAlmostEqual(LatLng(0, 0).distance(LatLng(1, 1)), math.sqrt(2))
+
     def test_haversine(self):
         """
         Haversine ground truth is from:
