@@ -1,4 +1,6 @@
+import numpy as np
 from edge import Edge
+from shapely.geometry import MultiLineString
 
 
 class Path(object):
@@ -8,6 +10,9 @@ class Path(object):
         for edge in self.edges:
             edge.path = self
 
+        self.way_type = None
+        self.tags = []
+
     @property
     def edges(self):
         return self._edges
@@ -15,6 +20,9 @@ class Path(object):
     @edges.setter
     def edges(self, edges):
         self._edges = edges
+
+    def get_multi_line_string(self):
+        return MultiLineString(self.edges)
 
     def get_nodes(self):
         """
