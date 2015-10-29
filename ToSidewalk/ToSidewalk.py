@@ -381,8 +381,8 @@ if __name__ == "__main__":
     # with open("../resources/SmallMap_01_StreetNodes.geojson", "wb") as f:
     #     geojson = street_network.export(data_type="nodes")
 
-    # filename = "../resources/SmallMap_04.osm"
-    filename = "../output/BaltimoreStreets.osm"
+    filename = "../resources/SmallMap_04.osm"
+    # filename = "../output/BaltimoreStreets.osm"
     # singlefile for small files and debugging
     # batch for large osm file
     runmode = "singlefile"

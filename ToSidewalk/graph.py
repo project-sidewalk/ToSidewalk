@@ -2,6 +2,7 @@ from node import Node
 from edge import Edge
 from path import Path
 from utilities import window
+from types import *
 
 
 class GeometricGraph(object):
@@ -39,6 +40,10 @@ class GeometricGraph(object):
         if not id:
             id = self.node_id_counter
             self.node_id_counter += 1
+
+        assert type(x) == FloatType
+        assert type(y) == FloatType
+        assert type(id) == IntType or type(id) == LongType
         self.nodes[id] = Node(id, y, x)
         return self.nodes[id]
 
@@ -93,6 +98,8 @@ class GeometricGraph(object):
     def remove_node(self, node_id):
         """
         Remove a node from the graph
+
+        :param node_id: Node id
         """
         node = self.get_node(node_id)
         connected_edges = node.edges
@@ -121,9 +128,51 @@ class GeometricGraph(object):
 
         for node in nodes:
             if len(node.edges) == 0:
-                del self.nodes[node.id]
+                del self.nodes[int(node.id)]
 
         del self.paths[path_id]
 
+
+def parse_osm(filename):
+    """
+    Parse an OSM file
+    """
+    from xml.etree import cElementTree as ET
+    import logging as log
+    with open(filename, "rb") as osm:
+        # Find element
+        # http://stackoverflow.com/questions/222375/elementtree-xpath-select-element-based-on-attribute
+        tree = ET.parse(osm)
+        nodes_tree = tree.findall(".//node")
+        ways_tree = tree.findall(".//way")
+        bounds_elem = tree.find(".//bounds")
+        bounds = [bounds_elem.get("minlat"), bounds_elem.get("minlon"), bounds_elem.get("maxlat"), bounds_elem.get("maxlon")]
+
+    log.debug("Start parsing the file: %s" % filename)
+    geometric_graph = GeometricGraph()
+
+    valid_highways = {'primary', 'secondary', 'tertiary', 'residential'}
+    for node in nodes_tree:
+        try:
+            geometric_graph.create_node(x=float(node.get("lon")), y=float(node.get("lat")), id=int(node.get("id")))
+        except AssertionError as e:
+            print "Assertion Error"
+
+    # Parse ways
+    for way in ways_tree:
+        highway_tag = way.find(".//tag[@k='highway']")
+        if highway_tag is not None and highway_tag.get("v") in valid_highways:
+            node_elements = filter(lambda elem: elem.tag == "nd", list(way))
+            nodes = [geometric_graph.get_node(int(element.get("ref"))) for element in node_elements]
+            path = geometric_graph.create_path(nodes, int(way.get("id")))
+            path.way_type = highway_tag.get('v')
+            for tag in way.findall('tag'):
+                if tag.attrib['k'] != "highway":
+                    path.tags.append(tag.attrib)
+
+    return geometric_graph
+
+
 if __name__ == "__main__":
-    pass
+    filename = "../resources/SmallMap_04.osm"
+    geometric_graph = parse_osm(filename)

@@ -27,9 +27,8 @@ class TestGeometricGraphMethods(unittest.TestCase):
 
         self.assertEqual(len(self.graph.get_adjacent_nodes(n0)), 4)
 
-
     def test_remove_node(self):
-        nodes =[self.graph.create_node(i, i * 10, i) for i in range(5)]
+        nodes =[self.graph.create_node(i, i * 10) for i in range(5)]
         path = self.graph.create_path(nodes, 0)
 
         self.graph.remove_node(2)
@@ -40,7 +39,16 @@ class TestGeometricGraphMethods(unittest.TestCase):
         self.assertEqual(path.edges[1].xy[1][0], 10.)
         self.assertEqual(path.edges[1].xy[1][1], 30.)
 
+    def test_remove_path(self):
+        nodes1 = [self.graph.create_node(i, 0) for i in range(5)]
+        nodes2 = [self.graph.create_node(i, 1) for i in range(2)] + [nodes1[2]]
+        path1 = self.graph.create_path(nodes1, 0)
+        path2 = self.graph.create_path(nodes2, 0)
 
+        node = nodes1[2]
+        self.assertEqual(len(node.edges), 3)
+        self.graph.remove_path(path1.id)
+        self.assertEqual(len(node.edges), 1)
 
 if __name__ == '__main__':
     unittest.main()

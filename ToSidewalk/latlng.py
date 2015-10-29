@@ -1,3 +1,4 @@
+import numpy as np
 from math import radians, cos, sin, asin, sqrt, atan2
 from shapely.geometry import Point
 
@@ -42,6 +43,27 @@ class LatLng(Point):
             return haversine(radians(self.lng), radians(self.lat), radians(latlng.lng), radians(latlng.lat))
         except AttributeError:
             raise
+
+    def vector(self):
+        """
+        Get a Numpy array representation of a latlng coordinate
+
+        :return: A latlng coordinate in a 2-d Numpy array
+        """
+        return np.array([self.lat, self.lng])
+
+    def vector_to(self, latlng, normalize=False):
+        """
+        Get a vector from the latlng coordinate of this latlng to another latlng.
+
+        :param latlng: The target LatLng object.
+        :param normalize: Boolean.
+        :return: A vector in a 2-d Numpy array
+        """
+        vec = np.array([self.lat, self.lng]) - np.array([self.lat, self.lng])
+        if normalize and np.linalg.norm(vec) != 0:
+            vec /= np.linalg.norm(vec)
+        return vec
 
 
 class LngLat(LatLng):
