@@ -45,66 +45,13 @@ class Node(LatLng):
         """
         self.edges.append(edge)
 
-
     def get_edges(self):
+        """
+        Returns edges
+
+        :return:
+        """
         return self.edges
-
-    def append_sidewalk_node(self, way_id, node):
-        """TBD
-
-        :param way_id: TBD
-        :param ndoe: TBD
-        """
-        self.sidewalk_nodes.setdefault(way_id, []).append(node)
-
-    def append_way(self, wid):
-        """
-        Add a way id to the list that keeps track of
-        which ways are connected to the node
-        :param wid: Way id
-        :return:
-        """
-        if wid not in self.way_ids:
-            len_before = len(self.way_ids)
-            self.way_ids.append(wid)
-            len_after = len(self.way_ids)
-            assert len_before + 1 == len_after
-
-    def append_ways(self, way_ids):
-        """
-
-        :param way_ids:
-        :return:
-        """
-        for wid in way_ids:
-            self.append_way(wid)
-
-    def belongs_to(self):
-        """TBD"""
-        return self._parent_nodes
-
-    def export(self, format="geojson"):
-
-        """
-        Export this node's information in Geojson format.
-        """
-        if self._parent_nodes and self._parent_nodes._parent_network:
-            if format=="geojson":
-                geojson = {}
-                geojson['type'] = "FeatureCollection"
-                geojson['features'] = []
-                for way_id in self.way_ids:
-                    way = self._parent_nodes._parent_network.ways.get(way_id)
-                    geojson['features'].append(way.get_geojson_features())
-                return json.dumps(geojson)
-
-    def get_adjacent_nodes(self):
-        """
-        Return a list of Node objects that are adjacent to this Node object (self)
-        :return: A list of nodes
-        """
-        network = self._parent_nodes.belongs_to()
-        return network.get_adjacent_nodes(self)
 
     def get_geojson_features(self):
         """
@@ -126,6 +73,79 @@ class Node(LatLng):
             'coordinates': [self.lng, self.lat]
         }
         return feature
+
+    def vector(self):
+        """
+        Vector representation of (x, y) coordinate
+        :return: An 1x2 numpy array
+        """
+        return np.array([self.lng, self.lat])
+
+    def vector_to(self, node, normalize=False):
+        """
+        Vector from this node to another node
+
+        :param node: A Node object
+        :param normalize: Boolean
+        :return: A 1x2 numpy array
+        """
+        vec = np.array([node.lng, node.lat]) - np.array([node.lng, node.lat])
+        if normalize:
+            vec /= np.linalg.norm(vec)
+        return vec
+
+
+    """ Deprecated """
+
+    def append_sidewalk_node(self, way_id, node):
+        """
+        Deprecated
+        """
+        self.sidewalk_nodes.setdefault(way_id, []).append(node)
+
+    def append_way(self, wid):
+        """
+        Deprecated
+        """
+        if wid not in self.way_ids:
+            len_before = len(self.way_ids)
+            self.way_ids.append(wid)
+            len_after = len(self.way_ids)
+            assert len_before + 1 == len_after
+
+    def append_ways(self, way_ids):
+        """
+        Deprecated
+        """
+        for wid in way_ids:
+            self.append_way(wid)
+
+    def belongs_to(self):
+        """
+        Deprecated
+        """
+        return self._parent_nodes
+
+    def export(self, format="geojson"):
+        """
+        Export this node's information in Geojson format.
+        """
+        if self._parent_nodes and self._parent_nodes._parent_network:
+            if format=="geojson":
+                geojson = {}
+                geojson['type'] = "FeatureCollection"
+                geojson['features'] = []
+                for way_id in self.way_ids:
+                    way = self._parent_nodes._parent_network.ways.get(way_id)
+                    geojson['features'].append(way.get_geojson_features())
+                return json.dumps(geojson)
+
+    def get_adjacent_nodes(self):
+        """
+        Deprecated
+        """
+        network = self._parent_nodes.belongs_to()
+        return network.get_adjacent_nodes(self)
 
     def get_way_ids(self):
         """ Return a list of way_ids that are connected to this node.
@@ -182,20 +202,3 @@ class Node(LatLng):
             return wid
         return None
 
-    def vector(self):
-        """ Get a Numpy array representation of a latlng coordinate
-        :return: A latlng coordinate in a 2-d Numpy array
-        """
-        return np.array(self.location())
-
-    def vector_to(self, node, normalize=False):
-        """ Get a vector from the latlng coordinate of this node to
-        another node.
-        :param node: The target Node object.
-        :param normalize: Boolean.
-        :return: A vector in a 2-d Numpy array
-        """
-        vec = np.array(node.location()) - np.array(self.location())
-        if normalize and np.linalg.norm(vec) != 0:
-            vec /= np.linalg.norm(vec)
-        return vec

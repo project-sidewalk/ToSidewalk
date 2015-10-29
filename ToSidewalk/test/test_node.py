@@ -2,6 +2,7 @@ import unittest
 from ToSidewalk.node import *
 from ToSidewalk.edge import *
 
+
 class TestNodeMethods(unittest.TestCase):
     def test_get_edges(self):
         node1 = Node(0, 0, 0)
