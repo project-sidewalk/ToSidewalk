@@ -13,8 +13,8 @@ import time
 import sys
 import numpy as np
 
-
-from nodes import Node, Nodes
+from node import Node
+from nodes import Nodes
 from ways import Street, Streets, Ways
 from utilities import window, area, foot, points_to_line
 
@@ -1634,18 +1634,17 @@ class OSM(Network):
 
     def simplify(self, way_id, threshold=0.5):
         """
-        Need a line simplification. Visvalingam?
+        Need a line simplification with a Visvalingam's algorithm.
 
         http://bost.ocks.org/mike/simplify/
         https://hydra.hull.ac.uk/assets/hull:8343/content
+        http://stackoverflow.com/questions/12749622/creating-a-heap-in-python
+        http://stackoverflow.com/questions/3954530/how-to-make-heapq-evaluate-the-heap-off-of-a-specific-attribute
         """
         nodes = [self.nodes.get(nid) for nid in self.ways.get(way_id).get_node_ids()]
         latlngs = [node.location() for node in nodes]
         groups = list(window(range(len(latlngs)), 3))
 
-        # Python heap
-        # http://stackoverflow.com/questions/12749622/creating-a-heap-in-python
-        # http://stackoverflow.com/questions/3954530/how-to-make-heapq-evaluate-the-heap-off-of-a-specific-attribute
         class Triangle(object):
             def __init__(self, prev_idx, idx, next_idx):
                 self.idx = idx

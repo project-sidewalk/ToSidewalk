@@ -6,7 +6,8 @@ import gzip
 import glob
 import shutil
 from latlng import LatLng
-from nodes import Node, Nodes
+from node import Node
+from nodes import Nodes
 from ways import Sidewalk, Sidewalks, Street
 from utilities import window, latlng_offset_size, latlng_offset
 from network import OSM, parse
