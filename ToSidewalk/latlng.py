@@ -1,11 +1,12 @@
-from math import radians, cos, sin, asin, sqrt
+from math import radians, cos, sin, asin, sqrt, atan2
+from shapely.geometry import Point
 
 
-class LatLng(object):
-    def __init__(self, lat, lng, node_id=None):
+class LatLng(Point):
+    def __init__(self, lat, lng):
+        super(LatLng, self).__init__(lng, lat)
         self.lat = float(lat)
         self.lng = float(lng)
-        return
 
     def __eq__(self, other):
         return self.lat == other.lat and self.lng == other.lng
@@ -13,13 +14,29 @@ class LatLng(object):
     def __str__(self):
         return str(self.lat) + "," + str(self.lng)
 
-    def distance_to(self, latlng):
+    def angle_to(self, latlng):
+        """
+        Get an agnle from this LatLng to another LatLng
 
-        """Get a distance from this object's coordinate to
+        :param node: A node object
+        """
+        y_node, x_node = latlng.lat, latlng.lng
+        y_self, x_self = self.lat, self.lng
+        return atan2(y_node - y_self, x_node - x_self)
+
+    def distance_in_meters(self, latlng):
+        """
+        Get a distance from this object's coordinate to
         another latlng coordinate in meters
 
         :param latlng: A LatLng object
         :return: Distance in meters
+        """
+        return self.distance_to(latlng)
+
+    def distance_to(self, latlng):
+        """
+        Deprecated. This is called by distance_in_meters
         """
         try:
             return haversine(radians(self.lng), radians(self.lat), radians(latlng.lng), radians(latlng.lat))
@@ -27,25 +44,23 @@ class LatLng(object):
             raise
 
 
-    def location(self):
-        """Returns a tuple of latlng
-
-        :return: A tuple (lat, lng)
-        """
-        return self.lat, self.lng
+class LngLat(LatLng):
+    def __init__(self, lng, lat):
+        super(LngLat, self).__init__(lat, lng)
 
 
 def haversine(lon1, lat1, lon2, lat2):
-    """Calculate the great circle distance between two points
+    """
+    Calculate the great circle distance between two points
     on the earth (specified in decimal radians)
     http://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points
+
     :param lon1: Longitude of the first point
     :param lat1: Latitude of the first point
     :param lon2: Longitude of the second point
     :param lat2: Latitude of the second point
     :return: A distance in meters
     """
-    # haversine formula
     dlon = lon2 - lon1
     dlat = lat2 - lat1
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
