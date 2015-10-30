@@ -9,27 +9,41 @@ class TestGeometricGraphMethods(unittest.TestCase):
         self.graph = GeometricGraph()
 
     def test_remove_node(self):
-        node = self.graph.create_node(0, 0)
+        node = self.graph.create_node(0., 0.)
         self.graph.remove_node(node.id)
-        self.assertEqual(len(self.graph.nodes.values()), 0)
+        self.assertEqual(len(self.graph.nodes.values()), 0.)
 
     def test_get_adjacent_nodes(self):
-        n0 = self.graph.create_node(0, 0)
-        n1 = self.graph.create_node(1, 0)
-        n2 = self.graph.create_node(0, 1)
-        n3 = self.graph.create_node(-1, 0)
-        n4 = self.graph.create_node(0, -1)
+        n0 = self.graph.create_node(0., 0.)
+        n1 = self.graph.create_node(1., 0.)
+        n2 = self.graph.create_node(0., 1.)
+        n3 = self.graph.create_node(-1., 0.)
+        n4 = self.graph.create_node(0., -1.)
 
-        p1 = self.graph.create_path([n0, n1])
-        p2 = self.graph.create_path([n0, n2])
-        p3 = self.graph.create_path([n0, n3])
-        p4 = self.graph.create_path([n0, n4])
+        p1 = self.graph.create_path(nodes=[n0, n1])
+        p2 = self.graph.create_path(nodes=[n0, n2])
+        p3 = self.graph.create_path(nodes=[n0, n3])
+        p4 = self.graph.create_path(nodes=[n0, n4])
 
         self.assertEqual(len(self.graph.get_adjacent_nodes(n0)), 4)
 
+    def test_get_degrees(self):
+        n0 = self.graph.create_node(0., 0.)
+        n1 = self.graph.create_node(1., 0.)
+        n2 = self.graph.create_node(0., 1.)
+        n3 = self.graph.create_node(-1., 0.)
+        n4 = self.graph.create_node(0., -1.)
+
+        p1 = self.graph.create_path(nodes=[n0, n1])
+        p2 = self.graph.create_path(nodes=[n0, n2])
+        p3 = self.graph.create_path(nodes=[n0, n3])
+        p4 = self.graph.create_path(nodes=[n0, n4])
+
+        self.assertEqual(self.graph.get_degrees()[0][0], 4)
+
     def test_remove_node(self):
-        nodes =[self.graph.create_node(i, i * 10) for i in range(5)]
-        path = self.graph.create_path(nodes, 0)
+        nodes =[self.graph.create_node(float(i), float(i) * 10) for i in range(5)]
+        path = self.graph.create_path(nodes=nodes)
 
         self.graph.remove_node(2)
 
@@ -40,10 +54,10 @@ class TestGeometricGraphMethods(unittest.TestCase):
         self.assertEqual(path.edges[1].xy[1][1], 30.)
 
     def test_remove_path(self):
-        nodes1 = [self.graph.create_node(i, 0) for i in range(5)]
-        nodes2 = [self.graph.create_node(i, 1) for i in range(2)] + [nodes1[2]]
-        path1 = self.graph.create_path(nodes1, 0)
-        path2 = self.graph.create_path(nodes2, 0)
+        nodes1 = [self.graph.create_node(float(i), 0.) for i in range(5)]
+        nodes2 = [self.graph.create_node(float(i), 1.) for i in range(2)] + [nodes1[2]]
+        path1 = self.graph.create_path(nodes=nodes1)
+        path2 = self.graph.create_path(nodes=nodes2)
 
         node = nodes1[2]
         self.assertEqual(len(node.edges), 3)

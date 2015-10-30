@@ -1287,8 +1287,8 @@ class OSM(Network):
         # print("Begin merging parallel street segments" + str(datetime.now()))
         # self.merge_parallel_street_segments(parallel_segments_filtered)
 
-        self.split_streets()
-        self.update_node_cardinality()
+        self.split_streets() # deprecated
+        self.update_node_cardinality() # deprecated
         self.merge_nodes()
         self.clean_street_segmentation()
         self.merge_parallel_street_segments3()
