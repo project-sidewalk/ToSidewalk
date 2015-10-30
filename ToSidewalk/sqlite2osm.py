@@ -4,8 +4,6 @@ from collections import namedtuple
 NodeRecord = namedtuple("NodeRecord", ["way_id", "node_id", "way_pos", "lat", "lon"])
 
 
-def node_record_to_element(record):
-    return """<node id="%s" lat="%s" lon="%s"/>""" % (str(record.node_id), str(record.lat), str(record.lon))
 
 
 def sqlite2osm(filename):
@@ -33,6 +31,8 @@ INNER JOIN nodes ON nodes.id == ways_nodes.node_id'''
     seen_ids = set()
     seen_ids_add = seen_ids.add
     nodes = [record for record in map(NodeRecord._make, cursor.fetchall()) if not (record.node_id in seen_ids or seen_ids_add(record.node_id))]
+
+    node_record_to_element = lambda record: """<node id="%s" lat="%s" lon="%s"/>""" % (str(record.node_id), str(record.lat), str(record.lon))
     nodes_string = "\n".join(map(node_record_to_element, nodes))
 
     ways_string = ""
@@ -45,7 +45,7 @@ INNER JOIN nodes ON nodes.id == ways_nodes.node_id'''
         ways_string += """  <nd ref="%s"/>\n""" % str(record.node_id)
 
     ways_string += "</way>"
-    ways_string = ways_string[40:]  # Remove the redundant </way> at the beginning
+    ways_string = ways_string[7:]  # Remove the redundant </way> at the beginning
 
     osm_string = "\n".join((header_string, bounding_box_string, nodes_string, ways_string, "</osm>"))
     connection.close()
