@@ -13,6 +13,18 @@ class Path(object):
         self.way_type = None
         self.tags = []
 
+    @staticmethod
+    def copy_properties(path1, path2):
+        """
+        Copy non-geometric properties of path1 to path2
+        :param path1:
+        :param path2:
+        :return:
+        """
+        path2.way_type = path1.way_type
+        path2.tags = list(path1.tags)
+        path2.osm_ids = list(path1.osm_ids)
+
     @property
     def edges(self):
         return self._edges
@@ -126,3 +138,4 @@ class Path(object):
             new_edges = self.edges[:idx - 1] + [new_edge] + self.edges[idx + 1:]
             self._remove_edge(self.edges[idx])
             self.edges = new_edges
+
