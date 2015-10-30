@@ -275,6 +275,26 @@ class GeometricGraph(object):
                 geojson['features'].append(path.geojson_feature)
 
             return json.dumps(geojson)
+        elif format == "osm":
+            header_string = """<?xml version="1.0" encoding="UTF-8"?>\n<osm version="0.6">"""
+            bounding_box_string = """<bounds minlat="%s" minlon="%s" maxlat="%s" maxlon="%s"/>""" % tuple(map(str, self.bounds))
+
+            node_to_node_element = lambda n: """<node id="%s" lat="%s" lon="%s">\n  <tag k="osm_id" v="%s"/>\n</node>""" % (str(n.id), str(n.lng), str(n.lng), str(n.osm_id))
+            nodes_string = "\n".join(map(node_to_node_element, self.get_nodes()))
+
+            ways_string_list = []
+            node_to_nd_element = lambda n: """  <nd ref="%s"/>""" % str(n.id)
+            osm_id_to_tag_element = lambda tag: """  <tag k="osm_id" v="%s"/>""" % str(tag)
+            for path in self.get_paths():
+                ways_string_list.append("<way id=\"%s\">" % str(path.id))
+                ways_string_list += map(node_to_nd_element, path.get_nodes())
+                ways_string_list += map(osm_id_to_tag_element, path.osm_ids)
+                ways_string_list.append("</way>")
+            ways_string = "\n".join(ways_string_list)
+            osm_string = "\n".join((header_string, bounding_box_string, nodes_string, ways_string, "</osm>"))
+            return osm_string
+        else:
+            raise ValueError("format should be either 'geojson' or 'osm'")
 
 
 def parse_osm(filename):
@@ -301,10 +321,13 @@ def parse_osm(filename):
     geometric_graph.bounds = bounds
 
     valid_highways = {'primary', 'secondary', 'tertiary', 'residential'}
+    osm_id_to_node_id = {}
     for node in nodes_tree:
         try:
-            geometric_graph.create_node(x=float(node.get("lon")), y=float(node.get("lat")), id=int(node.get("id")))
-        except AssertionError as e:
+            n = geometric_graph.create_node(x=float(node.get("lon")), y=float(node.get("lat")))
+            n.osm_id = int(node.get("id"))
+            osm_id_to_node_id[n.osm_id] = int(n.id)
+        except AssertionError:
             print "Assertion Error"
 
     # Parse ways
@@ -312,10 +335,10 @@ def parse_osm(filename):
         highway_tag = way.find(".//tag[@k='highway']")
         if highway_tag is not None and highway_tag.get("v") in valid_highways:
             node_elements = filter(lambda elem: elem.tag == "nd", list(way))
-            nodes = [geometric_graph.get_node(int(element.get("ref"))) for element in node_elements]
-            path = geometric_graph.create_path(nodes=nodes, id=int(way.get("id")))
+            nodes = [geometric_graph.get_node(osm_id_to_node_id[int(element.get("ref"))]) for element in node_elements]
+            path = geometric_graph.create_path(nodes=nodes)
             path.way_type = highway_tag.get('v')
-            path.osm_ids.append(path.id)
+            path.osm_ids.append(int(way.get("id")))
             for tag in way.findall('tag'):
                 if tag.attrib['k'] != "highway":
                     path.tags.append(tag.attrib)
@@ -405,4 +428,4 @@ if __name__ == "__main__":
     geometric_graph = clean_edge_segmentation(geometric_graph)
     geometric_graph = split_path(geometric_graph)
     geometric_graph = remove_short_edges(geometric_graph)
-    print geometric_graph.export()
+    print geometric_graph.export(format="osm")
