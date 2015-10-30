@@ -37,6 +37,18 @@ class Node(LatLng):
     def __str__(self):
         return str(self.id) + ": " + str(self.lat) + str(self.lng)
 
+    @property
+    def paths(self):
+        return set([edge.path for edge in self.get_edges()])
+
+    @property
+    def osm_id(self):
+        return self._osm_id
+
+    @osm_id.setter
+    def osm_id(self, id):
+        self._osm_id = id
+
     def append_edge(self, edge):
         """
         Append an edge to a list of edges.
@@ -52,10 +64,6 @@ class Node(LatLng):
         :return:
         """
         return self.edges
-
-    @property
-    def paths(self):
-        return set([edge.path for edge in self.get_edges()])
 
     def get_geojson_features(self):
         """
