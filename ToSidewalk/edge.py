@@ -16,3 +16,9 @@ class Edge(LineString):
     @path.setter
     def path(self, p):
         self._path = p
+
+    def get_length(self, in_meters=False):
+        if in_meters:
+            return self.source.distance_in_meters(self.target)
+        else:
+            return self.length

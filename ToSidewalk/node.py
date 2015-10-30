@@ -53,6 +53,10 @@ class Node(LatLng):
         """
         return self.edges
 
+    @property
+    def paths(self):
+        return set([edge.path for edge in self.get_edges()])
+
     def get_geojson_features(self):
         """
         A utilitie method to export the data as a geojson dump
@@ -95,7 +99,19 @@ class Node(LatLng):
         return vec
 
 
-    """ Deprecated """
+
+    def is_intersection(self):
+        """
+        Check if this node is an intersection or not
+
+        :return: Boolean
+        """
+        return len(self.edges) >= 3
+
+
+    ###################################################
+    # Everythign below here is deprecated
+    ###################################################
 
     def append_sidewalk_node(self, way_id, node):
         """
@@ -180,15 +196,7 @@ class Node(LatLng):
         """
         return len(self.sidewalk_nodes) > 0
 
-    def is_intersection(self):
-        """
-        Check if this node is an intersection or not
-        :return: Boolean
-        """
-        # adj_nodes = self.get_adjacent_nodes()
-        # return len(adj_nodes) >= self.min_intersection_cardinality
-        way_ids = self.get_way_ids()
-        return len(way_ids) >= self.min_intersection_cardinality
+
 
     def remove_way_id(self, wid):
         """

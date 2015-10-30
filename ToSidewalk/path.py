@@ -1,6 +1,6 @@
-import numpy as np
+from types import *
 from edge import Edge
-from shapely.geometry import MultiLineString
+from shapely.geometry import MultiLineString, mapping
 
 
 class Path(object):
@@ -17,12 +17,43 @@ class Path(object):
     def edges(self):
         return self._edges
 
+    @property
+    def osm_ids(self):
+        if not hasattr(self, '_osm_ids'):
+            self._osm_ids = []
+        return self._osm_ids
+
+    @property
+    def multi_line_string(self):
+        return MultiLineString(self.edges)
+
+    @property
+    def geojson_feature(self):
+        feature = dict()
+        feature['type'] = 'Feature'
+        feature['id'] = '%s' % (self.id)
+        feature['properties'] = {}
+        feature['geometry'] = mapping(self.multi_line_string)
+        return feature
+
     @edges.setter
     def edges(self, edges):
         self._edges = edges
 
-    def get_multi_line_string(self):
-        return MultiLineString(self.edges)
+    @osm_ids.setter
+    def osm_ids(self, ids):
+        assert type(ids) == ListType
+        self._osm_ids = ids
+
+    def _remove_edge(self, edge):
+        """
+        This method should be called from
+        :param edge:
+        :return:
+        """
+        edge.source.edges.remove(edge)
+        edge.target.edges.remove(edge)
+        self.edges.remove(edge)
 
     def get_nodes(self):
         """
@@ -46,15 +77,33 @@ class Path(object):
                     nodes.append(edge.source)
             return nodes
 
-    def _remove_edge(self, edge):
+    def merge_edges(self, edge1, edge2):
         """
-        This method should be called from
-        :param edge:
+        Merge two edges in this path
+        :param edge1:
+        :param edge2:
         :return:
         """
-        edge.source.edges.remove(edge)
-        edge.target.edges.remove(edge)
-        self.edges.remove(edge)
+        import copy
+        assert len(self.edges) > 1
+        assert edge1 in self.edges
+        assert edge2 in self.edges
+        assert len({edge1.source, edge1.target} & {edge2.source, edge2.target}) == 1
+
+        shared_node = list({edge1.source, edge1.target} & {edge2.source, edge2.target})[0]
+        if edge1.source == shared_node:
+            node1 = edge1.target
+        else:
+            node1 = edge1.source
+        if edge2.source == shared_node:
+            node2 = edge2.target
+        else:
+            node2 = edge2.source
+        new_edge = Edge(node1, node2)
+        self.edges.insert(self.edges.index(edge1), new_edge)
+        self.edges.remove(edge1)
+        self.edges.remove(edge2)
+        return new_edge
 
     def remove_node(self, node):
         """
