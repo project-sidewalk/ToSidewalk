@@ -1,3 +1,4 @@
+import copy
 import numpy as np
 from node import Node
 from edge import Edge
@@ -208,6 +209,29 @@ class GeometricGraph(object):
 
         del self.paths[path_id]
 
+    def split_path(self, path, node):
+        """
+        Split the path at node
+        :return:
+        """
+        assert len(node.edges) > 2  # it should be an intersection node
+
+        nodes = path.get_nodes()
+
+        if nodes[0] == node or nodes[-1] == node:
+            # Return if this is at the end of this path
+            return
+
+        idx = nodes.index(node)
+        edges1 = path.edges[:idx]
+        edges2 = path.edges[idx:]
+
+        path1 = self.create_path(edges=edges1)
+        path2 = self.create_path(edges=edges2)
+        Path.copy_properties(path, path1)
+        Path.copy_properties(path, path2)
+        del self.paths[path.id]
+
     def visualize(self):
         """
         Visuzalise the edges
@@ -368,7 +392,7 @@ def split_path(graph):
     intersection_nodes = filter(lambda node: node.is_intersection(), graph.get_nodes())
     for node in intersection_nodes:
         for path in node.paths:
-            path.split(node)
+            graph.split_path(path, node)
     return graph
 
 
