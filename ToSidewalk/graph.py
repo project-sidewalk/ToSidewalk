@@ -1,10 +1,13 @@
-import copy
 import numpy as np
 from node import Node
 from edge import Edge
 from path import Path
 from utilities import window
 from types import *
+
+import sys
+from logging import debug, DEBUG, basicConfig
+basicConfig(stream=sys.stderr, level=DEBUG)
 
 
 class GeometricGraph(object):
@@ -20,7 +23,7 @@ class GeometricGraph(object):
         if not self._bounds:
             latlngs = np.array(map(lambda node: (node.lat, node.lng), self.get_nodes()))
             lat, lng = latlngs.T[0], latlngs.T[1]
-            self._bounds = [np.min(lat), np.min(lng), np.max(lat).np.max(lng)]
+            self._bounds = [np.min(lat), np.min(lng), np.max(lat), np.max(lng)]
         return self._bounds
 
     @property
@@ -43,6 +46,15 @@ class GeometricGraph(object):
     def paths(self, p):
         self._paths = p
 
+    def add_node(self, node):
+        """
+        Add an existing node object to this graph
+        :param node:
+        :return:
+        """
+        if int(node.id) not in self.nodes:
+            self.nodes[int(node.id)] = node
+
     def create_node(self, x, y, id=None):
         """
         This method creates a new node.
@@ -61,6 +73,15 @@ class GeometricGraph(object):
         assert type(id) == IntType or type(id) == LongType
         self.nodes[id] = Node(id, y, x)
         return self.nodes[id]
+
+    def add_path(self, path):
+        """
+        Add an existing path object to this graph
+        :param path:
+        :return:
+        """
+        if path.id not in self.paths:
+            self.paths[path.id] = path
 
     def create_path(self, **kwargs):
         """
@@ -204,7 +225,7 @@ class GeometricGraph(object):
             edge.target.edges.remove(edge)
 
         for node in nodes:
-            if len(node.edges) == 0:
+            if len(node.edges) == 0 and int(node.id) in self.nodes:
                 del self.nodes[int(node.id)]
 
         del self.paths[path_id]
@@ -231,6 +252,48 @@ class GeometricGraph(object):
         Path.copy_properties(path, path1)
         Path.copy_properties(path, path2)
         del self.paths[path.id]
+
+    def subgraph(self, bounds, remove=False):
+        """
+        Extract a subgraph that is in the area bounded by the boudning box (minlat, minlng, maxlat, maxlng)
+
+        :param bounds: (minlat, minlng, maxlat, maxlng)
+        :return:
+        """
+        from shapely.geometry import Polygon
+        coords = ((bounds[1], bounds[0]),
+                  (bounds[3], bounds[0]),
+                  (bounds[3], bounds[2]),
+                  (bounds[1], bounds[2]),
+                  (bounds[1], bounds[0]))
+        bounding_box = Polygon(coords)
+        nodes = self.get_nodes()
+
+        # Get all the paths to extract
+        paths = []
+        for node in nodes:
+            if bounding_box.contains(node):
+                paths += node.paths
+        paths = set(paths)
+
+        if not paths:
+            return
+
+        nodes = []
+        for path in paths:
+            nodes += path.get_nodes()
+        nodes = set(nodes)
+
+        new_graph = GeometricGraph()
+        for node in nodes:
+            new_graph.add_node(node)
+
+        for path in paths:
+            new_graph.add_path(path)
+            if remove:
+                self.remove_path(path.id)
+
+        return new_graph
 
     def visualize(self):
         """
@@ -279,7 +342,7 @@ class GeometricGraph(object):
             header_string = """<?xml version="1.0" encoding="UTF-8"?>\n<osm version="0.6">"""
             bounding_box_string = """<bounds minlat="%s" minlon="%s" maxlat="%s" maxlon="%s"/>""" % tuple(map(str, self.bounds))
 
-            node_to_node_element = lambda n: """<node id="%s" lat="%s" lon="%s">\n  <tag k="osm_id" v="%s"/>\n</node>""" % (str(n.id), str(n.lng), str(n.lng), str(n.osm_id))
+            node_to_node_element = lambda n: """<node id="%s" lat="%s" lon="%s" osm_id="%s"/>""" % (str(n.id), str(n.lat), str(n.lng), str(n.osm_id))
             nodes_string = "\n".join(map(node_to_node_element, self.get_nodes()))
 
             ways_string_list = []
@@ -297,12 +360,13 @@ class GeometricGraph(object):
             raise ValueError("format should be either 'geojson' or 'osm'")
 
 
-def parse_osm(filename):
+def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'residential'}):
     """
     Parse an OSM file
     """
+    debug("Opening the file: %s" % filename)
+
     from xml.etree import cElementTree as ET
-    import logging as log
     with open(filename, "rb") as osm:
         # Find element
         # http://stackoverflow.com/questions/222375/elementtree-xpath-select-element-based-on-attribute
@@ -316,19 +380,24 @@ def parse_osm(filename):
                   float(bounds_elem.get("maxlat")) + padding,
                   float(bounds_elem.get("maxlon")) + padding]
 
-    log.debug("Start parsing the file: %s" % filename)
+    debug("Started parsing the file...")
     geometric_graph = GeometricGraph()
     geometric_graph.bounds = bounds
 
-    valid_highways = {'primary', 'secondary', 'tertiary', 'residential'}
     osm_id_to_node_id = {}
     for node in nodes_tree:
         try:
             n = geometric_graph.create_node(x=float(node.get("lon")), y=float(node.get("lat")))
-            n.osm_id = int(node.get("id"))
+            if node.get("osm_id"):
+                n.osm_id = int(node.get("osm_id"))
+            else:
+                n.osm_id = int(node.get("id"))
             osm_id_to_node_id[n.osm_id] = int(n.id)
+
+            for tag in node.findall('tag'):
+                n.tags.append(tag)
         except AssertionError:
-            print "Assertion Error"
+            raise
 
     # Parse ways
     for way in ways_tree:
@@ -346,6 +415,10 @@ def parse_osm(filename):
     return geometric_graph
 
 
+def mp_remove_short_edges(graph):
+    return remove_short_edges(graph, 15)
+
+
 def remove_short_edges(graph, distance_threshold=15):
     """
     Remove short edges.
@@ -354,6 +427,7 @@ def remove_short_edges(graph, distance_threshold=15):
     :return:
     """
     paths = graph.get_paths()
+    debug("Size of the graph. N_path=%s" % str(len(paths)))
     for path in paths:
         if len(path.edges) < 2:
             continue
@@ -385,6 +459,7 @@ def clean_edge_segmentation(graph):
     :param graph:
     :return:
     """
+    debug("Started cleaning edge segmentation...")
     queue = graph.get_paths()
     while queue:
         path = queue.pop(0)
@@ -394,7 +469,16 @@ def clean_edge_segmentation(graph):
                 # Fix the segmentation by merging the two paths. Get the two path, sort the
                 # edges, and concatenate.
                 path1, path2 = node.edges[0].path, node.edges[1].path
-                new_path = graph.merge_path(path1, path2)
+                if path1 == path2:
+                    continue
+
+                try:
+                    new_path = graph.merge_path(path1, path2)
+                except AssertionError, e:
+                    debug(e)
+                    debug(path1)
+                    debug(path2)
+                    raise
 
                 if path1 in queue:
                     queue.remove(path1)
@@ -419,13 +503,79 @@ def split_path(graph):
     return graph
 
 
+def mp_split_graph(graph_bound):
+    debug("Start splitting the graph...")
+    return graph_bound[0].subgraph(graph_bound[1])
+
+
+def split_graph(graph, rows, columns, remove=False, pool=None):
+    """
+    This method splits the graph into row x col sub graphs
+    :param rows: a number of rows
+    :param columns: a number of columns
+    :return:
+    """
+    dlat = (graph.bounds[2] - graph.bounds[0]) / rows
+    dlng = (graph.bounds[3] - graph.bounds[1]) / columns
+
+    from itertools import product
+    rows_columns = product(range(rows), range(columns))
+
+    to_bound = lambda row_column: (graph.bounds[0] + row_column[0] * dlat, graph.bounds[1] + row_column[1] * dlng,
+                             graph.bounds[0] + (row_column[0] + 1) * dlat, graph.bounds[1] + (row_column[1] + 1) * dlng)
+    to_subgraph = lambda bound: graph.subgraph(bound, remove=remove)
+    bounds = map(to_bound, rows_columns)
+
+    if pool:
+        arguments = [(graph, bound) for bound in bounds]
+        return pool.map(mp_split_graph, arguments)
+    else:
+        debug("Start splitting the graph...")
+        return map(to_subgraph, bounds)
+
+
+def merge_graph(graph1, graph2):
+    """
+    Merge two graphs
+    :param graph1:
+    :param graph2:
+    :return:
+    """
+    debug("Start merging the graphs...")
+    for node in graph2.get_nodes():
+        graph1.add_node(node)
+
+    for path in graph2.get_paths():
+        graph1.add_path(path)
+
+    return graph1
+
+
 def merge_parallel_edges(graph, distance_threshold=15):
     pass
 
-if __name__ == "__main__":
-    filename = "../resources/SmallMap_04.osm"
+
+def main():
+    debug("Start...")
+    # filename = "../resources/SmallMap_03.osm"
+    filename = "../resources/DC_IntersectedWithTheCityBoundary/district-of-columbia-latest.osm"
     geometric_graph = parse_osm(filename)
     geometric_graph = clean_edge_segmentation(geometric_graph)
+
     geometric_graph = split_path(geometric_graph)
-    geometric_graph = remove_short_edges(geometric_graph)
-    print geometric_graph.export(format="osm")
+
+    from multiprocessing import Pool
+    pool = Pool(processes=8)
+
+    rows, columns = 10, 10
+    subgraphs = filter(lambda graph: graph, split_graph(geometric_graph, rows, columns, remove=True))
+
+    debug("Start removing short edges...")
+    subgraphs = pool.map(mp_remove_short_edges, subgraphs)
+    original_graph = reduce(merge_graph, subgraphs)
+
+    with filename("output.geojson", "wb") as f:
+        f.write(original_graph.export())
+
+if __name__ == "__main__":
+    main()

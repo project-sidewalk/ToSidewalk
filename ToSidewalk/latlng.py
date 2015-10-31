@@ -1,11 +1,11 @@
 import numpy as np
 from math import radians, cos, sin, asin, sqrt, atan2
 from shapely.geometry import Point
-
+from shapely.wkt import loads
 
 class LatLng(Point):
     def __init__(self, lat, lng):
-        super(LatLng, self).__init__(lng, lat)
+        super(LatLng, self).__init__(float(lng), float(lat))
         self.lat = float(lat)
         self.lng = float(lng)
 
@@ -66,9 +66,13 @@ class LatLng(Point):
         return vec
 
 
-class LngLat(LatLng):
-    def __init__(self, lng, lat):
-        super(LngLat, self).__init__(lat, lng)
+    def __reduce__(self):
+        """
+        https://docs.python.org/3.1/library/pickle.html#pickle.object.__reduce__
+        http://stackoverflow.com/questions/19855156/whats-the-exact-usage-of-reduce-in-pickler
+        """
+        p = loads(super(LatLng, self).wkt)
+        return (self.__class__, (self.lat, self.lng))
 
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -89,3 +93,12 @@ def haversine(lon1, lat1, lon2, lat2):
     c = 2 * asin(sqrt(a))
     r = 6371000  # Radius of earth in kilometers. Use 3956 for miles
     return c * r
+
+
+if __name__ == "__main__":
+    latlng = LatLng(10., 10.)
+
+    import pickle
+    p = pickle.dumps(latlng)
+    latlng = pickle.loads(p)
+    print latlng

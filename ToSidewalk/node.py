@@ -6,7 +6,7 @@ from types import *
 
 
 class Node(LatLng):
-    def __init__(self, nid=None, lat=None, lng=None):
+    def __init__(self, nid, lat, lng):
         # self.latlng = latlng  # Note: Would it be cleaner to inherit LatLng?
         super(Node, self).__init__(lat, lng)
 
@@ -20,6 +20,7 @@ class Node(LatLng):
             self.id = str(nid)
 
         self.edges = []
+        self.tags = []
 
         self.user = "ProjectSidewalk"
         self.way_ids = []
@@ -45,9 +46,17 @@ class Node(LatLng):
     def osm_id(self):
         return self._osm_id
 
+    @property
+    def tags(self):
+        return self._tags
+
     @osm_id.setter
     def osm_id(self, id):
         self._osm_id = id
+
+    @tags.setter
+    def tags(self, t):
+        self._tags = t
 
     def append_edge(self, edge):
         """
@@ -218,3 +227,13 @@ class Node(LatLng):
             return wid
         return None
 
+    def __reduce__(self):
+        return (self.__class__, (self.id, self.lat, self.lng))
+
+if __name__ == "__main__":
+    node = Node(0, 10., 10.)
+
+    import pickle
+    p = pickle.dumps(node)
+    node = pickle.loads(p)
+    print node
