@@ -1,4 +1,5 @@
 from shapely.geometry import LineString
+from shapely.wkt import loads
 
 
 class Edge(LineString):
@@ -22,3 +23,17 @@ class Edge(LineString):
             return self.source.distance_in_meters(self.target)
         else:
             return self.length
+
+    def __reduce__(self):
+        return (self.__class__, (self.source, self.target))
+
+if __name__ == "__main__":
+    from node import Node
+    source = Node(0, 0., 0.)
+    target = Node(1, 10., 10.)
+    edge = Edge(source, target)
+
+    import pickle
+    p = pickle.dumps(edge)
+    edge = pickle.loads(p)
+    print edge
