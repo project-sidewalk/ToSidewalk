@@ -392,6 +392,8 @@ def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'res
                 n.osm_id = int(node.get("osm_id"))
             else:
                 n.osm_id = int(node.get("id"))
+
+            assert n.osm_id != None
             osm_id_to_node_id[n.osm_id] = int(n.id)
 
             for tag in node.findall('tag'):
@@ -556,6 +558,7 @@ def merge_parallel_edges(graph, distance_threshold=15):
 
 
 def main():
+    import pickle
     debug("Start...")
     # filename = "../resources/SmallMap_03.osm"
     filename = "../resources/DC_IntersectedWithTheCityBoundary/district-of-columbia-latest.osm"
@@ -564,18 +567,10 @@ def main():
 
     geometric_graph = split_path(geometric_graph)
 
-    from multiprocessing import Pool
-    pool = Pool(processes=8)
+    new_graph = remove_short_edges(geometric_graph)
 
-    rows, columns = 10, 10
-    subgraphs = filter(lambda graph: graph, split_graph(geometric_graph, rows, columns, remove=True))
-
-    debug("Start removing short edges...")
-    subgraphs = pool.map(mp_remove_short_edges, subgraphs)
-    original_graph = reduce(merge_graph, subgraphs)
-
-    with filename("output.geojson", "wb") as f:
-        f.write(original_graph.export())
+    with open("output.osm", "wb") as f:
+        f.write(new_graph.export(format="osm"))
 
 if __name__ == "__main__":
     main()

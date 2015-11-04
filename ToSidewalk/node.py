@@ -51,8 +51,8 @@ class Node(LatLng):
         return self._tags
 
     @osm_id.setter
-    def osm_id(self, id):
-        self._osm_id = id
+    def osm_id(self, oid):
+        self._osm_id = oid
 
     @tags.setter
     def tags(self, t):
