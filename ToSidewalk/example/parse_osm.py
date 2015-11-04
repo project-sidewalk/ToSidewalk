@@ -6,9 +6,9 @@ from ToSidewalk.graph import *
 
 def main(in_filename, out_filename):
     geometric_graph = parse_osm(in_filename)
-    # geometric_graph = clean_edge_segmentation(geometric_graph)
-    # geometric_graph = split_path(geometric_graph)
-    # geometric_graph = remove_short_edges(geometric_graph)
+    geometric_graph = clean_edge_segmentation(geometric_graph)
+    geometric_graph = split_path(geometric_graph)
+    geometric_graph = remove_short_edges(geometric_graph)
     with open(out_filename, "wb") as f:
         f.write(geometric_graph.export(format="osm"))
 
