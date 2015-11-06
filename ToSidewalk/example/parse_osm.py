@@ -14,6 +14,7 @@ def main(in_filename, out_filename):
     with open(out_filename, "wb") as f:
         f.write(new_graph.export(format="osm"))
 
+
 if __name__ == "__main__":
     main("../../resources/DC_IntersectedWithTheCityBoundary/district-of-columbia-latest.osm",
          "../../output/dc-streets-from-district-of-columbia-latest.osm")
