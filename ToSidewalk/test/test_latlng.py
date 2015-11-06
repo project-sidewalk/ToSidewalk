@@ -48,8 +48,16 @@ class TestLatLngMethods(unittest.TestCase):
         self.assertFalse(coord1 == coord2)
         self.assertTrue(coord1 == coord3)
 
+    def test_vector_to(self):
+        latlng1 = [38.898556, -77.037852]
+        latlng2 = [38.897147, -77.043934]
+        latlng3 = [38.898556, -77.037852]
+        coord1 = LatLng(latlng1[0], latlng1[1])
+        coord2 = LatLng(latlng2[0], latlng2[1])
+        coord3 = LatLng(latlng3[0], latlng3[1])
 
-
+        self.assertTrue(np.array_equal(coord1.vector_to(coord2), np.array(latlng2) - np.array(latlng1)))
+        self.assertFalse(np.array_equal(coord1.vector_to(coord3), np.array(latlng2) - np.array(latlng1)))
 
 if __name__ == '__main__':
     unittest.main()
