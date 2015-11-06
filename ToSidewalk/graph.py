@@ -392,7 +392,6 @@ def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'res
                 n.osm_id = int(node.get("osm_id"))
             else:
                 n.osm_id = int(node.get("id"))
-
             assert n.osm_id != None
             osm_id_to_node_id[n.osm_id] = int(n.id)
 
@@ -453,7 +452,6 @@ def remove_short_edges(graph, distance_threshold=15):
             new_edges.append(new_edge)
 
         path.edges = new_edges
-
 
     return graph
 
@@ -534,6 +532,7 @@ def split_graph(graph, rows, columns, remove=False, pool=None):
 
     debug("Start splitting the graph...")
     return map(to_subgraph, bounds)
+
 
 
 def merge_graph(graph1, graph2):
@@ -650,6 +649,7 @@ def main():
 
     sidewalk_graph = make_sidewalks(geometric_graph)
     sidewalk_graph.visualize()
+
 
 if __name__ == "__main__":
     main()

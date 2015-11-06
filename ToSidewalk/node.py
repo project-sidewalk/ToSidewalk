@@ -54,6 +54,7 @@ class Node(LatLng):
     def osm_id(self, oid):
         self._osm_id = oid
 
+
     @tags.setter
     def tags(self, t):
         self._tags = t
@@ -117,8 +118,6 @@ class Node(LatLng):
     #     if normalize:
     #         vec /= np.linalg.norm(vec)
     #     return vec
-
-
 
     def is_intersection(self):
         """
