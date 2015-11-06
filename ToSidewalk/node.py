@@ -36,7 +36,7 @@ class Node(LatLng):
         return
 
     def __str__(self):
-        return str(self.id) + ": " + str(self.lat) + str(self.lng)
+        return str(self.id) + ": " + str(self.lat) + "," + str(self.lng)
 
     @property
     def paths(self):
@@ -74,6 +74,9 @@ class Node(LatLng):
         """
         return self.edges
 
+    def remove_edge(self, edge):
+        self.edges.remove(edge)
+
     def get_geojson_features(self):
         """
         A utilitie method to export the data as a geojson dump
@@ -95,25 +98,25 @@ class Node(LatLng):
         }
         return feature
 
-    def vector(self):
-        """
-        Vector representation of (x, y) coordinate
-        :return: An 1x2 numpy array
-        """
-        return np.array([self.lng, self.lat])
+    # def vector(self):
+    #     """
+    #     Vector representation of (x, y) coordinate
+    #     :return: An 1x2 numpy array
+    #     """
+    #     return np.array([self.lng, self.lat])
 
-    def vector_to(self, node, normalize=False):
-        """
-        Vector from this node to another node
-
-        :param node: A Node object
-        :param normalize: Boolean
-        :return: A 1x2 numpy array
-        """
-        vec = np.array([node.lng, node.lat]) - np.array([node.lng, node.lat])
-        if normalize:
-            vec /= np.linalg.norm(vec)
-        return vec
+    # def vector_to(self, node, normalize=False):
+    #     """
+    #     Vector from this node to another node
+    #
+    #     :param node: A Node object
+    #     :param normalize: Boolean
+    #     :return: A 1x2 numpy array
+    #     """
+    #     vec = np.array([node.lng, node.lat]) - np.array([node.lng, node.lat])
+    #     if normalize:
+    #         vec /= np.linalg.norm(vec)
+    #     return vec
 
 
 

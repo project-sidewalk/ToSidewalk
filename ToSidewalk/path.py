@@ -96,7 +96,6 @@ class Path(object):
         :param edge2:
         :return:
         """
-        import copy
         assert len(self.edges) > 1
         assert edge1 in self.edges
         assert edge2 in self.edges
@@ -113,6 +112,12 @@ class Path(object):
             node2 = edge2.source
         new_edge = Edge(node1, node2)
         self.edges.insert(self.edges.index(edge1), new_edge)
+
+        # Clean up
+        edge1.source.remove_edge(edge1)
+        edge1.target.remove_edge(edge1)
+        edge2.source.remove_edge(edge2)
+        edge2.target.remove_edge(edge2)
         self.edges.remove(edge1)
         self.edges.remove(edge2)
         return new_edge
@@ -139,3 +144,13 @@ class Path(object):
             self._remove_edge(self.edges[idx])
             self.edges = new_edges
 
+    def to_string(self):
+        """
+        Returns a st
+
+        :return:
+        """
+        return_string = ""
+        for node in self.get_nodes():
+            return_string += "%s,%s\n" % (node.lat, node.lng)
+        return return_string
