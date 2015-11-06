@@ -118,6 +118,7 @@ class Path(object):
         edge1.target.remove_edge(edge1)
         edge2.source.remove_edge(edge2)
         edge2.target.remove_edge(edge2)
+
         self.edges.remove(edge1)
         self.edges.remove(edge2)
         return new_edge

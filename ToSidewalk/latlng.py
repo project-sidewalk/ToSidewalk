@@ -61,10 +61,10 @@ class LatLng(Point):
         :return: A vector in a 2-d Numpy array
         """
         vec = np.array([latlng.lat, latlng.lng]) - np.array([self.lat, self.lng])
+
         if normalize and np.linalg.norm(vec) != 0:
             vec /= np.linalg.norm(vec)
         return vec
-
 
     def __reduce__(self):
         """
