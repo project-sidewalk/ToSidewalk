@@ -393,6 +393,7 @@ def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'res
             else:
                 n.osm_id = int(node.get("id"))
             assert n.osm_id != None
+
             osm_id_to_node_id[n.osm_id] = int(n.id)
 
             for tag in node.findall('tag'):
@@ -414,10 +415,6 @@ def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'res
                     path.tags.append(tag.attrib)
 
     return geometric_graph
-
-
-def mp_remove_short_edges(graph):
-    return remove_short_edges(graph, 15)
 
 
 def remove_short_edges(graph, distance_threshold=15):
@@ -515,6 +512,7 @@ def split_graph(graph, rows, columns, remove=False, pool=None):
     """
     This method splits the graph into row x col sub graphs
 
+
     :param rows: a number of rows
     :param columns: a number of columns
     :return:
@@ -532,6 +530,7 @@ def split_graph(graph, rows, columns, remove=False, pool=None):
 
     debug("Start splitting the graph...")
     return map(to_subgraph, bounds)
+
 
 
 
