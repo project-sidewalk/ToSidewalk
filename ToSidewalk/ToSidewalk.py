@@ -20,6 +20,15 @@ distance_to_sidewalk = 0.00008
 
 
 def make_sidewalk_nodes(street, prev_node, curr_node, next_node):
+    """
+    Create two sidewalk nodes from three nodes in a street.
+
+    :param street:
+    :param prev_node:
+    :param curr_node:
+    :param next_node:
+    :return:
+    """
     if prev_node is None:
         v = - curr_node.vector_to(next_node, normalize=False)
         vec_prev = curr_node.vector() + v
