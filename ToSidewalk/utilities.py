@@ -54,6 +54,7 @@ def latlng_offset(lat_origin, **kwargs):
     Given an original coordinate (lat, lng) and displacement (dx, dy) in meters,
     return a new latlng coordinate.
     http://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
+
     :param lat_origin: Original latitude
     :param lng_origin: Original longitude
     :param kwargs: Can take:
@@ -80,7 +81,9 @@ def latlng_offset(lat_origin, **kwargs):
 
 def latlng_offset_size(lat_origin, **kwargs):
     """
-    Given an coordinate (lat, lng) and displacement (dx, dy) in meters, return the size of offset in latlng
+    Given an coordinate (lat, lng) and displacement (dx, dy) in meters,
+    return the size of offset in latlng.
+
     :param lat_origin:
     :param lng_origin:
     :param kwargs:

@@ -319,7 +319,7 @@ class GeometricGraph(object):
         for path in self.get_paths():
             latlngs = np.array(map(lambda node: (node.lat, node.lng), path.get_nodes()))
             x, y = m(latlngs.T[1], latlngs.T[0])
-            m.plot(x, y, color="#000000", linestyle='-', linewidth=2, alpha=.5)
+            m.plot(x, y, color="#000000", marker='o', linestyle='-', linewidth=2, alpha=.5)
 
         plt.title('Segment plotting')
         plt.show()
@@ -446,7 +446,14 @@ def remove_short_edges(graph, distance_threshold=15):
             else:
                 new_edges.append(edge)
 
+        if len(new_edges) > 1 and new_edges[-1].get_length(in_meters=True) < distance_threshold:
+            edge_1 = new_edges.pop()
+            edge_2 = new_edges.pop()
+            new_edge = path.merge_edges(edge_1, edge_2)
+            new_edges.append(new_edge)
+
         path.edges = new_edges
+
 
     return graph
 
@@ -495,6 +502,7 @@ def clean_edge_segmentation(graph):
 def split_path(graph):
     """
     This method splits the each path at intersection
+
     :param graph:
     :return:
     """
@@ -505,14 +513,10 @@ def split_path(graph):
     return graph
 
 
-def mp_split_graph(graph_bound):
-    debug("Start splitting the graph...")
-    return graph_bound[0].subgraph(graph_bound[1])
-
-
 def split_graph(graph, rows, columns, remove=False, pool=None):
     """
     This method splits the graph into row x col sub graphs
+
     :param rows: a number of rows
     :param columns: a number of columns
     :return:
@@ -528,17 +532,19 @@ def split_graph(graph, rows, columns, remove=False, pool=None):
     to_subgraph = lambda bound: graph.subgraph(bound, remove=remove)
     bounds = map(to_bound, rows_columns)
 
-    if pool:
-        arguments = [(graph, bound) for bound in bounds]
-        return pool.map(mp_split_graph, arguments)
-    else:
-        debug("Start splitting the graph...")
-        return map(to_subgraph, bounds)
+    debug("Start splitting the graph...")
+    return map(to_subgraph, bounds)
 
 
 def merge_graph(graph1, graph2):
     """
-    Merge two graphs
+    Merge two graphs.
+
+    Todo. This is not really safe... Imagine two graphs sharing same nodes but those nodes
+    have differnt memory signatures. If you look up an edge and see what nodes are connected to them,
+    those nodes may not be in the graph (well, technically they are, but those nodes are pointing
+    to other nodes in the graph data structure...)
+
     :param graph1:
     :param graph2:
     :return:
@@ -557,20 +563,93 @@ def merge_parallel_edges(graph, distance_threshold=15):
     pass
 
 
+def make_sidewalks(street_graph, distance_to_sidewalk=15):
+    """
+    Make a new graph with new sidewalk edges and sidewalk nodes from the passed graph of streets.
+    For each street in the street_graph like:
+    Street:     *------*------*------*
+
+    Create two sidewalks like:
+    Sidewalk 1: +------+------+------+
+    Street:     *------*------*------*
+    Sidewalk 2: +------+------+------+
+
+    Todo: Move this function to ToSidewalk.py
+
+    :param graph:
+    :return:
+    """
+    import numpy as np
+    from utilities import latlng_offset_size
+
+    sidewalk_graph = GeometricGraph()
+
+    # Create sidewalks
+    for path in street_graph.get_paths():
+        sidewalk_nodes_1 = []
+        sidewalk_nodes_2 = []
+
+        # Create sidewalk nodes
+        # First make new sidewalk nodes on each side of each street node. Use three consecutive
+        # nodes to calculate the correct angle to place the sidewalk nodes.
+        for prev_node, curr_node, next_node in window(path.get_nodes(), 3, padding=1):
+            if not prev_node:
+                vec_prev = curr_node.vector() - curr_node.vector_to(next_node)  # v is a vec of (lat, lng)
+                prev_node = Node(-1, vec_prev[0], vec_prev[1])  # a temporary node to calculate vec_curr_to_sidewalk
+            elif not next_node:
+                vec_next = curr_node.vector() - curr_node.vector_to(prev_node)
+                next_node = Node(-1, vec_next[0], vec_next[1])
+
+            # Calculate the angle from the current node to the sidewalk nodes.
+            vec_curr_to_prev = curr_node.vector_to(prev_node, normalize=True)
+            vec_curr_to_next = curr_node.vector_to(next_node, normalize=True)
+            vec_curr_to_sidewalk = vec_curr_to_prev + vec_curr_to_next
+
+            # vec_curr_to_sidewalk is 0 if you are using temporary node for prev_node or next_node. Take care of it.
+            # Then normalize the vector.
+            if np.linalg.norm(vec_curr_to_sidewalk) < 1e-10:
+                vec_curr_to_sidewalk = np.array([vec_curr_to_next[1], -vec_curr_to_next[0]])
+            vec_curr_to_sidewalk /= np.linalg.norm(vec_curr_to_sidewalk)
+
+            # Create two sidewalk nodes next to the current node
+            d = latlng_offset_size(curr_node.lat, vector=vec_curr_to_sidewalk, distance=distance_to_sidewalk)
+            latlng_1 = np.array([curr_node.lat, curr_node.lng]) + vec_curr_to_sidewalk * d
+            latlng_2 = np.array([curr_node.lat, curr_node.lng]) - vec_curr_to_sidewalk * d
+            sidewalk_node_1 = sidewalk_graph.create_node(float(latlng_1[1]), float(latlng_1[0]))
+            sidewalk_node_2 = sidewalk_graph.create_node(float(latlng_2[1]), float(latlng_2[0]))
+            sidewalk_node_1.parents = [prev_node, curr_node, next_node]
+            sidewalk_node_2.parents = [prev_node, curr_node, next_node]
+
+            # Figure out which side you want to put each node
+            vec_curr_to_sidewalk_node_1 = curr_node.vector_to(sidewalk_node_1)
+            if np.cross(vec_curr_to_next, vec_curr_to_sidewalk_node_1) > 0:
+                sidewalk_nodes_1.append(sidewalk_node_1)
+                sidewalk_nodes_2.append(sidewalk_node_2)
+            else:
+                sidewalk_nodes_2.append(sidewalk_node_1)
+                sidewalk_nodes_1.append(sidewalk_node_2)
+
+        sidewalk_graph.create_path(nodes=sidewalk_nodes_1)
+        sidewalk_graph.create_path(nodes=sidewalk_nodes_2)
+
+    # Create crosswalks
+    intersection_nodes = [node for node in street_graph.get_nodes() if node.is_intersection()]
+    for node in intersection_nodes:
+        print "%s,%s" % (node.lat, node.lng)
+
+    return sidewalk_graph
+
+
 def main():
-    import pickle
     debug("Start...")
-    # filename = "../resources/SmallMap_03.osm"
-    filename = "../resources/DC_IntersectedWithTheCityBoundary/district-of-columbia-latest.osm"
+    filename = "../resources/SmallMap_03.osm"
     geometric_graph = parse_osm(filename)
     geometric_graph = clean_edge_segmentation(geometric_graph)
-
     geometric_graph = split_path(geometric_graph)
+    geometric_graph = remove_short_edges(geometric_graph)
 
-    new_graph = remove_short_edges(geometric_graph)
-
-    with open("output.osm", "wb") as f:
-        f.write(new_graph.export(format="osm"))
+    sidewalk_graph = make_sidewalks(geometric_graph)
+    sidewalk_graph.visualize()
 
 if __name__ == "__main__":
     main()
