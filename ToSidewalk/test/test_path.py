@@ -25,9 +25,11 @@ class TestPathMethods(unittest.TestCase):
         e1 = edges[1]
         e2 = edges[2]
 
-        path.merge_edges(edges[1], edges[2])
+        new_edge = path.merge_edges(edges[1], edges[2])
         self.assertFalse(e1 in nodes[1].edges)
         self.assertFalse(e2 in nodes[2].edges)
+
+        self.assertTrue(path == new_edge.path)
 
 if __name__ == '__main__':
     unittest.main()

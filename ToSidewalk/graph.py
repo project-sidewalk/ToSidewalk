@@ -104,6 +104,10 @@ class GeometricGraph(object):
         else:
             raise ValueError("nodes or edges have to be provided")
         self.paths[id] = Path(id=id, edges=edges)
+
+        for edge in edges:
+            edge.path = self.paths[id]
+
         return self.paths[id]
 
     def get_node(self, node_id):
@@ -122,6 +126,17 @@ class GeometricGraph(object):
         :return: A list of nodes
         """
         return [node for node in self.nodes.values()]
+
+    def get_edges(self):
+        """
+        This method returns a set of edges
+        :return:
+        """
+        paths = self.get_paths()
+        edges = []
+        for path in paths:
+            edges += path.edges
+        return set(edges)
 
     def get_path(self, path_id):
         """
@@ -162,6 +177,16 @@ class GeometricGraph(object):
         :return: A list of (degree, node)
         """
         return [(len(node.edges), node) for node in self.nodes.values()]
+
+    @staticmethod
+    def get_connected_paths(node):
+        """
+        This method returns a set of paths that are connected to the given node
+
+        :param node:
+        :return: A set of path objects
+        """
+        return {edge.path for edge in node.edges}
 
     def merge_path(self, path1, path2):
         """
@@ -563,7 +588,7 @@ def merge_parallel_edges(graph, distance_threshold=15):
 
 def make_sidewalks(street_graph, distance_to_sidewalk=15):
     """
-    Make a new graph with new sidewalk edges and sidewalk nodes from the passed graph of streets.
+    Make a new graph with new sidewalks and crosswalks from the passed graph of streets.
     For each street in the street_graph like:
     Street:     *------*------*------*
 
@@ -577,6 +602,7 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
     :param graph:
     :return:
     """
+    import math
     import numpy as np
     from utilities import latlng_offset_size
 
@@ -617,6 +643,10 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
             sidewalk_node_2 = sidewalk_graph.create_node(float(latlng_2[1]), float(latlng_2[0]))
             sidewalk_node_1.parents = [prev_node, curr_node, next_node]
             sidewalk_node_2.parents = [prev_node, curr_node, next_node]
+            for n in [prev_node, curr_node, next_node]:
+                if not hasattr(n, 'children'):
+                    n.children = {}
+                n.children[path.id] = [sidewalk_node_1, sidewalk_node_2]
 
             # Figure out which side you want to put each node
             vec_curr_to_sidewalk_node_1 = curr_node.vector_to(sidewalk_node_1)
@@ -632,19 +662,95 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
 
     # Create crosswalks
     intersection_nodes = [node for node in street_graph.get_nodes() if node.is_intersection()]
-    for node in intersection_nodes:
-        print "%s,%s" % (node.lat, node.lng)
+    for intersection_node in intersection_nodes:
+        adjacent_nodes = street_graph.get_adjacent_nodes(intersection_node)
+        adjacent_nodes = sort_nodes(intersection_node, adjacent_nodes)
+
+        if len(adjacent_nodes) == 3:
+            # Take care of the case where len(adj_nodes) == 3.
+            # Identify the largest angle that are formed by three segments
+            # Make a dummy node between two vectors that form the largest angle
+            vectors = [intersection_node.vector_to(adjacent_node, normalize=True) for adjacent_node in adjacent_nodes]
+            angles = [math.acos(np.dot(vectors[i - 1], vectors[i])) for i in range(3)]
+            idx = np.argmax(angles)
+            vec_idx = (idx + 1) % 3
+            d = latlng_offset_size(intersection_node.lat, vector=vectors[vec_idx], distance=distance_to_sidewalk)
+            dummy_coordinate = intersection_node.vector() - vectors[vec_idx] * d
+            dummy_node = Node(-1, dummy_coordinate[0], dummy_coordinate[1])
+            adjacent_nodes.insert(idx, dummy_node)
+
+        # Create crosswalk nodes
+        assert len(adjacent_nodes) > 3
+        crosswalk_nodes = []
+        for i in range(len(adjacent_nodes)):
+            # Take a pair of adjacent nodes and make a new node between them.
+            vec_intersection_to_adjacent_1 = intersection_node.vector_to(adjacent_nodes[i - 1], normalize=True)
+            vec_intersection_to_adjacent_2 = intersection_node.vector_to(adjacent_nodes[i], normalize=True)
+            vector_intersection_to_crosswalk = vec_intersection_to_adjacent_1 + vec_intersection_to_adjacent_2
+            vector_intersection_to_crosswalk /= np.linalg.norm(vector_intersection_to_crosswalk)
+            d = math.sqrt(2) * latlng_offset_size(intersection_node.lat, vector=vector_intersection_to_crosswalk, distance=distance_to_sidewalk)
+            crosswalk_coordinate = intersection_node.vector() + vector_intersection_to_crosswalk * d
+            crosswalk_node = sidewalk_graph.create_node(float(crosswalk_coordinate[1]), float(crosswalk_coordinate[0]))
+            crosswalk_nodes.append(crosswalk_node)
+            crosswalk_node.parents = [adjacent_nodes[i - 1], adjacent_nodes[i]]
+
+        # Create crosswalk paths
+        crosswalk_paths = []
+        for crosswalk_node_pair in window(crosswalk_nodes, 2):
+            crosswalk = sidewalk_graph.create_path(nodes=crosswalk_node_pair)
+            crosswalk_paths.append(crosswalk)
+        crosswalk = sidewalk_graph.create_path(nodes=[crosswalk_nodes[-1], crosswalk_nodes[0]])
+        crosswalk_paths.append(crosswalk)
+
+        # Connect the crosswalk nodes to appropriate sidealk nodes
+        for crosswalk_node in crosswalk_nodes:
+            # Go through adjacent street nodes that this crosswalk node was made from
+            # Get sidewalk nodes that are created from the adjacent street node, and
+            # identify which one should be connected to the crosswalk_node
+            for adjacent_node in crosswalk_node.parents:
+                if not hasattr(adjacent_node, 'children'):
+                    continue  # Skip a dummy node which doesn't have any child sidewalk nodes
+
+                adjacent_node_street_paths = street_graph.get_connected_paths(adjacent_node)
+                intersection_node_street_paths = street_graph.get_connected_paths(intersection_node)
+                street_path = list(adjacent_node_street_paths & intersection_node_street_paths)[0]
+                print adjacent_node.children[street_path.id]
+
 
     return sidewalk_graph
 
 
+def sort_nodes(center_node, nodes):
+    """
+    Sort nodes around the center_node in clockwise
+    """
+    import math
+    def cmp(n1, n2):
+        angle1 = (math.degrees(center_node.angle_to(n1)) + 360.) % 360
+        angle2 = (math.degrees(center_node.angle_to(n2)) + 360.) % 360
+
+        if angle1 < angle2:
+            return -1
+        elif angle1 == angle2:
+            return 0
+        else:
+            return 1
+    return sorted(nodes, cmp=cmp)
+
+
 def main():
     debug("Start...")
-    filename = "../resources/SmallMap_03.osm"
+    filename = "../resources/SmallMap_04.osm"
     geometric_graph = parse_osm(filename)
     geometric_graph = clean_edge_segmentation(geometric_graph)
     geometric_graph = split_path(geometric_graph)
+
+    for edge in geometric_graph.get_edges():
+        assert hasattr(edge, '_path')
     geometric_graph = remove_short_edges(geometric_graph)
+
+    for edge in geometric_graph.get_edges():
+        assert hasattr(edge, '_path')
 
     sidewalk_graph = make_sidewalks(geometric_graph)
     sidewalk_graph.visualize()

@@ -1,5 +1,4 @@
 from shapely.geometry import LineString
-from shapely.wkt import loads
 
 
 class Edge(LineString):

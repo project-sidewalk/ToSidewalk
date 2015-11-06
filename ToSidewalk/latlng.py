@@ -3,6 +3,7 @@ from math import radians, cos, sin, asin, sqrt, atan2
 from shapely.geometry import Point
 from shapely.wkt import loads
 
+
 class LatLng(Point):
     def __init__(self, lat, lng):
         super(LatLng, self).__init__(float(lng), float(lat))

@@ -111,6 +111,7 @@ class Path(object):
         else:
             node2 = edge2.source
         new_edge = Edge(node1, node2)
+        new_edge.path = self
         self.edges.insert(self.edges.index(edge1), new_edge)
 
         # Clean up
@@ -118,6 +119,8 @@ class Path(object):
         edge1.target.remove_edge(edge1)
         edge2.source.remove_edge(edge2)
         edge2.target.remove_edge(edge2)
+        edge1.path = None
+        edge2.path = None
 
         self.edges.remove(edge1)
         self.edges.remove(edge2)
