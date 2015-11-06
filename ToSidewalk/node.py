@@ -54,7 +54,6 @@ class Node(LatLng):
     def osm_id(self, oid):
         self._osm_id = oid
 
-
     @tags.setter
     def tags(self, t):
         self._tags = t
@@ -118,6 +117,7 @@ class Node(LatLng):
     #     if normalize:
     #         vec /= np.linalg.norm(vec)
     #     return vec
+
 
     def is_intersection(self):
         """
@@ -214,8 +214,6 @@ class Node(LatLng):
         :return: Boolean
         """
         return len(self.sidewalk_nodes) > 0
-
-
 
     def remove_way_id(self, wid):
         """
