@@ -854,7 +854,8 @@ def sort_nodes(center_node, nodes):
     Sort nodes around the center_node in clockwise
     """
     import math
-    def cmp(n1, n2):
+
+    def compare_angle(n1, n2):
         angle1 = (math.degrees(center_node.angle_to(n1)) + 360.) % 360
         angle2 = (math.degrees(center_node.angle_to(n2)) + 360.) % 360
 
@@ -864,7 +865,7 @@ def sort_nodes(center_node, nodes):
             return 0
         else:
             return 1
-    return sorted(nodes, cmp=cmp)
+    return sorted(nodes, cmp=compare_angle)
 
 
 def main():
