@@ -57,7 +57,7 @@ class Path(object):
         assert type(ids) == ListType
         self._osm_ids = ids
 
-    def _remove_edge(self, edge):
+    def remove_edge(self, edge):
         """
         This method should be called from
         :param edge:
@@ -137,15 +137,15 @@ class Path(object):
 
         nodes = self.get_nodes()
         if node == nodes[0]:
-            self._remove_edge(self.edges[0])
+            self.remove_edge(self.edges[0])
         elif node == nodes[-1]:
-            self._remove_edge(self.edges[-1])
+            self.remove_edge(self.edges[-1])
         else:
             idx = nodes.index(node)
             new_edge = Edge(nodes[idx - 1], nodes[idx + 1])
             new_edge.path = self
             new_edges = self.edges[:idx - 1] + [new_edge] + self.edges[idx + 1:]
-            self._remove_edge(self.edges[idx])
+            self.remove_edge(self.edges[idx])
             self.edges = new_edges
 
     def to_string(self):

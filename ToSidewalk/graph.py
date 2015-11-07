@@ -117,6 +117,7 @@ class GeometricGraph(object):
         :param node_id:
         :return:
         """
+        assert node_id in self.nodes
         return self.nodes[node_id]
 
     def get_nodes(self):
@@ -145,6 +146,7 @@ class GeometricGraph(object):
         :param path_id:
         :return:
         """
+        assert path_id in self.paths
         return self.paths[path_id]
 
     def get_paths(self):
@@ -161,12 +163,16 @@ class GeometricGraph(object):
         :param node:
         :return:
         """
+        assert node.id in self.nodes
+
         nodes = []
         for edge in node.edges:
             if node == edge.source:
                 nodes.append(edge.target)
             else:
                 nodes.append(edge.source)
+
+        assert len(nodes) > 0
         return nodes
 
     def get_degrees(self):
@@ -217,6 +223,89 @@ class GeometricGraph(object):
         del self.paths[path1.id]
         del self.paths[path2.id]
         return new_path
+
+    def swap_path_node(self, path, swap_from, swap_to):
+        """
+        Swap the source node in the path to target
+        :param path:
+        :param source:
+        :param target:
+        :return:
+        """
+        nodes = path.get_nodes()
+        assert swap_from in nodes
+        idx = nodes.index(swap_from)
+        if idx == 0:
+            # Remove the first edge and swap with a new one
+            old_edge = path.edges[0]
+            if old_edge.source == swap_from:
+                new_edge = Edge(source=swap_to, target=old_edge.target)
+            else:
+                new_edge = Edge(source=old_edge.source, target=swap_to)
+            new_edge.path = path
+            path.remove_edge(old_edge)
+            path.edges.insert(0, new_edge)
+        elif idx == len(nodes) - 1:
+            # Remove the last edge and swap with a new one
+            old_edge = path.edges[-1]
+            if old_edge.source == swap_from:
+                new_edge = Edge(source=swap_to, target=old_edge.target)
+            else:
+                new_edge = Edge(source=old_edge.source, target=swap_to)
+            new_edge.path = path
+            path.remove_edge(old_edge)
+            path.edges.append(new_edge)
+        else:
+            old_edge_1 = path.edges[idx - 1]
+            old_edge_2 = path.edges[idx]
+            for e_idx, old_edge in [(idx - 1, old_edge_1), (idx, old_edge_2)]:
+                if old_edge.source == swap_from:
+                    new_edge = Edge(source=swap_to, target=old_edge.target)
+                else:
+                    new_edge = Edge(source=old_edge.source, target=swap_to)
+                new_edge.path = path
+                path.remove_edge(old_edge)
+                path.edges.insert(e_idx, new_edge)
+
+    def swap_edge_node(self, edge, node_from, node_to):
+        """
+        Swap a node
+        :param edge:
+        :param node_from:
+        :param node_to:
+        :return:
+        """
+        assert hasattr(edge, 'path')
+        assert edge in edge.path.edges
+        path = edge.path
+        if edge.source == node_from:
+            new_edge = Edge(source=node_to, target=edge.target)
+        else:
+            new_edge = Edge(source=edge.source, target=node_to)
+        new_edge.path = path
+        idx = path.edges.index(edge)
+        path.remove_edge(edge)
+        path.edges.insert(idx, new_edge)
+
+    def swap_edge(self, edge, nodes_from, nodes_to):
+        """
+
+        :param nodes_from:
+        :param nodes_to:
+        :return:
+        """
+        assert len(nodes_from) == 2
+        assert len(nodes_to) == 2
+        assert edge in edge.path.edges
+        assert len(edge.path.edges) == 1
+        if edge.source == nodes_from[0]:
+            new_edge = Edge(source=nodes_to[0], target=nodes_to[1])
+        else:
+            new_edge = Edge(source=nodes_to[1], target=nodes_to[0])
+        path = edge.path
+        new_edge.path = path
+        path.remove_edge(edge)
+        path.edges.append(new_edge)
 
     def remove_node(self, node_id):
         """
@@ -605,6 +694,7 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
     import math
     import numpy as np
     from utilities import latlng_offset_size
+    from itertools import chain, product
 
     sidewalk_graph = GeometricGraph()
 
@@ -643,10 +733,16 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
             sidewalk_node_2 = sidewalk_graph.create_node(float(latlng_2[1]), float(latlng_2[0]))
             sidewalk_node_1.parents = [prev_node, curr_node, next_node]
             sidewalk_node_2.parents = [prev_node, curr_node, next_node]
-            for n in [prev_node, curr_node, next_node]:
-                if not hasattr(n, 'children'):
-                    n.children = {}
-                n.children[path.id] = [sidewalk_node_1, sidewalk_node_2]
+
+            if not hasattr(curr_node, 'children'):
+                curr_node.children = {}
+            curr_node.children.setdefault(path.id, []).append(sidewalk_node_1)
+            curr_node.children[path.id].append(sidewalk_node_2)
+            # for n in [prev_node, curr_node, next_node]:
+            #     if not hasattr(n, 'children'):
+            #         n.children = {}
+            #     n.children.setdefault(path.id, []).append(sidewalk_node_1)
+            #     n.children[path.id].append(sidewalk_node_2)
 
             # Figure out which side you want to put each node
             vec_curr_to_sidewalk_node_1 = curr_node.vector_to(sidewalk_node_1)
@@ -662,6 +758,7 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
 
     # Create crosswalks
     intersection_nodes = [node for node in street_graph.get_nodes() if node.is_intersection()]
+    edges_to_swap = {}
     for intersection_node in intersection_nodes:
         adjacent_nodes = street_graph.get_adjacent_nodes(intersection_node)
         adjacent_nodes = sort_nodes(intersection_node, adjacent_nodes)
@@ -688,7 +785,7 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
             vec_intersection_to_adjacent_2 = intersection_node.vector_to(adjacent_nodes[i], normalize=True)
             vector_intersection_to_crosswalk = vec_intersection_to_adjacent_1 + vec_intersection_to_adjacent_2
             vector_intersection_to_crosswalk /= np.linalg.norm(vector_intersection_to_crosswalk)
-            d = math.sqrt(2) * latlng_offset_size(intersection_node.lat, vector=vector_intersection_to_crosswalk, distance=distance_to_sidewalk)
+            d = latlng_offset_size(intersection_node.lat, vector=vector_intersection_to_crosswalk, distance=distance_to_sidewalk)
             crosswalk_coordinate = intersection_node.vector() + vector_intersection_to_crosswalk * d
             crosswalk_node = sidewalk_graph.create_node(float(crosswalk_coordinate[1]), float(crosswalk_coordinate[0]))
             crosswalk_nodes.append(crosswalk_node)
@@ -702,21 +799,53 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
         crosswalk = sidewalk_graph.create_path(nodes=[crosswalk_nodes[-1], crosswalk_nodes[0]])
         crosswalk_paths.append(crosswalk)
 
-        # Connect the crosswalk nodes to appropriate sidealk nodes
-        for crosswalk_node in crosswalk_nodes:
-            # Go through adjacent street nodes that this crosswalk node was made from
-            # Get sidewalk nodes that are created from the adjacent street node, and
-            # identify which one should be connected to the crosswalk_node
-            for adjacent_node in crosswalk_node.parents:
-                if not hasattr(adjacent_node, 'children'):
-                    continue  # Skip a dummy node which doesn't have any child sidewalk nodes
+        # Connect the crosswalk nodes to appropriate sidewalk nodes
+        for street_path_id in intersection_node.children:
+            street_path = street_graph.get_path(street_path_id)
+            street_nodes = street_path.get_nodes()
+            idx = street_nodes.index(intersection_node)
+            adjacent_node = street_nodes[1] if idx == 0 else street_nodes[idx - 1]
 
-                adjacent_node_street_paths = street_graph.get_connected_paths(adjacent_node)
-                intersection_node_street_paths = street_graph.get_connected_paths(intersection_node)
-                street_path = list(adjacent_node_street_paths & intersection_node_street_paths)[0]
-                print adjacent_node.children[street_path.id]
+            sidewalk_edges = map(lambda edge_set: list(edge_set)[0],
+                                 filter(lambda edges: len(edges) > 0,
+                                        map(lambda pair: set(pair[0].edges) & set(pair[1].edges),
+                                            product(adjacent_node.children[street_path_id], intersection_node.children[street_path_id]))))
 
+            for sidewalk_edge in sidewalk_edges:
+                if sidewalk_edge.source in intersection_node.children[street_path_id]:
+                    node_to_swap = sidewalk_edge.source
+                    other = sidewalk_edge.target
+                else:
+                    node_to_swap = sidewalk_edge.target
+                    other = sidewalk_edge.source
 
+                # Identify which one of crosswalk_nodes to swap
+                curr_crosswalk_nodes = filter(lambda node: adjacent_node in node.parents, crosswalk_nodes)
+                assert len(curr_crosswalk_nodes) == 2  # Two crosswalk nodes should have been created from each adj node
+
+                crosswalk_node = curr_crosswalk_nodes[0]
+                vec_intersection_to_adjacent_node = intersection_node.vector_to(adjacent_node, normalize=True)
+                vec_intersection_to_sidewalk_node = intersection_node.vector_to(other, normalize=True)
+                vec_intersection_to_crosswalk_node = intersection_node.vector_to(crosswalk_node, normalize=True)
+                if np.cross(vec_intersection_to_adjacent_node, vec_intersection_to_crosswalk_node) * np.cross(vec_intersection_to_adjacent_node, vec_intersection_to_sidewalk_node) < 0:
+                    crosswalk_node = curr_crosswalk_nodes[1]
+                edges_to_swap.setdefault(sidewalk_edge, []).append((node_to_swap, crosswalk_node))
+
+    # Swap sidewalk edges
+    for sidewalk_edge in edges_to_swap:
+        node_pairs = edges_to_swap[sidewalk_edge]
+        if 1 < len(sidewalk_edge.path.edges):
+            assert len(node_pairs) == 1  # It should safice to swap a single node of an edge
+            node_to_swap, crosswalk_node = node_pairs[0]
+            sidewalk_graph.swap_edge_node(sidewalk_edge, node_to_swap, crosswalk_node)
+        elif len(node_pairs) == 1:
+            # Todo: I don' quite get how this happend... Need to be investigated.
+            node_to_swap, crosswalk_node = node_pairs[0]
+            sidewalk_graph.swap_edge_node(sidewalk_edge, node_to_swap, crosswalk_node)
+        elif len(node_pairs) == 2:
+            sidewalk_graph.swap_edge(sidewalk_edge, (node_pairs[0][0], node_pairs[1][0]), (node_pairs[0][1], node_pairs[1][1]))
+        else:
+            raise ValueError("This should not happen.")
     return sidewalk_graph
 
 
@@ -744,15 +873,9 @@ def main():
     geometric_graph = parse_osm(filename)
     geometric_graph = clean_edge_segmentation(geometric_graph)
     geometric_graph = split_path(geometric_graph)
-
-    for edge in geometric_graph.get_edges():
-        assert hasattr(edge, '_path')
     geometric_graph = remove_short_edges(geometric_graph)
-
-    for edge in geometric_graph.get_edges():
-        assert hasattr(edge, '_path')
-
     sidewalk_graph = make_sidewalks(geometric_graph)
+
     sidewalk_graph.visualize()
 
 

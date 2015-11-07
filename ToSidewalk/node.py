@@ -15,9 +15,9 @@ class Node(LatLng):
 
         if nid is None:
             ri = random.randint(0, 0x7fffffff)  # Generate a random positive integer.
-            self.id = str(ri)
+            self.id = int(ri)
         else:
-            self.id = str(nid)
+            self.id = int(nid)
 
         self.edges = []
         self.tags = []
@@ -32,7 +32,7 @@ class Node(LatLng):
 
         self._parent_nodes = None  # Parent Nodes data structure
 
-        assert type(self.id) is StringType
+        assert type(self.id) is IntType
         return
 
     def __str__(self):
