@@ -672,8 +672,17 @@ def merge_graph(graph1, graph2):
 
 
 def merge_parallel_edges(graph, distance_threshold=15):
-    pass
+    import rtree
+    rtree_index = rtree.index.Index()
 
+    edge = graph.get_paths()[0].edges[0]
+    for path in graph.get_paths():
+        for edge in path.edges:
+            rtree_index.insert(edge.id, edge.bounds, edge)
+
+    edges = rtree_index.nearest(edge.bounds, 10, objects='raw')
+    for edge in edges:
+        print edge.id, edge.source, edge.target, edge
 
 def make_sidewalks(street_graph, distance_to_sidewalk=15):
     """
@@ -875,9 +884,9 @@ def main():
     geometric_graph = clean_edge_segmentation(geometric_graph)
     geometric_graph = split_path(geometric_graph)
     geometric_graph = remove_short_edges(geometric_graph)
-    sidewalk_graph = make_sidewalks(geometric_graph)
-
-    sidewalk_graph.visualize()
+    geometric_graph = merge_parallel_edges(geometric_graph)
+    # sidewalk_graph = make_sidewalks(geometric_graph)
+    # sidewalk_graph.visualize()
 
 
 if __name__ == "__main__":

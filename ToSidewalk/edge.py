@@ -1,13 +1,31 @@
+import os
 from shapely.geometry import LineString
 
 
 class Edge(LineString):
+    unique_id_counter = 0
+
     def __init__(self, source, target):
-        super(Edge, self).__init__([source, target])
+        if os.name == 'posix':
+            # Need this because Shapely 1.3 for OS X has different constructor for LineString.
+            super(Edge, self).__init__([(source.lng, source.lat), (target.lng, target.lat)])
+        else:
+            super(Edge, self).__init__([source, target])
+
         self.source = source
         self.target = target
         source.append_edge(self)
         target.append_edge(self)
+        self._id = self.get_uid()
+
+    @classmethod
+    def get_uid(cls):
+        cls.unique_id_counter += 1
+        return cls.unique_id_counter
+
+    @property
+    def id(self):
+        return self._id
 
     @property
     def path(self):
