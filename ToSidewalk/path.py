@@ -73,6 +73,7 @@ class Path(object):
 
         :return:
         """
+        assert len(self.edges) > 0
         if len(self.edges) == 1:
             return [self.edges[0].source, self.edges[0].target]
         else:
@@ -158,3 +159,10 @@ class Path(object):
         for node in self.get_nodes():
             return_string += "%s,%s\n" % (node.lat, node.lng)
         return return_string
+
+    def split_edges(self, edge_index):
+        assert edge_index >= 0 or edge_index < len(self.edges)
+        return self.edges[:edge_index], self.edges[edge_index + 1:]
+
+    def __reduce__(self):
+        return (self.__class__, (self.id, self.edges))

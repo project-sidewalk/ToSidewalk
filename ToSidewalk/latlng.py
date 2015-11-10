@@ -2,6 +2,7 @@ import numpy as np
 from math import radians, cos, sin, asin, sqrt, atan2
 from shapely.geometry import Point
 from shapely.wkt import loads
+from utilities import Vector
 
 
 class LatLng(Point):
@@ -51,7 +52,8 @@ class LatLng(Point):
 
         :return: A latlng coordinate in a 2-d Numpy array
         """
-        return np.array([self.lat, self.lng])
+        return Vector([self.lat, self.lng])
+        # return np.array([self.lat, self.lng])
 
     def vector_to(self, latlng, normalize=False):
         """
@@ -61,8 +63,8 @@ class LatLng(Point):
         :param normalize: Boolean.
         :return: A vector in a 2-d Numpy array
         """
-        vec = np.array([latlng.lat, latlng.lng]) - np.array([self.lat, self.lng])
-
+        # vec = np.array([latlng.lat, latlng.lng]) - np.array([self.lat, self.lng])
+        vec = Vector([latlng.lat, latlng.lng]) - np.array([self.lat, self.lng])
         if normalize and np.linalg.norm(vec) != 0:
             vec /= np.linalg.norm(vec)
         return vec

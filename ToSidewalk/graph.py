@@ -224,6 +224,77 @@ class GeometricGraph(object):
         del self.paths[path2.id]
         return new_path
 
+
+    def merge_edges(self, edge1, edge2):
+        """
+        Return a new edge after merging the two passed edge. This method does not delete the original edges.
+        :param edge1:
+        :param edge2:
+        :return: A list of edges and a table that maps the old nodes to new nodes.
+        """
+        # assert Edge.parallel(edge1, edge2)
+        old_to_new, new_to_old = {}, {}
+
+        if Edge.connected(edge1, edge2):
+            # If one node is shared between two edges, the method should return two new edges that are connected
+            base_node = {edge1.source, edge1.target} & {edge2.source, edge2.target}
+            assert len(base_node) == 1  # One and only one shared node
+            target_nodes = {edge1.source, edge1.target, edge2.source, edge2.target} - base_node
+            assert len(target_nodes) == 2  # Two nodes other than the shared nodes
+
+            target_nodes = list(target_nodes)
+            base_node = list(base_node)[0]
+            tmp_lat, tmp_lng = (target_nodes[1].lat + target_nodes[0].lat) / 2, (target_nodes[1].lng + target_nodes[0].lng) / 2
+            tmp_node = Node(-1, tmp_lat, tmp_lng)
+            base_vector = base_node.vector_to(tmp_node, normalize=True)
+
+            # Create new nodes
+            items = []  # (distance along the base vec, node)
+            for target_node in target_nodes:
+                vec_base_to_target = base_node.vector_to(target_node)
+                d_base_to_new_node = np.dot(vec_base_to_target, base_vector)
+                new_node_latlng = base_node.vector() + d_base_to_new_node * base_vector
+                new_node = self.create_node(float(new_node_latlng[1]), float(new_node_latlng[0]))
+                items.append((d_base_to_new_node, new_node))
+            items.sort(key=lambda item: item[0])
+            new_nodes = map(lambda item: item[1], items)
+            assert len(new_nodes) == 2
+            new_edge = Edge(source=base_node, target=new_nodes[0])
+            for node in target_nodes:
+                old_to_new[node] = new_nodes[0]
+            old_to_new[base_node] = base_node
+            return new_edge, old_to_new
+        else:
+            # Take the average coordinate of the four nodes connected to the edges to get a base node coord.
+            edge_nodes = {edge1.source, edge1.target, edge2.source, edge2.target}
+            latlngs = [np.array([node.lat, node.lng]) for node in edge_nodes]
+            base_latlng = np.sum(latlngs, axis=0) / len(latlngs)
+            base_node = Node(-1, base_latlng[0], base_latlng[1])
+
+            v1 = edge1.vector(normalize=True)
+            v2 = edge2.vector(normalize=True)
+            if np.dot(v1, v2) < 0:
+                v2 = -v2
+            base_vector = (v1 + v2) / np.linalg.norm(v1 + v2)
+
+            items = []
+            for edge_node in edge_nodes:
+                vec_base_to_edge_node = base_node.vector_to(edge_node)
+                d_base_to_new_node = np.dot(vec_base_to_edge_node, base_vector)
+                new_node_latlng = base_node.vector() + d_base_to_new_node * base_vector
+                new_node = self.create_node(float(new_node_latlng[1]), float(new_node_latlng[0]))
+                items.append((d_base_to_new_node, new_node))
+                old_to_new[edge_node] = new_node
+                new_to_old[new_node] = edge_node
+            items.sort(key=lambda item: item[0])
+            new_nodes = map(lambda item: item[1], items)
+            assert len(new_nodes) == 4
+            new_edge = Edge(source=new_nodes[1], target=new_nodes[2])
+            old_to_new[new_to_old[new_nodes[0]]] = new_nodes[1]
+            old_to_new[new_to_old[new_nodes[3]]] = new_nodes[2]
+
+            return new_edge, old_to_new
+
     def swap_path_node(self, path, swap_from, swap_to):
         """
         Swap the source node in the path to target
@@ -277,6 +348,9 @@ class GeometricGraph(object):
         """
         assert hasattr(edge, 'path')
         assert edge in edge.path.edges
+        if node_from == node_to:
+            return edge
+
         path = edge.path
         if edge.source == node_from:
             new_edge = Edge(source=node_to, target=edge.target)
@@ -286,6 +360,7 @@ class GeometricGraph(object):
         idx = path.edges.index(edge)
         path.remove_edge(edge)
         path.edges.insert(idx, new_edge)
+        return new_edge
 
     def swap_edge(self, edge, nodes_from, nodes_to):
         """
@@ -409,7 +484,7 @@ class GeometricGraph(object):
 
         return new_graph
 
-    def visualize(self):
+    def visualize(self, padding=0.001):
         """
         Visuzalise the edges
 
@@ -420,8 +495,8 @@ class GeometricGraph(object):
         import matplotlib.pyplot as plt
         import numpy as np
 
-        m = Basemap(projection='mill', llcrnrlat=self.bounds[0], urcrnrlat=self.bounds[2],
-                    llcrnrlon=self.bounds[1], urcrnrlon=self.bounds[3], resolution='c')
+        m = Basemap(projection='mill', llcrnrlat=self.bounds[0] - padding, urcrnrlat=self.bounds[2] + padding,
+                    llcrnrlon=self.bounds[1] - padding, urcrnrlon=self.bounds[3] + padding, resolution='c')
 
         m.drawcoastlines()
         m.drawcountries()
@@ -646,8 +721,6 @@ def split_graph(graph, rows, columns, remove=False, pool=None):
     return map(to_subgraph, bounds)
 
 
-
-
 def merge_graph(graph1, graph2):
     """
     Merge two graphs.
@@ -671,18 +744,130 @@ def merge_graph(graph1, graph2):
     return graph1
 
 
-def merge_parallel_edges(graph, distance_threshold=15):
+def merge_parallel_edges(graph, overlap_threshold=.3, angle_threshold=10.):
+    import math
     import rtree
+    debug("Merge parallel edges...")
+
     rtree_index = rtree.index.Index()
-
-    edge = graph.get_paths()[0].edges[0]
-    for path in graph.get_paths():
-        for edge in path.edges:
-            rtree_index.insert(edge.id, edge.bounds, edge)
-
-    edges = rtree_index.nearest(edge.bounds, 10, objects='raw')
+    edges = graph.get_edges()
+    edge_to_original_edge_table = {}
     for edge in edges:
-        print edge.id, edge.source, edge.target, edge
+        rtree_index.insert(edge.id, edge.bounds, edge)
+        edge_to_original_edge_table[edge.id] = edge
+
+    while edges:
+        current_edge = edges.pop()
+
+        # Caution! The parent path information of each edge is lost when retrieved from rtree. This is because
+        # pickle cannot serialize some properties (e.g., the reference to path object). So fix that.
+        nearby_edges = list(rtree_index.nearest(current_edge.bounds, 5, objects='raw'))
+        nearby_edges = map(lambda e: edge_to_original_edge_table[e.id],
+                           filter(lambda e: e != current_edge, nearby_edges))
+
+        # Check if two edges are parallel and do not belong to the same path.
+        parallel_edges = []
+        for nearby_edge in nearby_edges:
+            try:
+                if Edge.connected(current_edge, nearby_edge) and \
+                        (math.degrees(Edge.angle(current_edge, nearby_edge)) < angle_threshold or
+                         math.degrees(Edge.angle(current_edge, nearby_edge)) > 360. - angle_threshold):
+                    parallel_edges.append((Edge.overlap(current_edge, nearby_edge, relative=True), current_edge, nearby_edge))
+                elif Edge.parallel(current_edge, nearby_edge) and not Edge.same_path(current_edge, nearby_edge)\
+                        and not Edge.connected(current_edge, nearby_edge):
+                    parallel_edges.append((Edge.overlap(current_edge, nearby_edge, relative=True), current_edge, nearby_edge))
+            except AssertionError:
+                debug("Something went wrong")
+                raise
+
+        # Merge edges that have the greatest overlap
+        parallel_edges.sort(key=lambda item: -item[0])
+        edges_to_remove = set()
+        if parallel_edges and parallel_edges[0][0] > overlap_threshold:
+            edge1, edge2 = parallel_edges[0][1], parallel_edges[0][2]
+            path1, path2 = edge1.path, edge2.path
+
+            # Identify which edges will get affected
+            affected = {edge for node in {edge1.source, edge1.target, edge2.source, edge2.target} for edge in node.edges}
+            edges_to_remove = affected.copy()
+            affected -= set(path1.edges)  # Exclude the edges in p1
+            affected -= set(path2.edges)  # Exclude the edges in p2
+            affected_paths = set()
+
+            # Merge two edges and create a new path out of the edge.
+            # Warning: This could cause edge segmentation. We'll take care of it below.
+            new_edge, old_to_new = graph.merge_edges(edge1, edge2)
+            new_path = graph.create_path(edges=[new_edge])
+            affected_paths.add(new_path)
+
+            # Keep edges (Create copies of edges so nodes won't get deleted when I delete paths.)
+            edge_index_1 = path1.edges.index(edge1)
+            edge_index_2 = path2.edges.index(edge2)
+            edges_1_1, edges_1_2 = path1.split_edges(edge_index_1)
+            edges_2_1, edges_2_2 = path2.split_edges(edge_index_2)
+            edge_lists = [edges_1_1, edges_1_2, edges_2_1, edges_2_2]
+            new_edge_lists = [[e.copy() for e in edges] for edges in edge_lists]
+            new_edge_lists = filter(lambda e: e, new_edge_lists)  # remove empty lists
+
+            # Remove old paths
+            graph.remove_path(path1.id)
+            graph.remove_path(path2.id)
+
+            # Create new paths
+            for new_edge_list in new_edge_lists:
+                p = graph.create_path(edges=new_edge_list)
+                affected_paths.add(p)
+                node_to_swap = list(set(p.get_nodes()) & set(old_to_new.keys()))
+                assert len(node_to_swap) == 1
+                node_to_swap = node_to_swap[0]
+
+                edge_to_swap = list(set(p.edges) & set(node_to_swap.edges))
+                assert len(edge_to_swap) == 1
+                edge_to_swap = edge_to_swap[0]
+
+                graph.swap_edge_node(edge_to_swap, node_to_swap, old_to_new[node_to_swap])
+
+            # Update affectede edges
+            new_edges = []
+            for affected_edge in affected:
+                try:
+                    node_from = list({affected_edge.source, affected_edge.target} & set(old_to_new.keys()))
+                    assert len(node_from) == 1
+                    node_from = node_from[0]
+                    node_to = old_to_new[node_from]
+                    other = affected_edge.source if affected_edge.target == node_from else affected_edge.target
+
+                    # Make sure we don't make duplicate paths
+                    if not {node_to, other} in new_edges:
+                        graph.swap_edge_node(affected_edge, node_from, node_to)
+                        new_edges.append({node_to, other})
+                        affected_paths.add(affected_edge.path)
+                    else:
+                        graph.remove_path(affected_edge.path.id)
+                except AssertionError:
+                    raise
+
+            # Resolve edge segmentation
+            affected_paths = list(affected_paths)
+            while affected_paths:
+                p = affected_paths.pop()
+                nodes = p.get_nodes()
+                for node in [nodes[0], nodes[-1]]:
+                    if len(node.edges) == 2:
+                        path1, path2 = node.edges[0].path, node.edges[1].path
+                        if path1 == path2:
+                            continue
+                        new_path = graph.merge_path(path1, path2)
+                        if path1 in affected_paths:
+                            affected_paths.remove(path1)
+                        if path2 in affected_paths:
+                            affected_paths.remove(path2)
+
+                        affected_paths.append(new_path)
+
+            # Update the rtree index
+    return graph
+
 
 def make_sidewalks(street_graph, distance_to_sidewalk=15):
     """
@@ -703,7 +888,7 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
     import math
     import numpy as np
     from utilities import latlng_offset_size
-    from itertools import chain, product
+    from itertools import product
 
     sidewalk_graph = GeometricGraph()
 
@@ -884,9 +1069,10 @@ def main():
     geometric_graph = clean_edge_segmentation(geometric_graph)
     geometric_graph = split_path(geometric_graph)
     geometric_graph = remove_short_edges(geometric_graph)
-    geometric_graph = merge_parallel_edges(geometric_graph)
-    # sidewalk_graph = make_sidewalks(geometric_graph)
-    # sidewalk_graph.visualize()
+    # geometric_graph = merge_parallel_edges(geometric_graph)
+    # geometric_graph.visualize()
+    sidewalk_graph = make_sidewalks(geometric_graph)
+    sidewalk_graph.visualize()
 
 
 if __name__ == "__main__":

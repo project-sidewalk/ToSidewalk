@@ -128,3 +128,28 @@ def window(seq, n=2, padding=None):
         result = result[1:] + (elem,)
         yield result
     return
+
+
+class Vector(np.ndarray):
+
+    def __new__(cls, input_array):
+        # Input array is an already formed ndarray instance
+        # We first cast to be our class type
+        obj = np.asarray(input_array).view(cls)
+        # add the new attribute to the created instance
+        # obj.info = info
+        # Finally, we must return the newly created object:
+        return obj
+
+    def unit(self):
+        return self / np.linalg.norm(self)
+
+    def magnitude(self):
+        return np.linalg.norm(self)
+
+
+if __name__ == "__main__":
+    v = Vector([1, 2])
+    v2 = Vector([2, -1])
+    print np.dot(v, v2)
+    print v.magnitude() == math.sqrt(5)
