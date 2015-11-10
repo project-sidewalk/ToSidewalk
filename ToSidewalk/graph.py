@@ -220,10 +220,11 @@ class GeometricGraph(object):
         new_path.way_type = path1.way_type
         new_path.tags = path1.tags + path2.tags
 
+        # self.remove_path(path1.id)
+        # self.remove_path(path2.id)
         del self.paths[path1.id]
         del self.paths[path2.id]
         return new_path
-
 
     def merge_edges(self, edge1, edge2):
         """
@@ -406,6 +407,7 @@ class GeometricGraph(object):
         :param path_id:
         :return:
         """
+        assert path_id in self.paths
         path = self.get_path(path_id)
         edges = path.edges
         nodes = path.get_nodes()
@@ -537,10 +539,12 @@ class GeometricGraph(object):
             ways_string_list = []
             node_to_nd_element = lambda n: """  <nd ref="%s"/>""" % str(n.id)
             osm_id_to_tag_element = lambda tag: """  <tag k="osm_id" v="%s"/>""" % str(tag)
+            # osm_highway_tag_element = lambda tag: """ <tag k="highway" v="%s"/>""" % str(tag)
             for path in self.get_paths():
                 ways_string_list.append("<way id=\"%s\">" % str(path.id))
                 ways_string_list += map(node_to_nd_element, path.get_nodes())
                 ways_string_list += map(osm_id_to_tag_element, path.osm_ids)
+                ways_string_list.append("""  <tag k="highway" v="%s"/>""" % str(path.way_type))
                 ways_string_list.append("</way>")
             ways_string = "\n".join(ways_string_list)
             osm_string = "\n".join((header_string, bounding_box_string, nodes_string, ways_string, "</osm>"))
@@ -593,11 +597,11 @@ def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'res
     # Parse ways
     for way in ways_tree:
         highway_tag = way.find(".//tag[@k='highway']")
-        if highway_tag is not None and highway_tag.get("v") in valid_highways:
+        if highway_tag is not None and highway_tag.get("v") in valid_highways or True:
             node_elements = filter(lambda elem: elem.tag == "nd", list(way))
             nodes = [geometric_graph.get_node(osm_id_to_node_id[int(element.get("ref"))]) for element in node_elements]
             path = geometric_graph.create_path(nodes=nodes)
-            path.way_type = highway_tag.get('v')
+            # path.way_type = highway_tag.get('v')
             path.osm_ids.append(int(way.get("id")))
             for tag in way.findall('tag'):
                 if tag.attrib['k'] != "highway":
@@ -756,8 +760,10 @@ def merge_parallel_edges(graph, overlap_threshold=.3, angle_threshold=10.):
         rtree_index.insert(edge.id, edge.bounds, edge)
         edge_to_original_edge_table[edge.id] = edge
 
-    while edges:
-        current_edge = edges.pop()
+    edge_queue = list(edges)
+    while edge_queue:
+        print "Before", edge_queue
+        current_edge = edge_queue.pop()
 
         # Caution! The parent path information of each edge is lost when retrieved from rtree. This is because
         # pickle cannot serialize some properties (e.g., the reference to path object). So fix that.
@@ -782,7 +788,6 @@ def merge_parallel_edges(graph, overlap_threshold=.3, angle_threshold=10.):
 
         # Merge edges that have the greatest overlap
         parallel_edges.sort(key=lambda item: -item[0])
-        edges_to_remove = set()
         if parallel_edges and parallel_edges[0][0] > overlap_threshold:
             edge1, edge2 = parallel_edges[0][1], parallel_edges[0][2]
             path1, path2 = edge1.path, edge2.path
@@ -797,6 +802,8 @@ def merge_parallel_edges(graph, overlap_threshold=.3, angle_threshold=10.):
             # Merge two edges and create a new path out of the edge.
             # Warning: This could cause edge segmentation. We'll take care of it below.
             new_edge, old_to_new = graph.merge_edges(edge1, edge2)
+            edges_to_remove.add(edge1)
+            edges_to_remove.add(edge2)
             new_path = graph.create_path(edges=[new_edge])
             affected_paths.add(new_path)
 
@@ -810,8 +817,10 @@ def merge_parallel_edges(graph, overlap_threshold=.3, angle_threshold=10.):
             new_edge_lists = filter(lambda e: e, new_edge_lists)  # remove empty lists
 
             # Remove old paths
-            graph.remove_path(path1.id)
-            graph.remove_path(path2.id)
+            if path1.id in graph.paths:
+                graph.remove_path(path1.id)
+            if path2.id in graph.paths:
+                graph.remove_path(path2.id)
 
             # Create new paths
             for new_edge_list in new_edge_lists:
@@ -832,6 +841,7 @@ def merge_parallel_edges(graph, overlap_threshold=.3, angle_threshold=10.):
             for affected_edge in affected:
                 try:
                     node_from = list({affected_edge.source, affected_edge.target} & set(old_to_new.keys()))
+
                     assert len(node_from) == 1
                     node_from = node_from[0]
                     node_to = old_to_new[node_from]
@@ -839,13 +849,19 @@ def merge_parallel_edges(graph, overlap_threshold=.3, angle_threshold=10.):
 
                     # Make sure we don't make duplicate paths
                     if not {node_to, other} in new_edges:
-                        graph.swap_edge_node(affected_edge, node_from, node_to)
+                        new_edge = graph.swap_edge_node(affected_edge, node_from, node_to)
                         new_edges.append({node_to, other})
                         affected_paths.add(affected_edge.path)
+
+                        # Update the queue and rtree
+                        edge_queue.append(new_edge)
+                        rtree_index.insert(new_edge.id, new_edge.bounds, new_edge)
+                        edge_to_original_edge_table[new_edge.id] = new_edge
                     else:
                         graph.remove_path(affected_edge.path.id)
                 except AssertionError:
-                    raise
+                    debug("Something went wrong. Continue.")
+                    pass
 
             # Resolve edge segmentation
             affected_paths = list(affected_paths)
@@ -866,6 +882,9 @@ def merge_parallel_edges(graph, overlap_threshold=.3, angle_threshold=10.):
                         affected_paths.append(new_path)
 
             # Update the rtree index
+            for edge_to_remove in edges_to_remove:
+                rtree_index.delete(edge_to_remove.id, edge_to_remove.bounds)
+
     return graph
 
 
@@ -1015,7 +1034,10 @@ def make_sidewalks(street_graph, distance_to_sidewalk=15):
 
                 # Identify which one of crosswalk_nodes to swap
                 curr_crosswalk_nodes = filter(lambda node: adjacent_node in node.parents, crosswalk_nodes)
-                assert len(curr_crosswalk_nodes) == 2  # Two crosswalk nodes should have been created from each adj node
+                try:
+                    assert len(curr_crosswalk_nodes) == 2  # Two crosswalk nodes should have been created from each adj node
+                except AssertionError:
+                    debug(curr_crosswalk_nodes)
 
                 crosswalk_node = curr_crosswalk_nodes[0]
                 vec_intersection_to_adjacent_node = intersection_node.vector_to(adjacent_node, normalize=True)
@@ -1064,7 +1086,7 @@ def sort_nodes(center_node, nodes):
 
 def main():
     debug("Start...")
-    filename = "../resources/SmallMap_04.osm"
+    filename = "../resources/DCStreets/DCStreets-separated.osm"
     geometric_graph = parse_osm(filename)
     geometric_graph = clean_edge_segmentation(geometric_graph)
     geometric_graph = split_path(geometric_graph)

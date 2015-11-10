@@ -61,3 +61,5 @@ target/
 
 resources/*
 output/*
+ToSidewalk/lib
+ToSidewalk/data

@@ -75,6 +75,7 @@ class Node(LatLng):
         return self.edges
 
     def remove_edge(self, edge):
+        assert edge in self.edges
         self.edges.remove(edge)
 
     def get_geojson_features(self):
