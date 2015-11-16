@@ -100,18 +100,25 @@ class TSPath(object):
         assert len(self.edges) > 1
         assert edge1 in self.edges
         assert edge2 in self.edges
-        assert len({edge1.source, edge1.target} & {edge2.source, edge2.target}) == 1
+        assert edge1 != edge2
 
-        shared_node = list({edge1.source, edge1.target} & {edge2.source, edge2.target})[0]
-        if edge1.source == shared_node:
-            node1 = edge1.target
+        if {edge1.source, edge1.target} == {edge2.source, edge2.target}:
+            new_edge = Edge(edge1.source, edge1.target)
         else:
-            node1 = edge1.source
-        if edge2.source == shared_node:
-            node2 = edge2.target
-        else:
-            node2 = edge2.source
-        new_edge = Edge(node1, node2)
+            num_shared_nodes = len({edge1.source, edge1.target} & {edge2.source, edge2.target})
+            assert num_shared_nodes == 1 or num_shared_nodes == 2
+
+            shared_node = list({edge1.source, edge1.target} & {edge2.source, edge2.target})[0]
+            if edge1.source == shared_node:
+                node1 = edge1.target
+            else:
+                node1 = edge1.source
+            if edge2.source == shared_node:
+                node2 = edge2.target
+            else:
+                node2 = edge2.source
+            new_edge = Edge(node1, node2)
+
         new_edge.path = self
         self.edges.insert(self.edges.index(edge1), new_edge)
 

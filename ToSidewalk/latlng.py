@@ -11,11 +11,14 @@ class LatLng(Point):
         self.lat = float(lat)
         self.lng = float(lng)
 
-    def __eq__(self, other):
-        return self.lat == other.lat and self.lng == other.lng
+    # def __eq__(self, other):
+    #     return self.lat == other.lat and self.lng == other.lng
 
     def __str__(self):
         return str(self.lat) + "," + str(self.lng)
+
+    def __hash__(self):
+        return hash(repr(self))
 
     def angle_to(self, latlng):
         """

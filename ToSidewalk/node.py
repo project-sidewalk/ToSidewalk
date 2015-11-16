@@ -227,6 +227,9 @@ class Node(LatLng):
             return wid
         return None
 
+    # def __hash__(self):
+    #     hash(str(self))
+
     def __reduce__(self):
         return (self.__class__, (self.id, self.lat, self.lng))
 

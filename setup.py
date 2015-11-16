@@ -30,7 +30,8 @@ setup(
     license='Apache Software License',
     author='Zachary Lawrence and Kotaro Hara',
     tests_require=['pytest'],
-    install_requires=['GeoAlchemy2>=0.2.5',
+    install_requires=['basemap>=1.0.7',
+                      'GeoAlchemy2>=0.2.5',
                       'numpy>=1.9.2',
                       'rtree>=0.8.2',
                       'shapely>=1.5.8'

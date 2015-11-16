@@ -597,7 +597,7 @@ def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'res
     # Parse ways
     for way in ways_tree:
         highway_tag = way.find(".//tag[@k='highway']")
-        if highway_tag is not None and highway_tag.get("v") in valid_highways or True:
+        if highway_tag is not None and highway_tag.get("v") in valid_highways:
             node_elements = filter(lambda elem: elem.tag == "nd", list(way))
             nodes = [geometric_graph.get_node(osm_id_to_node_id[int(element.get("ref"))]) for element in node_elements]
             path = geometric_graph.create_path(nodes=nodes)
@@ -630,8 +630,12 @@ def remove_short_edges(graph, distance_threshold=15):
             edge = edges.pop(0)
             if edge.get_length(in_meters=True) < distance_threshold and len(edges) > 0:
                 other = edges.pop(0)
-                new_edge = path.merge_edges(edge, other)
-                edges.insert(0, new_edge)
+                try:
+                    new_edge = path.merge_edges(edge, other)
+                    edges.insert(0, new_edge)
+                except AssertionError, e:
+                    debug(e)
+                    raise
             else:
                 new_edges.append(edge)
 
