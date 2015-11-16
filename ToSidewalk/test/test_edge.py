@@ -1,7 +1,7 @@
 import unittest
 from ToSidewalk.edge import Edge
 from ToSidewalk.node import Node
-from ToSidewalk.path import Path
+from ToSidewalk.tspath import TSPath
 
 
 class TestEdgeMethods(unittest.TestCase):
@@ -25,8 +25,8 @@ class TestEdgeMethods(unittest.TestCase):
         edge2 = Edge(node2, node4)
         edge3 = Edge(node1, node3)
         edge4 = Edge(node3, node4)
-        path1 = Path(0, [edge1, edge2])
-        path2 = Path(1, [edge3, edge4])
+        path1 = TSPath(0, [edge1, edge2])
+        path2 = TSPath(1, [edge3, edge4])
 
         self.assertTrue(Edge.same_path(edge1, edge2))
         self.assertFalse(Edge.same_path(edge1, edge3))

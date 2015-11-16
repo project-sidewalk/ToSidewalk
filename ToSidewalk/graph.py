@@ -1,10 +1,9 @@
 import numpy as np
 from node import Node
-from edge import Edge
-from path import Path
 from utilities import window
 from types import *
-
+from edge import Edge
+from tspath import TSPath
 import sys
 from logging import debug, DEBUG, basicConfig
 basicConfig(stream=sys.stderr, level=DEBUG)
@@ -103,7 +102,8 @@ class GeometricGraph(object):
             edges = kwargs["edges"]
         else:
             raise ValueError("nodes or edges have to be provided")
-        self.paths[id] = Path(id=id, edges=edges)
+
+        self.paths[id] = TSPath(id=id, edges=edges)
 
         for edge in edges:
             edge.path = self.paths[id]
@@ -440,8 +440,8 @@ class GeometricGraph(object):
 
         path1 = self.create_path(edges=edges1)
         path2 = self.create_path(edges=edges2)
-        Path.copy_properties(path, path1)
-        Path.copy_properties(path, path2)
+        TSPath.copy_properties(path, path1)
+        TSPath.copy_properties(path, path2)
         del self.paths[path.id]
 
     def subgraph(self, bounds, remove=False):
@@ -1086,15 +1086,17 @@ def sort_nodes(center_node, nodes):
 
 def main():
     debug("Start...")
-    filename = "../resources/DCStreets/DCStreets-separated.osm"
+    # filename = "../resources/DCStreets/DCStreets-separated.osm"
+    filename = "../resources/SmallMap_01.osm"
     geometric_graph = parse_osm(filename)
     geometric_graph = clean_edge_segmentation(geometric_graph)
     geometric_graph = split_path(geometric_graph)
     geometric_graph = remove_short_edges(geometric_graph)
+    geometric_graph.visualize()
     # geometric_graph = merge_parallel_edges(geometric_graph)
     # geometric_graph.visualize()
-    sidewalk_graph = make_sidewalks(geometric_graph)
-    sidewalk_graph.visualize()
+    # sidewalk_graph = make_sidewalks(geometric_graph)
+    # sidewalk_graph.visualize()
 
 
 if __name__ == "__main__":

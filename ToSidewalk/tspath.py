@@ -3,7 +3,7 @@ from edge import Edge
 from shapely.geometry import MultiLineString, mapping
 
 
-class Path(object):
+class TSPath(object):
     def __init__(self, id, edges):
         self.id = id
         self.edges = edges

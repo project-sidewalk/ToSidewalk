@@ -33,10 +33,19 @@ class DB(object):
             else:
                 database_name = "routing"
 
-        self.engine = create_engine('postgresql://%s@localhost/%s' % (user_name, database_name), echo=False)
-        Session = sessionmaker(bind=self.engine)
-        self.session = Session()
+        self.engine = create_engine('postgresql://%s:%s@localhost/%s' % (user_name, password, database_name), echo=False)
+        session = sessionmaker(bind=self.engine)
+        self.session = session()
 
+    def remove_records(self):
+        query = """
+        DELETE FROM sidewalk.audit_task_interaction;
+        DELETE FROM sidewalk.audit_task_environment;
+        DELETE FROM sidewalk.audit_task;
+        DELETE FROM sidewalk.street_edge;
+        """
+        self.engine.execute(query)
+        return
 
 if __name__ == "__main__":
     setting_file = os.path.relpath("../../", os.path.dirname(__file__)) + "/.settings"

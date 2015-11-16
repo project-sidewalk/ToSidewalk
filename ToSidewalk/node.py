@@ -1,6 +1,5 @@
 from latlng import LatLng
 import json
-import numpy as np
 import random
 from types import *
 
