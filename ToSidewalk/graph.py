@@ -601,13 +601,30 @@ def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'res
             node_elements = filter(lambda elem: elem.tag == "nd", list(way))
             nodes = [geometric_graph.get_node(osm_id_to_node_id[int(element.get("ref"))]) for element in node_elements]
             path = geometric_graph.create_path(nodes=nodes)
-            # path.way_type = highway_tag.get('v')
+            path.way_type = highway_tag.get('v')
             path.osm_ids.append(int(way.get("id")))
             for tag in way.findall('tag'):
                 if tag.attrib['k'] != "highway":
                     path.tags.append(tag.attrib)
 
     return geometric_graph
+
+
+def remove_dangling_nodes(graph):
+    """
+    Remove nodes that are not connected to anything
+
+    :param graph:
+    :return:
+    """
+    nodes = graph.get_nodes()
+    paths = graph.get_paths()
+    street_nodes = set([node for path in paths for node in path.get_nodes()])
+
+    for node in nodes:
+        if node not in street_nodes:
+            graph.remove_node(node.id)
+    return graph
 
 
 def remove_short_edges(graph, distance_threshold=15):
@@ -620,34 +637,36 @@ def remove_short_edges(graph, distance_threshold=15):
     paths = graph.get_paths()
     debug("Size of the graph. N_path=%s" % str(len(paths)))
     for path in paths:
-        if len(path.edges) < 2:
-            continue
+        try:
+            if len(path.edges) < 2:
+                continue
 
-        edges = list(path.edges)
-        new_edges = []
+            edges = list(path.edges)
+            new_edges = []
 
-        while edges:
-            edge = edges.pop(0)
-            if edge.get_length(in_meters=True) < distance_threshold and len(edges) > 0:
-                other = edges.pop(0)
-                try:
-                    new_edge = path.merge_edges(edge, other)
-                    edges.insert(0, new_edge)
-                except AssertionError, e:
-                    debug(e)
-                    raise
-            else:
-                new_edges.append(edge)
+            while edges:
+                edge = edges.pop(0)
+                if edge.get_length(in_meters=True) < distance_threshold and len(edges) > 0:
+                    other = edges.pop(0)
+                    if edge == other:
+                        edges.insert(0, edge)
+                    else:
+                        new_edge = path.merge_edges(edge, other)
+                        edges.insert(0, new_edge)
+                else:
+                    new_edges.append(edge)
 
-        if len(new_edges) > 1 and new_edges[-1].get_length(in_meters=True) < distance_threshold:
-            edge_1 = new_edges.pop()
-            edge_2 = new_edges.pop()
-            new_edge = path.merge_edges(edge_1, edge_2)
-            new_edges.append(new_edge)
+            if len(new_edges) > 1 and new_edges[-1].get_length(in_meters=True) < distance_threshold:
+                edge_1 = new_edges.pop()
+                edge_2 = new_edges.pop()
+                new_edge = path.merge_edges(edge_1, edge_2)
+                new_edges.append(new_edge)
 
-        path.edges = new_edges
+            path.edges = new_edges
+        except AssertionError, e:
+            debug(e)
 
-    return graph
+    return remove_dangling_nodes(graph)
 
 
 def clean_edge_segmentation(graph):
@@ -1091,12 +1110,13 @@ def sort_nodes(center_node, nodes):
 def main():
     debug("Start...")
     # filename = "../resources/DCStreets/DCStreets-separated.osm"
-    filename = "../resources/SmallMap_01.osm"
+    filename = "../resources/SmallMap_04.osm"
     geometric_graph = parse_osm(filename)
+    geometric_graph = remove_dangling_nodes(geometric_graph)
     geometric_graph = clean_edge_segmentation(geometric_graph)
     geometric_graph = split_path(geometric_graph)
     geometric_graph = remove_short_edges(geometric_graph)
-    geometric_graph.visualize()
+    print geometric_graph.export()
     # geometric_graph = merge_parallel_edges(geometric_graph)
     # geometric_graph.visualize()
     # sidewalk_graph = make_sidewalks(geometric_graph)

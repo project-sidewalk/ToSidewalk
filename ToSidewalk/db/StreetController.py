@@ -1,10 +1,12 @@
-import numpy as np
 import os
+import sys
 from geoalchemy2.shape import from_shape
 from shapely.geometry import LineString, Point
 from sqlalchemy.exc import IntegrityError
 
-import db
+from logging import debug, DEBUG, basicConfig
+basicConfig(stream=sys.stderr, level=DEBUG)
+
 from StreetTables import *
 from ToSidewalk.ToSidewalk import parse
 
@@ -28,7 +30,7 @@ def split_streets(filename):
         f.write(osm)
 
 
-def insert(filename):
+def insert_streets(street_network):
     """
     Insert streets
     Example: http://geoalchemy-2.readthedocs.org/en/latest/core_tutorial.html
@@ -36,13 +38,11 @@ def insert(filename):
     :return:
     """
     database = db.DB('../../.settings')
-    street_network = parse(filename)
 
     street_edge_table = StreetEdgeTable().__table__
     street_edge_parent_edge_table = StreetEdgeParentEdgeTable().__table__
     street_edge_street_node_table = StreetEdgeStreetNodeTable().__table__
     street_node_table = StreetNodeTable().__table__
-
 
     # Using transaction from sqlalchemy
     # http://docs.sqlalchemy.org/en/rel_0_9/core/connections.html#using-transactions
@@ -56,39 +56,37 @@ def insert(filename):
                 ins = street_node_table.insert().values(street_node_id=street_node_id, geom=geom, lat=node.lat, lng=node.lng)
                 connection.execute(ins)
             except IntegrityError:
-                # The node already exists
-                continue
-
+                continue  # Continue if the node already exists
 
         # Insert streets
-        for street in street_network.get_ways():
+        for street in street_network.get_paths():
             # Insert a street
-            coordinates = street_network.get_coordinates(street, lnglat=True)
+            nodes = street.get_nodes()
+            coordinates = map(lambda node: (node.lng, node.lat), nodes)
             geom = from_shape(LineString(coordinates), srid=4326)
             street_id = int(street.id)
             x1 = coordinates[0][0]
             y1 = coordinates[0][1]
             x2 = coordinates[-1][0]
             y2 = coordinates[-1][1]
-            street_type = street.type
-            source = int(street.nids[0])
-            target = int(street.nids[-1])
+            street_type = street.way_type
+            source = int(nodes[0].id)
+            target = int(nodes[-1].id)
             ins = street_edge_table.insert().values(street_edge_id=street_id, geom=geom, x1=x1, y1=y1,
                                                     x2=x2, y2=y2, way_type=street_type, source=source,
                                                     target=target, deleted=False)
             connection.execute(ins)
 
             # Insert parent edges if there are any
-            parents = street.get_original_ways()
+            parents = street.osm_ids
             for parent_way_id in parents:
                 parent_edge_id = int(parent_way_id)
                 street_edge_id = int(street.id)
                 ins = street_edge_parent_edge_table.insert().values(street_edge_id=street_edge_id, parent_edge_id=parent_edge_id)
                 connection.execute(ins)
 
-
             # Insert edge-node relationship
-            for node_id in street.get_node_ids():
+            for node_id in map(lambda node: node.id, nodes):
                 street_edge_id = int(street.id)
                 street_node_id = int(node_id)
                 ins = street_edge_street_node_table.insert().values(street_edge_id=street_edge_id, street_node_id=street_node_id)
@@ -116,9 +114,51 @@ def init_assignment_count():
         trans.commit()
 
 
+def get_street_graph(**kwargs):
+    """
+    Parse a osm file and retrieve streets. Return a graph.
+
+    :param kwargs:
+    :return:
+    """
+    assert 'database' in kwargs
+    assert 'osm_filename' in kwargs
+    osm_filename = kwargs['osm_filename']
+
+    from ToSidewalk.graph import *
+    geometric_graph = parse_osm(osm_filename)
+    geometric_graph = remove_dangling_nodes(geometric_graph)
+    geometric_graph = clean_edge_segmentation(geometric_graph)
+    geometric_graph = split_path(geometric_graph)
+    geometric_graph = remove_short_edges(geometric_graph)
+    return geometric_graph
+
+
+def _remove_records(database):
+    query = """
+    DELETE FROM sidewalk.audit_task_interaction;
+    DELETE FROM sidewalk.audit_task_environment;
+    DELETE FROM sidewalk.audit_task;
+    DELETE FROM street_edge_street_node;
+    DELETE FROM sidewalk.street_edge_parent_edge;
+    DELETE FROM sidewalk.street_edge;
+    DELETE FROM sidewalk.street_node;
+    """
+    database.engine.execute(query)
+    return
+
+
+def insert_dc_street_records():
+    filename = os.path.relpath("../../resources", os.path.dirname(__file__)) + "/"
+    filename += "DC_IntersectedWithTheCityBoundary/district-of-columbia-latest.osm"
+
+    database = db.DB('../../.settings')
+    street_graph = get_street_graph(database=database, osm_filename=filename)
+    insert_streets(street_graph)
+
 if __name__ == "__main__":
     print("StreetController.py")
-    filename = os.path.relpath("../../output", os.path.dirname(__file__)) + "/SmallMap_04_streets.osm"
-    # insert(filename)
+
+
     # split_streets("../../resources/SmallMap_04.osm")
-    init_assignment_count()
+    # init_assignment_count()

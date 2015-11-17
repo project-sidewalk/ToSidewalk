@@ -37,17 +37,12 @@ class DB(object):
         session = sessionmaker(bind=self.engine)
         self.session = session()
 
-    def remove_records(self):
-        query = """
-        DELETE FROM sidewalk.audit_task_interaction;
-        DELETE FROM sidewalk.audit_task_environment;
-        DELETE FROM sidewalk.audit_task;
-        DELETE FROM sidewalk.street_edge;
-        """
-        self.engine.execute(query)
-        return
+
+
+
 
 if __name__ == "__main__":
     setting_file = os.path.relpath("../../", os.path.dirname(__file__)) + "/.settings"
     db = DB(setting_file)
+
 

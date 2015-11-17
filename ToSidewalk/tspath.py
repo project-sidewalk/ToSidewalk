@@ -10,7 +10,7 @@ class TSPath(object):
         for edge in self.edges:
             edge.path = self
 
-        self.way_type = None
+        self._way_type = None
         self.tags = []
 
     @staticmethod
@@ -24,6 +24,10 @@ class TSPath(object):
         path2.way_type = path1.way_type
         path2.tags = list(path1.tags)
         path2.osm_ids = list(path1.osm_ids)
+
+    @property
+    def way_type(self):
+        return self._way_type
 
     @property
     def edges(self):
@@ -47,6 +51,10 @@ class TSPath(object):
         feature['properties'] = {}
         feature['geometry'] = mapping(self.multi_line_string)
         return feature
+
+    @way_type.setter
+    def way_type(self, wtype):
+        self._way_type = wtype
 
     @edges.setter
     def edges(self, edges):
