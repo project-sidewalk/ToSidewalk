@@ -134,19 +134,6 @@ def get_street_graph(**kwargs):
     return geometric_graph
 
 
-def _remove_records(database):
-    query = """
-    DELETE FROM sidewalk.audit_task_interaction;
-    DELETE FROM sidewalk.audit_task_environment;
-    DELETE FROM sidewalk.audit_task;
-    DELETE FROM street_edge_street_node;
-    DELETE FROM sidewalk.street_edge_parent_edge;
-    DELETE FROM sidewalk.street_edge;
-    DELETE FROM sidewalk.street_node;
-    """
-    database.engine.execute(query)
-    return
-
 
 def insert_dc_street_records():
     filename = os.path.relpath("../../resources", os.path.dirname(__file__)) + "/"
@@ -158,7 +145,7 @@ def insert_dc_street_records():
 
 if __name__ == "__main__":
     print("StreetController.py")
-
+    init_assignment_count()
 
     # split_streets("../../resources/SmallMap_04.osm")
     # init_assignment_count()
