@@ -553,7 +553,7 @@ class GeometricGraph(object):
             raise ValueError("format should be either 'geojson' or 'osm'")
 
 
-def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'residential'}):
+def parse_osm(filename, valid_highways={'primary', 'secondary', 'tertiary', 'residential', 'trunk'}):
     """
     Parse an OSM file
     """

@@ -100,7 +100,8 @@ def init_assignment_count():
     assignment_count_table = StreetEdgeAssignmentCountTable.__table__
 
     session = database.session
-    query = session.query(StreetEdgeTable.street_edge_id, StreetEdgeAssignmentCountTable.assignment_count, StreetEdgeAssignmentCountTable.completion_count).\
+    query = session.query(StreetEdgeTable.street_edge_id, StreetEdgeAssignmentCountTable.assignment_count,
+                          StreetEdgeAssignmentCountTable.completion_count).\
         outerjoin(StreetEdgeAssignmentCountTable).\
         filter(StreetEdgeAssignmentCountTable.assignment_count is not None)
 
@@ -108,7 +109,8 @@ def init_assignment_count():
     with connection.begin() as trans:
         for item in query:
             street_edge_id = item[0]
-            ins = assignment_count_table.insert().values(street_edge_id=street_edge_id, assignment_count=0, completion_count=0)
+            ins = assignment_count_table.insert().values(street_edge_id=street_edge_id,
+                                                         assignment_count=0, completion_count=0)
             connection.execute(ins)
 
         trans.commit()
@@ -133,19 +135,24 @@ def get_street_graph(**kwargs):
     geometric_graph = remove_short_edges(geometric_graph)
     return geometric_graph
 
-
+def sanitize_edge_id(graph):
+    for path in graph.get_paths():
+        print path
 
 def insert_dc_street_records():
-    filename = os.path.relpath("../../resources", os.path.dirname(__file__)) + "/"
-    filename += "DC_IntersectedWithTheCityBoundary/district-of-columbia-latest.osm"
+    filename = os.path.relpath("../../output", os.path.dirname(__file__)) + "/"
+    filename += "dc-streets-from-district-of-columbia-trunk.osm"
 
     database = db.DB('../../.settings')
-    street_graph = get_street_graph(database=database, osm_filename=filename)
+    street_graph = get_street_graph(database="", osm_filename=filename)
+    sanitize_edge_id(street_graph)
     insert_streets(street_graph)
+    return
 
 if __name__ == "__main__":
     print("StreetController.py")
     init_assignment_count()
+    # init_assignment_count()
 
     # split_streets("../../resources/SmallMap_04.osm")
     # init_assignment_count()

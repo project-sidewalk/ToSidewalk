@@ -7,6 +7,7 @@ import json
 import numpy as np
 import os
 
+
 def main():
     database = db.DB("../../.settings")
     session = database.session

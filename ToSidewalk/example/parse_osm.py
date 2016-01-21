@@ -6,7 +6,7 @@ from ToSidewalk.graph import *
 
 def main(in_filename, out_filename):
     debug("Start...")
-    geometric_graph = parse_osm(in_filename)
+    geometric_graph = parse_osm(in_filename, valid_highways={'trunk'})
     geometric_graph = clean_edge_segmentation(geometric_graph)
     geometric_graph = split_path(geometric_graph)
     new_graph = remove_short_edges(geometric_graph)
@@ -16,6 +16,6 @@ def main(in_filename, out_filename):
 
 
 if __name__ == "__main__":
-    # main("../../resources/DC_IntersectedWithTheCityBoundary/district-of-columbia-latest.osm",
-    #      "../../output/dc-streets-from-district-of-columbia-latest.osm")
     pass
+    # main("../../resources/DC_IntersectedWithTheCityBoundary/district-of-columbia-latest.osm",
+    #       "../../output/dc-streets-from-district-of-columbia-trunk.osm")
