@@ -36,5 +36,7 @@ def import_dc_neighborhood():
 # SELECT * FROM region
 # WHERE (region_id = 85 OR region_id = 73 OR region_id = 105 OR region_id = 97)
 
+
+
 if __name__ == "__main__":
-    import_dc_neighborhood()
+    pass

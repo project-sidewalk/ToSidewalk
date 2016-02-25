@@ -33,7 +33,12 @@ class DB(object):
             else:
                 database_name = "routing"
 
-        self.engine = create_engine('postgresql://%s:%s@localhost/%s' % (user_name, password, database_name), echo=False)
+            if "port" in j:
+                port = j["port"]
+            else:
+                port = "5432"
+
+        self.engine = create_engine('postgresql://%s:%s@localhost:%s/%s' % (user_name, password, port, database_name), echo=False)
         session = sessionmaker(bind=self.engine)
         self.session = session()
 
