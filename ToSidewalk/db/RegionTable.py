@@ -14,6 +14,19 @@ class RegionTypeTable(Base):
     region_type_id = Column(Integer, primary_key=True, name="region_type_id")
     region_type = Column(String, name="region_type")
 
+    def __repr__(self):
+        return "RegionType(region_type_id=%s, region_type=%s)" % (self.region_type_id, self.region_type)
+
+    @classmethod
+    def list(cls, session):
+        """
+        List records of region types
+
+        :param session:
+        :return:
+        """
+        return [record for record in session.query(cls)]
+
 
 class RegionTable(Base):
     """
@@ -28,13 +41,33 @@ class RegionTable(Base):
     data_source = Column(String, name="data_source")
     geom = Column(Geometry("Polygon", srid=4326), name="geom")
 
+    def __repr__(self):
+        return "Region(region_id=%s, region_type_id=%s, description=%s, data_source=%s, geom=%s)" % \
+               (self.region_id, self.region_type_id, self.description, self.data_source, self.geom)
 
-def import_dc_neighborhood():
-    database = db.DB("../../.settings")
-    region_table = RegionTable.__table__
-    session = database.session
-    connection = database.engine.connect()
+    @classmethod
+    def list(cls, session):
+        query = session.query(cls)
+        return [record for record in query]
 
+    @classmethod
+    def list_region_of_type(cls, session, type):
+        region_type = session.query(RegionTypeTable).filter_by(region_type=type).first()
+        return [record for record in session.query(cls).filter_by(region_type_id=region_type.region_type_id).order_by(cls.region_id)]
+
+    @classmethod
+    def add_region(cls, session, region):
+        session.add(region)
+        session.commit()
+
+    @classmethod
+    def add_regions(cls, session, regions):
+        for region in regions:
+            session.add(region)
+        session.commit()
+
+
+def import_dc_neighborhood(session):
     resource_file_dir = "../../resources/DCNeighborhood/Neighborhood_Composition/Neighborhood_Composition.shp"
     sf = shapefile.Reader(resource_file_dir)
     shapes = sf.shapes()
@@ -42,26 +75,16 @@ def import_dc_neighborhood():
     # Insert data
     region_type_id = 2  # "neighborhood"
     data_source = "http://opendata.dc.gov/datasets/a0225495cda9411db0373a1db40a64d5_21"
-    with connection.begin() as transaction:
-        for i, shape in enumerate(shapes):
-            polygon_string = "POLYGON((" + ",".join(["%f %f" % (coord[0], coord[1]) for coord in shape.points]) + \
-                             ",%f %f" % (shape.points[0][0], shape.points[0][1]) + "))"
-            ins = region_table.insert().values(region_id=i,
-                                               region_type_id=region_type_id,
-                                               description="DC Neighborhood Composition",
-                                               data_source=data_source,
-                                               geom=polygon_string)
-            connection.execute(ins)
-        transaction.commit()
+    regions = []
+    for i, shape in enumerate(shapes):
+        polygon_string = "POLYGON((" + ",".join(["%f %f" % (coord[0], coord[1]) for coord in shape.points]) + \
+                         ",%f %f" % (shape.points[0][0], shape.points[0][1]) + "))"
+        regions.append(RegionTable(region_type_id=region_type_id, description="DC Neighborhood Composition", data_source=data_source, geom=polygon_string))
+    RegionTable.add_regions(session, regions)
 
-
-    # session = database.session
-    # query = session.query(RegionTypeTable)
-    # for item in query:
-    #     print item.region_type_id, item.region_type
-#
-# SELECT * FROM region
-# WHERE (region_id = 85 OR region_id = 73 OR region_id = 105 OR region_id = 97)
 
 if __name__ == "__main__":
-    pass
+    database = db.DB("../../.settings")
+    session = database.session
+    for record in RegionTable.list_region_of_type(session, "neighborhood"):
+        print record
