@@ -48,9 +48,7 @@ def compute_area_coverage_from_distance(session):
     total_distance_by_region = {}
 
     distance_query = """SELECT SUM(ST_Length(ST_Transform(street_edge.geom, 26985))) FROM sidewalk.region
-    INNER JOIN sidewalk.street_edge
-    ON region.geom && street_edge.geom
-    WHERE region.region_id = %s"""
+    INNER JOIN sidewalk.street_edge ON region.geom && street_edge.geom WHERE region.region_id = %s"""
 
     region_ids = set(map(lambda m: m.region_id, filter(lambda m: m.region_id is not None, MissionTable.list(session))))
     for region_id in region_ids:
@@ -73,9 +71,7 @@ def compute_distance_from_area_coverage(session):
     total_distance_by_region = {}
 
     distance_query = """SELECT SUM(ST_Length(ST_Transform(street_edge.geom, 26985))) FROM sidewalk.region
-    INNER JOIN sidewalk.street_edge
-    ON region.geom && street_edge.geom
-    WHERE region.region_id = %s"""
+    INNER JOIN sidewalk.street_edge ON region.geom && street_edge.geom WHERE region.region_id = %s"""
 
     region_ids = set(map(lambda m: m.region_id, filter(lambda m: m.region_id is not None, MissionTable.list(session))))
     for region_id in region_ids:
@@ -93,7 +89,7 @@ if __name__ == "__main__":
     session = database.session
     # populate_missions(session)
     # compute_area_coverage_from_distance(session)
-    compute_distance_from_area_coverage(session)
+    # compute_distance_from_area_coverage(session)
 
 
 
