@@ -52,7 +52,9 @@ INNER JOIN sidewalk.street_edge ON region.geom && street_edge.geom WHERE region.
 
     elif mission_label == "area-coverage-mission":
         for record in RegionTable.list_region_of_type(session, "neighborhood"):
-            for level, distance, coverage in zip(mission_types["area-coverage-mission"]["levels"], mission_types["area-coverage-mission"]["distances"], mission_types["area-coverage-mission"]["coverages"]):
+            for level, distance, coverage in zip(mission_types["area-coverage-mission"]["levels"],
+                                                 mission_types["area-coverage-mission"]["distances"],
+                                                 mission_types["area-coverage-mission"]["coverages"]):
                 mission = MissionTable(region_id=record.region_id, label="area-coverage-mission", level=level, distance=distance, coverage=coverage)
                 missions.append(mission)
 
