@@ -3,7 +3,12 @@ from ToSidewalk.db.MissionTables import MissionTable
 from ToSidewalk.db.RegionTable import RegionTable
 
 
-def populate_missions(session):
+def populate_missions(session, mission_label):
+    """
+    Populate the mission
+    :param session:
+    :return:
+    """
     mission_types = {
         "initial-mission": {
             "id": "initial-mission",
@@ -27,16 +32,32 @@ def populate_missions(session):
 
     # Populate missions
     missions = []
-    missions.append(MissionTable(label="initial-mission", level=1, distance=250))
-    for record in RegionTable.list_region_of_type(session, "neighborhood"):
-        for level, distance, coverage in zip(mission_types["distance-mission"]["levels"], mission_types["distance-mission"]["distances"], mission_types["distance-mission"]["coverages"]):
-            mission = MissionTable(region_id=record.region_id, label="distance-mission", level=level, distance=distance, coverage=coverage)
-            missions.append(mission)
 
-        for level, distance, coverage in zip(mission_types["area-coverage-mission"]["levels"], mission_types["area-coverage-mission"]["distances"], mission_types["area-coverage-mission"]["coverages"]):
-            mission = MissionTable(region_id=record.region_id, label="area-coverage-mission", level=level, distance=distance, coverage=coverage)
-            missions.append(mission)
-    MissionTable.add_missions(session, missions)
+    if mission_label == "initial-mission":
+        missions.append(MissionTable(label="initial-mission", level=1, distance=250))
+    elif mission_label == "distance-mission":
+        # Get total distance in the neighborhood. Create mission for every 1500 meters (roughly a mile)
+        step_size = 1500
+        neighborhood_distance_query = """SELECT SUM(ST_Length(ST_Transform(street_edge.geom, 26985))) FROM sidewalk.region
+INNER JOIN sidewalk.street_edge ON region.geom && street_edge.geom WHERE region.region_id = %s"""
+
+        for record in RegionTable.list_region_of_type(session, "neighborhood"):
+            neighborhood_total_distance = int(session.execute(neighborhood_distance_query % str(record.region_id)).fetchone()[0])
+            distances = [500, 1000] + range(1500, neighborhood_total_distance, step_size)
+
+            for level, distance in enumerate(distances, 1):
+                coverage = float(distance) / neighborhood_total_distance
+                mission = MissionTable(region_id=record.region_id, label=mission_label, level=level, distance=distance, coverage=coverage)
+                missions.append(mission)
+
+    elif mission_label == "area-coverage-mission":
+        for record in RegionTable.list_region_of_type(session, "neighborhood"):
+            for level, distance, coverage in zip(mission_types["area-coverage-mission"]["levels"], mission_types["area-coverage-mission"]["distances"], mission_types["area-coverage-mission"]["coverages"]):
+                mission = MissionTable(region_id=record.region_id, label="area-coverage-mission", level=level, distance=distance, coverage=coverage)
+                missions.append(mission)
+
+    if missions:
+        MissionTable.add_missions(session, missions)
 
 
 def compute_area_coverage_from_distance(session):
@@ -48,7 +69,7 @@ def compute_area_coverage_from_distance(session):
     total_distance_by_region = {}
 
     distance_query = """SELECT SUM(ST_Length(ST_Transform(street_edge.geom, 26985))) FROM sidewalk.region
-    INNER JOIN sidewalk.street_edge ON region.geom && street_edge.geom WHERE region.region_id = %s"""
+INNER JOIN sidewalk.street_edge ON region.geom && street_edge.geom WHERE region.region_id = %s"""
 
     region_ids = set(map(lambda m: m.region_id, filter(lambda m: m.region_id is not None, MissionTable.list(session))))
     for region_id in region_ids:
@@ -71,7 +92,7 @@ def compute_distance_from_area_coverage(session):
     total_distance_by_region = {}
 
     distance_query = """SELECT SUM(ST_Length(ST_Transform(street_edge.geom, 26985))) FROM sidewalk.region
-    INNER JOIN sidewalk.street_edge ON region.geom && street_edge.geom WHERE region.region_id = %s"""
+INNER JOIN sidewalk.street_edge ON region.geom && street_edge.geom WHERE region.region_id = %s"""
 
     region_ids = set(map(lambda m: m.region_id, filter(lambda m: m.region_id is not None, MissionTable.list(session))))
     for region_id in region_ids:
@@ -83,11 +104,12 @@ def compute_distance_from_area_coverage(session):
         mission.distance = distance
     session.commit()
 
+
 if __name__ == "__main__":
     print("MissionTables.py")
     database = DB("../../.settings")
     session = database.session
-    # populate_missions(session)
+    populate_missions(session, "distance-mission")
     # compute_area_coverage_from_distance(session)
     # compute_distance_from_area_coverage(session)
 

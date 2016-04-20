@@ -58,6 +58,7 @@ docs/_build/
 target/
 
 .settings
+.remote_settings
 
 resources/*
 output/*
