@@ -10,12 +10,14 @@ class MissionTable(db.Base):
     label = Column(String, name="label")
     level = Column(Integer, name="level")
     distance = Column(Float, name="distance")
+    distance_ft = Column(Float, name="distance_ft")
+    distance_mi = Column(Float, name="distance_mi")
     coverage = Column(Float, name="coverage")
     deleted = Column(Boolean, name="deleted", default=False)
 
     def __repr__(self):
-        return "Mission(mission_id=%s, region_id=%s, label=%s, level=%s, distance=%s, coverage=%s)" % \
-               (self.mission_id, self.region_id, self.label, self.level, self.distance, self.coverage)
+        return "Mission(mission_id=%s, region_id=%s, label=%s, level=%s, distance=%s, distance_ft=%s, distance_mi=%s, coverage=%s)" % \
+               (self.mission_id, self.region_id, self.label, self.level, self.distance, self.distance_ft, self.distance_mi, self.coverage)
 
     @classmethod
     def list(cls, session):
