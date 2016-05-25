@@ -9,6 +9,28 @@ meta = MetaData(schema="sidewalk")
 Base = declarative_base(metadata=meta)
 
 
+class RegionPropertyTable(Base):
+    __tablename__ = "region_property"
+    region_property_id = Column(Integer, primary_key=True, name="region_property_id")
+    region_id = Column(Integer, name="region_id")
+    key = Column(String, name="key")
+    value = Column(String, name="value")
+
+    def __repr__(self):
+        return "RegionProperty(region_property_id=%s, region_id=%s, key=%s, value=%s)" % (self.region_property_id, self.region_id, self.key, self.value)
+
+    @classmethod
+    def add_region_property(cls, session, region_property):
+        session.add(region_property)
+        session.commit()
+
+    @classmethod
+    def add_region_properties(cls, session, region_properties):
+        for region_property in region_properties:
+            session.add(region_property)
+        session.commit()
+
+
 class RegionTypeTable(Base):
     __tablename__ = "region_type"
     region_type_id = Column(Integer, primary_key=True, name="region_type_id")
@@ -83,8 +105,26 @@ def import_dc_neighborhood(session):
     RegionTable.add_regions(session, regions)
 
 
+def import_neighborhood_names(session):
+    import fiona
+
+    region_names = []
+    with fiona.open("../../resources/region_id_with_neighborhood/region_id_with_neighborhood.shp") as shp:
+
+        for feature in shp:
+            region_id = int(feature['id'])
+            neighborhood_name = feature['properties']['distance_m']
+            region_property = RegionPropertyTable(region_id=region_id, key="Neighborhood Name", value=neighborhood_name)
+            region_names.append(region_property)
+
+    RegionPropertyTable.add_region_properties(session, region_names)
+
+
 if __name__ == "__main__":
     database = db.DB("../../.settings")
     session = database.session
-    for record in RegionTable.list_region_of_type(session, "neighborhood"):
-        print record
+
+    import_neighborhood_names(session)
+    # regions = RegionTable.list_region_of_type(session, "neighborhood")
+
+
