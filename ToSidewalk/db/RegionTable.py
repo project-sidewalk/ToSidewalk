@@ -3,6 +3,7 @@ from sqlalchemy import ForeignKey, MetaData, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
 import db
+import fiona
 import shapefile
 
 meta = MetaData(schema="sidewalk")
@@ -90,30 +91,37 @@ class RegionTable(Base):
 
 
 def import_dc_neighborhood(session):
-    resource_file_dir = "../../resources/DCNeighborhood/Neighborhood_Composition/Neighborhood_Composition.shp"
-    sf = shapefile.Reader(resource_file_dir)
-    shapes = sf.shapes()
-
+    #
+    # sf = shapefile.Reader(resource_file_dir)
+    # shapes = sf.shapes()
     # Insert data
-    region_type_id = 2  # "neighborhood"
-    data_source = "http://opendata.dc.gov/datasets/a0225495cda9411db0373a1db40a64d5_21"
+
+    # http://gis.stackexchange.com/questions/70591/creating-shapely-multipolygons-from-shape-file-multipolygons
+    from shapely.geometry import shape
+    from geoalchemy2.shape import from_shape
+
     regions = []
-    for i, shape in enumerate(shapes):
-        polygon_string = "POLYGON((" + ",".join(["%f %f" % (coord[0], coord[1]) for coord in shape.points]) + \
-                         ",%f %f" % (shape.points[0][0], shape.points[0][1]) + "))"
-        regions.append(RegionTable(region_type_id=region_type_id, description="DC Neighborhood Composition", data_source=data_source, geom=polygon_string))
+    resource_file_dir = "../../resources/Census_Tracts__2010/Census_Tracts__2010.shp"
+    region_type_id = 2  # "neighborhood"
+    data_source = "http://opendata.dc.gov/datasets/6969dd63c5cb4d6aa32f15effb8311f3_8"
+    with fiona.open(resource_file_dir) as shp:
+        for feature in shp:
+            polygon = shape(feature["geometry"])
+            wkb_element = from_shape(polygon, srid=4326)
+            description = feature["properties"]["TRACT"]
+            region = RegionTable(region_type_id=region_type_id, description=description, data_source=data_source, geom=wkb_element)
+            regions.append(region)
+
     RegionTable.add_regions(session, regions)
 
 
 def import_neighborhood_names(session):
-    import fiona
-
     region_names = []
-    with fiona.open("../../resources/region_id_with_neighborhood/region_id_with_neighborhood.shp") as shp:
+    with fiona.open("../../resources/tract_centroid/tract_centroid_with_name.shp") as shp:
 
         for feature in shp:
-            region_id = int(feature['id'])
-            neighborhood_name = feature['properties']['distance_m']
+            region_id = int(feature['properties']['region_id'])
+            neighborhood_name = feature['properties']['tract_cent']
             region_property = RegionPropertyTable(region_id=region_id, key="Neighborhood Name", value=neighborhood_name)
             region_names.append(region_property)
 
@@ -124,7 +132,9 @@ if __name__ == "__main__":
     database = db.DB("../../.settings")
     session = database.session
 
-    import_neighborhood_names(session)
+    # import_dc_neighborhood(session)
+    # import_neighborhood_names(session)
+
     # regions = RegionTable.list_region_of_type(session, "neighborhood")
 
 

@@ -24,6 +24,8 @@ def populate_missions(session, mission_label):
 INNER JOIN sidewalk.street_edge ON ST_Intersects(region.geom, street_edge.geom) WHERE region.region_id = %s"""
 
         for record in RegionTable.list_region_of_type(session, "neighborhood"):
+            if record.region_id < 193:
+                continue
             neighborhood_total_distance_m = float(session.execute(neighborhood_distance_query % str(record.region_id)).fetchone()[0]) * ureg.meter
             neighborhood_total_distance_mi = neighborhood_total_distance_m.to(ureg.mile)
             distances = [2000 * ureg.feet, 4000 * ureg.feet] + [dist * ureg.mile for dist in range(1, int(neighborhood_total_distance_mi.magnitude), step_size)]
@@ -109,8 +111,8 @@ if __name__ == "__main__":
     print("populate_missions.py")
     database = DB("../../.settings")
     session = database.session
-    # populate_missions(session, "area-coverage-mission")
-    # compute_area_coverage_from_distance(session)
+    # populate_missions(session, "distance-mission")
+    compute_area_coverage_from_distance(session)
     # compute_distance_from_area_coverage(session)
 
 
