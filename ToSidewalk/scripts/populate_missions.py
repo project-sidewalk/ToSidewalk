@@ -106,13 +106,38 @@ INNER JOIN sidewalk.street_edge ON ST_Intersects(region.geom, street_edge.geom) 
         mission.distance = distance
     session.commit()
 
+SRID = 26918
+def check_if_mission_is_possible(session):
+    total_distance_by_region = {}
+    distance_query = """SELECT SUM(ST_Length(ST_Transform(street_edge.geom, %s)))
+  FROM sidewalk.region
+INNER JOIN sidewalk.street_edge
+  ON ST_Intersects(region.geom, street_edge.geom)
+WHERE street_edge.deleted = False
+  AND region.region_id = %s"""
+
+    region_ids = set(map(lambda m: m.region_id, filter(lambda m: m.region_id is not None and m.region_type_id == 2, RegionTable.list(session))))
+    for region_id in region_ids:
+        total_distance_by_region[region_id] = session.execute(distance_query % (SRID, str(region_id))).fetchone()[0]
+
+    missions = filter(lambda m: m.region_id is not None, MissionTable.list(session))
+    for mission in missions:
+        if total_distance_by_region[mission.region_id] > mission.distance:
+            mission.deleted = False
+        else:
+            mission.deleted = True
+    session.commit()
+
+
 
 if __name__ == "__main__":
     print("populate_missions.py")
     database = DB("../../.settings")
     session = database.session
+
+    check_if_mission_is_possible(session)
     # populate_missions(session, "distance-mission")
-    compute_area_coverage_from_distance(session)
+    # compute_area_coverage_from_distance(session)
     # compute_distance_from_area_coverage(session)
 
 

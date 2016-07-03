@@ -32,6 +32,21 @@ class StreetEdgeTable(db.Base):
     # http://docs.sqlalchemy.org/en/rel_1_0/orm/basic_relationships.html
     street_edge_assignment_count = relationship("StreetEdgeAssignmentCountTable", uselist=False, backref="street_edge")
 
+    def __repr__(self):
+        return "StreetEdge(street_edge_id=%s, x1=%s, y1=%s, x2=%s, y2=%s, way_type=%s, source=%s, target=%s, deleted=%s)" % \
+               tuple(map(str, (self.street_edge_id, self.x1, self.y1, self.x2, self.y2, self.way_type, self.source, self.target, self.deleted)))
+
+    @classmethod
+    def select_street_edge(cls, session, street_edge_id):
+        street_edge = session.query(StreetEdgeTable).filter_by(street_edge_id=street_edge_id).first()
+        return street_edge
+
+    @classmethod
+    def delete_street_edge(cls, session, street_edge_id):
+        street_edge = session.query(StreetEdgeTable).filter_by(street_edge_id=street_edge_id).first()
+        street_edge.deleted = True
+        session.commit()
+
 
 class StreetEdgeParentEdgeTable(db.Base):
     """
